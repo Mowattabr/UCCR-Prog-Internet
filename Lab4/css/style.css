@@ -1,0 +1,96 @@
+body {
+  background: linear-gradient(rgba(24, 24, 27, 0.5), rgba(24, 24, 27, 0.5)),
+    url('https://wallpaperaccess.com/full/1537805.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #f3f4f6;
+  font-family: Arial, sans-serif;
+}
+
+.form-group label {
+  display: block;
+  margin-left: 5px;
+  font-weight: bold;
+  color: #f3f4f6;
+}
+
+.form-input {
+  width: 50vw;
+  max-width: 100%;
+  min-width: 200px;
+  padding: 10px 0;
+  border: 1px solid #27272a;
+  background-color: #e5e7eb;
+  color: #18181b;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.form-input:focus {
+  outline: 2px solid #6366f1;
+  background-color: #f3f4f6;
+  color: #18181b;
+}
+
+.submit-button {
+  padding: 10px 50px;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+  background-color: #2563eb;
+  color: #f3f4f6;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  background-color: #1e40af;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline;
+  margin-right: 10px;
+}
+
+nav a {
+  color: #f3f4f6;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+nav a:hover {
+  background: #27272a;
+}
+
+fieldset {
+  border: 1px solid #27272a;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+legend {
+  font-weight: bold;
+  color: #a5b4fc;
+}
+
+footer {
+  margin-top: 30px;
+  color: #a1a1aa;
+}
+
+label {
+  color: #f3f4f6;
+}
+
+#email-error {
+  color: #f87171;
+}
