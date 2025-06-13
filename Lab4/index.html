@@ -10,18 +10,29 @@
 
 <body>
 
-  <!-- encabezado de cuerpo de la página -->
+  <!-- 
+    HEADER (Encabezado):
+    Esta sección representa la cabecera principal de la página.
+    Normalmente aquí colocamos el título o el logo del sitio web.
+    Es importante porque le da identidad visual a la página y ayuda al usuario a saber dónde está.
+  -->
   <header>
     <h1>Plataforma Educativa Universidad Central</h1>
   </header>
 
-  <!-- menú -->
+  <!-- 
+    NAV (Navegación):
+    Este bloque contiene el menú de navegación principal.
+    Usamos una lista (<ul>) para organizar los enlaces (<li>).
+    Cada enlace (<a>) lleva al usuario a una sección diferente del sitio.
+    Es fundamental para que el usuario pueda moverse fácilmente entre las distintas páginas o secciones.
+  -->
   <nav>
     <ul>
-      <li><a href="final/">Inicio</a></li>
-      <li><a href="#">Cursos</a></li>
-      <li><a href="#">Contacto</a></li>
-      <li><a href="#">Ayuda</a></li>
+      <li><a href="final/">Inicio</a></li> <!-- Enlace a la página de inicio -->
+      <li><a href="#">Cursos</a></li>      <!-- Enlace a la sección de cursos (aún sin destino real) -->
+      <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
+      <li><a href="#">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
     </ul>
   </nav>
 
@@ -159,6 +170,18 @@
       </form>
     </section>
 
+    <!-- 
+      VIDEO EMBEBIDO DE YOUTUBE:
+      Para insertar un video de YouTube en tu página, debes ir al video en YouTube, hacer clic en "Compartir" y luego en "Insertar".
+      Allí verás un código <iframe> que puedes copiar y pegar en tu HTML.
+      Este método es el recomendado porque el propio YouTube genera el código compatible.
+
+      IMPORTANTE: 
+      Algunos videos, especialmente los musicales o de canales oficiales, pueden tener restricciones de derechos de autor.
+      Esto puede hacer que el video no se pueda reproducir fuera de YouTube o que muestre un mensaje de "video no disponible" cuando se intenta embeber.
+      Por eso, siempre es recomendable probar el video embebido en tu página para asegurarte de que funciona correctamente.
+
+    -->
     <section style="margin-left: 50px;">
       <iframe width="560" height="315" src="https://www.youtube.com/embed/k-Ua033oKAk"
         title="Video Incrustado" frameborder="0"
@@ -171,6 +194,28 @@
     <p>&copy; 2023 Plataforma Educativa Universidad Central</p>
     <p>Contacto: <a href="mailto:allan.villalobos.calderon@gmail.com">Allan</a></p>
   </footer>
+
+  <!-- 
+    Caja informativa para invitar a aprender más de HTML.
+    Se utiliza un div con estilos en línea para destacarla visualmente.
+    El enlace lleva a la página de W3Schools, un recurso muy recomendado para aprender HTML desde cero.
+  -->
+  <div style="margin: 40px auto 20px auto; max-width: 500px; background: #23232b; border-radius: 12px; border: 2px solid #6366f1; padding: 24px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
+    <h2 style="color: #a5b4fc; margin-bottom: 12px;">¿Quieres aprender más de HTML?</h2>
+    <p style="color: #f3f4f6; margin-bottom: 16px;">
+      Visita el siguiente recurso recomendado para profundizar tus conocimientos:
+    </p>
+    <a href="https://www.w3schools.com/html/default.asp" 
+       target="_blank" 
+       style="display: inline-block; background: #2563eb; color: #fff; padding: 10px 28px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: background 0.2s;">
+      <!-- 
+        target="_blank": 
+        Este atributo hace que el enlace se abra en una nueva pestaña del navegador.
+        Es útil cuando quieres que el usuario visite un recurso externo sin salir de tu página.
+      -->
+      Aprende más de HTML en W3Schools
+    </a>
+  </div>
 
   <script>
     document.querySelector('form').addEventListener('submit', function(e) {

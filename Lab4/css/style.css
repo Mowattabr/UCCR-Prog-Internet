@@ -1,3 +1,44 @@
+/*
+  === Explicación de conceptos CSS básicos ===
+
+  - padding: Espacio interno entre el contenido de un elemento y su borde.
+    Ejemplo: padding: 10px; agrega 10 píxeles de espacio dentro del elemento.
+
+  - border: Línea que rodea el elemento. Puedes definir grosor, estilo y color.
+    Ejemplo: border: 1px solid #27272a; crea un borde de 1 píxel, sólido y gris oscuro.
+
+  - color: Color del texto dentro del elemento.
+    Ejemplo: color: #f3f4f6; pone el texto en un tono claro.
+
+  - background-color: Color de fondo del elemento.
+    Ejemplo: background-color: #e5e7eb; fondo gris claro.
+
+  - margin-top, margin-bottom, margin-left, margin-right: Espacios externos que separan un elemento de otros.
+    Ejemplo: margin-top: 15px; agrega 15 píxeles de espacio arriba del elemento.
+
+  - border-radius: Redondea las esquinas del elemento.
+    Ejemplo: border-radius: 8px; esquinas redondeadas.
+
+  - transition: Hace que los cambios de estilo sean suaves.
+    Ejemplo: transition: background-color 0.3s ease; el color de fondo cambia suavemente en 0.3 segundos.
+
+  - font-weight: Grosor del texto. "bold" es negrita.
+
+  - outline: Línea que aparece fuera del borde, útil para resaltar elementos enfocados.
+
+  Nota sobre imágenes:
+  Las imágenes usadas en este proyecto son libres y se obtuvieron de sitios de iconos gratuitos.
+  Para usar una imagen de internet, puedes hacer clic derecho sobre ella y seleccionar "Copiar dirección de imagen" o "Dirección de imagen" según tu navegador.
+  Luego, esa URL se puede usar en el atributo src de una etiqueta <img> o en CSS como background-image.
+
+  A continuación, se explica el propósito de cada parte del CSS:
+*/
+
+/* 
+  body: 
+  Define el fondo de la página con un degradado y una imagen, el color del texto y la fuente general.
+  El background-size: cover; hace que la imagen de fondo cubra toda la pantalla.
+*/
 body {
   background: linear-gradient(rgba(24, 24, 27, 0.5), rgba(24, 24, 27, 0.5)),
     url('https://wallpaperaccess.com/full/1537805.jpg') no-repeat center center fixed;
@@ -6,6 +47,13 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* 
+  .form-group label:
+  Estiliza las etiquetas de los formularios para que sean más visibles y estén alineadas.
+  display: block; hace que cada etiqueta ocupe toda la línea.
+  margin-left: 5px; separa la etiqueta del borde izquierdo.
+  font-weight: bold; pone el texto en negrita.
+*/
 .form-group label {
   display: block;
   margin-left: 5px;
@@ -13,6 +61,13 @@ body {
   color: #f3f4f6;
 }
 
+/* 
+  .form-input:
+  Estiliza los campos de entrada del formulario.
+  padding: agrega espacio interno para que el texto no esté pegado al borde.
+  border-radius: suaviza las esquinas.
+  margin-bottom: separa los campos entre sí.
+*/
 .form-input {
   width: 50vw;
   max-width: 100%;
@@ -25,12 +80,27 @@ body {
   margin-bottom: 10px;
 }
 
+/* 
+  .form-input:focus:
+  Cambia el estilo del campo cuando está enfocado (cuando el usuario hace clic en él).
+  outline: resalta el campo.
+  background-color y color: mejoran la visibilidad del texto.
+*/
 .form-input:focus {
   outline: 2px solid #6366f1;
   background-color: #f3f4f6;
   color: #18181b;
 }
 
+/* 
+  .submit-button:
+  Estiliza el botón de enviar del formulario.
+  padding: agranda el botón.
+  border-radius: esquinas redondeadas.
+  transition: hace que el cambio de color sea suave al pasar el mouse.
+  background-color y color: colores del botón y del texto.
+  cursor: pointer; cambia el cursor al pasar sobre el botón.
+*/
 .submit-button {
   padding: 10px 50px;
   border-radius: 15px;
@@ -43,10 +113,19 @@ body {
   font-weight: bold;
 }
 
+/* 
+  .submit-button:hover:
+  Cambia el color de fondo del botón cuando el usuario pasa el mouse por encima.
+*/
 .submit-button:hover {
   background-color: #1e40af;
 }
 
+/* 
+  nav ul, nav li, nav a:
+  Estilizan el menú de navegación.
+  Se eliminan los puntos de la lista, se muestran los enlaces en línea y se les da color y efecto al pasar el mouse.
+*/
 nav ul {
   list-style-type: none;
   padding: 0;
@@ -69,6 +148,12 @@ nav a:hover {
   background: #27272a;
 }
 
+/* 
+  fieldset y legend:
+  Mejoran la apariencia de los grupos de campos del formulario.
+  border-radius: hace que los bordes sean redondeados.
+  background-color: transparente para que se vea el fondo.
+*/
 fieldset {
   border: 1px solid #27272a;
   padding: 15px;
@@ -82,15 +167,27 @@ legend {
   color: #a5b4fc;
 }
 
+/* 
+  footer:
+  Estiliza el pie de página, dándole un color más tenue y separándolo del contenido principal.
+*/
 footer {
   margin-top: 30px;
   color: #a1a1aa;
 }
 
+/* 
+  label:
+  Asegura que todas las etiquetas tengan el mismo color claro.
+*/
 label {
   color: #f3f4f6;
 }
 
+/* 
+  #email-error:
+  Da color rojo al mensaje de error del email para que sea fácil de notar.
+*/
 #email-error {
   color: #f87171;
 }
