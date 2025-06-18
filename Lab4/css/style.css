@@ -1,43 +1,40 @@
 /*
-  === Explicación de conceptos CSS básicos ===
+  === Guía rápida de conceptos CSS para principiantes ===
 
-  - padding: Espacio interno entre el contenido de un elemento y su borde.
-    Ejemplo: padding: 10px; agrega 10 píxeles de espacio dentro del elemento.
+  - padding: Espacio dentro de un elemento, entre el borde y el contenido.
+    Ejemplo: padding: 10px; (agrega 10 píxeles de espacio interno)
 
-  - border: Línea que rodea el elemento. Puedes definir grosor, estilo y color.
-    Ejemplo: border: 1px solid #27272a; crea un borde de 1 píxel, sólido y gris oscuro.
+  - border: Línea que rodea el elemento. Puedes cambiar su grosor, color y estilo.
+    Ejemplo: border: 1px solid #27272a; (borde de 1px, sólido y gris oscuro)
 
-  - color: Color del texto dentro del elemento.
-    Ejemplo: color: #f3f4f6; pone el texto en un tono claro.
+  - color: Cambia el color del texto.
+    Ejemplo: color: #f3f4f6; (texto claro)
 
-  - background-color: Color de fondo del elemento.
-    Ejemplo: background-color: #e5e7eb; fondo gris claro.
+  - background-color: Cambia el color de fondo de un elemento.
+    Ejemplo: background-color: #e5e7eb; (fondo gris claro)
 
-  - margin-top, margin-bottom, margin-left, margin-right: Espacios externos que separan un elemento de otros.
-    Ejemplo: margin-top: 15px; agrega 15 píxeles de espacio arriba del elemento.
+  - margin: Espacio fuera del borde, separa el elemento de otros.
+    Ejemplo: margin-top: 15px; (15px de espacio arriba)
 
   - border-radius: Redondea las esquinas del elemento.
-    Ejemplo: border-radius: 8px; esquinas redondeadas.
+    Ejemplo: border-radius: 8px; (esquinas redondeadas)
 
-  - transition: Hace que los cambios de estilo sean suaves.
-    Ejemplo: transition: background-color 0.3s ease; el color de fondo cambia suavemente en 0.3 segundos.
+  - transition: Hace que los cambios de estilo sean suaves y animados.
+    Ejemplo: transition: background-color 0.3s; (el fondo cambia suavemente)
 
   - font-weight: Grosor del texto. "bold" es negrita.
 
-  - outline: Línea que aparece fuera del borde, útil para resaltar elementos enfocados.
+  - outline: Línea extra que aparece fuera del borde, útil para resaltar campos activos.
 
-  Nota sobre imágenes:
-  Las imágenes usadas en este proyecto son libres y se obtuvieron de sitios de iconos gratuitos.
-  Para usar una imagen de internet, puedes hacer clic derecho sobre ella y seleccionar "Copiar dirección de imagen" o "Dirección de imagen" según tu navegador.
-  Luego, esa URL se puede usar en el atributo src de una etiqueta <img> o en CSS como background-image.
+  TIP: Puedes copiar la URL de una imagen de internet y usarla en CSS con background-image o en HTML con <img>.
 
-  A continuación, se explica el propósito de cada parte del CSS:
+  Lee los comentarios de cada bloque para entender cómo se aplica cada concepto en la práctica.
 */
 
-/* 
-  body: 
-  Define el fondo de la página con un degradado y una imagen, el color del texto y la fuente general.
-  El background-size: cover; hace que la imagen de fondo cubra toda la pantalla.
+/*
+  body:
+  Establece el fondo de la página con un degradado y una imagen, el color del texto y la fuente general.
+  background-size: cover; hace que la imagen cubra toda la pantalla.
 */
 body {
   background: linear-gradient(rgba(24, 24, 27, 0.5), rgba(24, 24, 27, 0.5)),
@@ -47,24 +44,40 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* 
+/*
   .form-group label:
-  Estiliza las etiquetas de los formularios para que sean más visibles y estén alineadas.
-  display: block; hace que cada etiqueta ocupe toda la línea.
+  Los títulos de los campos principales (nombre, correo, contraseña) aparecen arriba de sus cajas de texto.
+  display: block; asegura que el label esté en una línea y el input debajo.
   margin-left: 5px; separa la etiqueta del borde izquierdo.
   font-weight: bold; pone el texto en negrita.
 */
 .form-group label {
   display: block;
-  margin-left: 5px;
+  position: relative;
+  margin-bottom: 4px;
+  min-width: unset;
+  cursor: pointer;
   font-weight: bold;
   color: #f3f4f6;
 }
 
-/* 
+/*
+  fieldset label:
+  Los labels de los fieldsets (como género e intereses) se muestran en línea para que los radios y checkboxes estén ordenados horizontalmente.
+*/
+fieldset label {
+  display: inline-block;
+  position: relative;
+  min-width: 140px;
+  margin-bottom: 8px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/*
   .form-input:
-  Estiliza los campos de entrada del formulario.
-  padding: agrega espacio interno para que el texto no esté pegado al borde.
+  Da estilo a las cajas de texto: ancho, color, bordes y separación.
+  padding: espacio interno para que el texto no esté pegado al borde.
   border-radius: suaviza las esquinas.
   margin-bottom: separa los campos entre sí.
 */
@@ -80,9 +93,9 @@ body {
   margin-bottom: 10px;
 }
 
-/* 
+/*
   .form-input:focus:
-  Cambia el estilo del campo cuando está enfocado (cuando el usuario hace clic en él).
+  Cuando haces clic en una caja de texto, cambia el borde y el fondo para que sepas cuál estás editando.
   outline: resalta el campo.
   background-color y color: mejoran la visibilidad del texto.
 */
@@ -92,9 +105,9 @@ body {
   color: #18181b;
 }
 
-/* 
+/*
   .submit-button:
-  Estiliza el botón de enviar del formulario.
+  Botón para enviar el formulario. Es grande, colorido y cambia de color al pasar el mouse.
   padding: agranda el botón.
   border-radius: esquinas redondeadas.
   transition: hace que el cambio de color sea suave al pasar el mouse.
@@ -113,17 +126,17 @@ body {
   font-weight: bold;
 }
 
-/* 
+/*
   .submit-button:hover:
-  Cambia el color de fondo del botón cuando el usuario pasa el mouse por encima.
+  Cambia el color de fondo del botón al pasar el mouse.
 */
 .submit-button:hover {
   background-color: #1e40af;
 }
 
-/* 
+/*
   nav ul, nav li, nav a:
-  Estilizan el menú de navegación.
+  El menú de navegación no tiene puntos y los enlaces cambian de color al pasar el mouse.
   Se eliminan los puntos de la lista, se muestran los enlaces en línea y se les da color y efecto al pasar el mouse.
 */
 nav ul {
@@ -148,9 +161,9 @@ nav a:hover {
   background: #27272a;
 }
 
-/* 
+/*
   fieldset y legend:
-  Mejoran la apariencia de los grupos de campos del formulario.
+  Agrupan y titulan secciones del formulario, con bordes y esquinas redondeadas.
   border-radius: hace que los bordes sean redondeados.
   background-color: transparente para que se vea el fondo.
 */
@@ -167,27 +180,236 @@ legend {
   color: #a5b4fc;
 }
 
-/* 
+/*
   footer:
-  Estiliza el pie de página, dándole un color más tenue y separándolo del contenido principal.
+  Pie de página con texto más tenue y separado del contenido principal.
+  margin-top: 30px; separa el pie de página del contenido.
+  color: #a1a1aa; color gris tenue para el texto.
 */
 footer {
   margin-top: 30px;
   color: #a1a1aa;
 }
 
-/* 
+/*
   label:
-  Asegura que todas las etiquetas tengan el mismo color claro.
+  Todos los labels tienen color claro para mejor visibilidad.
+  color: #f3f4f6; color claro para los labels.
 */
 label {
   color: #f3f4f6;
 }
 
-/* 
+/*
   #email-error:
-  Da color rojo al mensaje de error del email para que sea fácil de notar.
+  Mensaje de error en rojo si el correo no es válido. Fondo suave y borde para que resalte.
+  color: #f87171; color del texto del error.
+  background-color: rgba(248, 113, 113, 0.1); fondo suave para el mensaje de error.
+  border: 1px solid #f87171; borde rojo para resaltar el error.
+  padding: 8px; espacio interno para que el texto no esté pegado al borde.
+  border-radius: esquinas redondeadas para el borde.
+  margin-top: espacio arriba del mensaje de error.
+  display: none; oculta el mensaje por defecto.
 */
 #email-error {
   color: #f87171;
+  background-color: rgba(248, 113, 113, 0.1);
+  border: 1px solid #f87171;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+  display: none; /* Oculto por defecto */
+}
+
+/*
+  Curiosidad visual: Avatar de género con giro 360°
+  Si pasas el mouse sobre el avatar, gira completamente. ¡Prueba y sorpréndete!
+  transition: suaviza la transición de la transformación.
+*/
+#avatar-genero {
+  transition: transform 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+#avatar-genero:hover {
+  transform: rotateY(360deg);
+}
+
+/*
+  Curiosidad visual: Mensaje especial de Star Wars con fade
+  Si seleccionas Star Wars, aparece un mensaje amarillo fuerte (sin opacidad) que se desvanece suavemente.
+*/
+#fuerza-msg {
+  opacity: 0;
+  transition: opacity 1s linear;
+  visibility: hidden;
+  height: 22px;
+  color: #ffe81f; /* Amarillo fuerte, sin opacidad */
+  font-weight: bold;
+  margin-top: 8px;
+  font-size: 1.1em;
+  padding-left: 25px;
+}
+#fuerza-msg.visible {
+  opacity: 1;
+  visibility: visible;
+  color: #ffe81f;
+  transition: opacity 1s linear;
+}
+#fuerza-msg.fade {
+  opacity: 0;
+  color: #ffe81f;
+  transition: opacity 5s linear, color 5s linear, background-color 5s linear;
+}
+
+/*
+1. Estructura del Modelo de Caja (Box Model)
+   - Contenido: área donde se muestra el texto o imágenes.
+   - Padding: espacio entre el contenido y el borde.
+   - Border: borde que rodea el padding y el contenido.
+   - Margin: espacio fuera del borde, separa la caja de otras cajas.
+   - Representación visual del flujo de cajas: cada elemento HTML es una caja que se coloca en el flujo del documento.
+   - Impacto del modelo en el diseño web: permite controlar tamaño, espaciado y disposición de los elementos.
+
+2. Propiedades en CSS
+   - Dimensiones: width, height
+   - Colores y fondos: background-color
+   - Bordes: border, border-radius
+   - Espaciado: padding y margin
+
+3. Selectores CSS
+   - ID: #id
+   - Etiqueta: div, p
+   - Clase: .clase
+   - Pseudoclases: :hover, :focus
+   - Pseudoelementos: ::before, ::after
+*/
+
+ /* Ejemplo de selectores y propiedades del modelo de caja */
+#caja-ejemplo {
+  width: 300px; /* Dimensiones */
+  height: 150px; /* Dimensiones */
+  background-color: #e0f7fa; /* Colores y fondos */
+  border: 3px solid #00796b; /* Bordes */
+  border-radius: 10px; /* Bordes */
+  padding: 20px; /* Espaciado */
+  margin: 30px auto; /* Espaciado */
+  box-sizing: border-box;
+  position: relative;
+}
+
+.resaltado { /* Clase */
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+div:hover { /* Pseudoclase */
+  background-color: #000000;
+}
+
+#caja-ejemplo::before { /* Pseudoelemento */
+  content: "Antes ";
+  color: #388e3c;
+}
+
+#caja-ejemplo::after { /* Pseudoelemento */
+  content: " Después";
+  color: #388e3c;
+}
+
+/*
+  .form-group label, fieldset label:
+  Estiliza los labels de formularios y fieldsets para alineación y espaciado.
+  display: inline-block; hace que los labels se alineen uno al lado del otro.
+  position: relative; permite posicionar elementos hijos de forma absoluta dentro del label.
+  min-width: 140px; asegura un ancho mínimo para los labels.
+  margin-bottom: 8px; separa los labels de los elementos siguientes.
+  vertical-align: middle; alinea verticalmente los labels con respecto a los inputs.
+  cursor: pointer; cambia el cursor al pasar sobre el label.
+*/
+.form-group label {
+  display: block;
+  position: relative;
+  margin-bottom: 4px;
+  min-width: unset;
+  cursor: pointer;
+  font-weight: bold;
+  color: #f3f4f6;
+}
+
+fieldset label {
+  display: inline-block;
+  position: relative;
+  min-width: 140px;
+  margin-bottom: 8px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/*
+  #avatar-genero:
+  Hace que el avatar gire en el eje Y al hacer hover.
+  transition: suaviza la transición de la transformación.
+*/
+#avatar-genero {
+  transition: transform 1s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+#avatar-genero:hover {
+  transform: rotateY(360deg);
+}
+
+/*
+  .form-group:
+  Cada grupo de campo del formulario tiene espacio debajo para que no se vean pegados.
+  margin-bottom: 16px; asegura que haya espacio entre los grupos de campos.
+*/
+.form-group {
+  margin-bottom: 16px;
+}
+
+/*
+  .form-group input:
+  Las cajas de texto ocupan el 50% del ancho del formulario y tienen espacio entre ellas.
+  width: 50%; hace que el campo de texto ocupe el 50% del ancho del contenedor.
+  margin-bottom: agrega espacio entre cada campo para evitar que se vean pegados.
+*/
+.form-group input {
+  width: 50%;
+  margin-bottom: 18px;
+}
+
+/*
+  #email-error (avanzado):
+  El mensaje de error solo aparece si el correo es inválido, usando selectores avanzados de CSS.
+  .form-group input[type="email"]:invalid + #email-error:
+  input[type="email"]:valid + #email-error {
+  display: none;
+}
+*/
+.form-group input[type="email"]:invalid + #email-error {
+  display: block;
+}
+
+/*
+  Oculta el mensaje de error del correo electrónico cuando el campo es válido.
+  .form-group input[type="email"]:valid + #email-error:
+  input[type="email"]:invalid + #email-error {
+  display: block;
+}
+*/
+.form-group input[type="email"]:valid + #email-error {
+  display: none;
+}
+
+/*
+  .video-centrado:
+  Centra el video de YouTube horizontalmente en la pantalla usando flexbox.
+  justify-content: center; alinea el contenido al centro horizontal.
+  display: flex; activa el modelo flexbox.
+  margin: 32px 0; agrega espacio arriba y abajo del video.
+*/
+.video-centrado {
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
 }
