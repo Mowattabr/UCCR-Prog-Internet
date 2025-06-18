@@ -413,3 +413,42 @@ fieldset label {
   justify-content: center;
   margin: 32px 0;
 }
+
+/*
+  .podcasts-educativos:
+  Sección final para mostrar podcasts recomendados. Centra el título y los videos.
+*/
+.podcasts-educativos {
+  margin: 40px 0 32px 0;
+  text-align: center;
+}
+
+.podcasts-educativos h2 {
+  font-size: 1.7em;
+  color: #2563eb;
+  margin-bottom: 24px;
+}
+
+/*
+  .podcast-videos:
+  Usa flexbox para mostrar los videos uno al lado del otro y centrados.
+*/
+.podcast-videos {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.podcast-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+}
+
+.podcast-item p {
+  margin-top: 12px;
+  color: #f3f4f6;
+  font-size: 1.1em;
+}
