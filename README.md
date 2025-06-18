@@ -22,7 +22,7 @@ El objetivo de este repositorio es entregar los documentos requeridos y, además
 - **Lab1/**: Primera asignación (estructura de workspace)
 - **Lab2/**: Conceptos básicos de HTML y CSS
 - **Lab3/**: Formulario interactivo y validación básica
-- **Lab4/**: Formulario avanzado, estilos CSS y JavaScript para interacción
+- **Lab4/**: Formulario avanzado con estilos CSS modernos, animaciones, validación visual y JavaScript interactivo. Incluye comentarios didácticos, recursos extra para principiantes y una sección con dos podcasts recomendados sobre HTML y CSS (uno en español y otro en portugués).
 
 Cada laboratorio incluye comentarios y anotaciones que amplían las explicaciones vistas en clase.
 
