@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB-04</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!--
+    HEADER (Encabezado):
+    Aquí va el título principal de la página. Sirve para que el usuario sepa dónde está y da identidad al sitio.
+    Puedes poner el nombre de la plataforma, el logo o ambos.
+  -->
+  <header>
+    <h1>Plataforma Educativa Universidad Central</h1>
+  </header>
+
+  <!--
+    NAV (Navegación):
+    Este bloque contiene el menú principal. Usamos una lista (<ul>) para organizar los enlaces (<li>).
+    Cada enlace (<a>) lleva a una sección diferente. Así el usuario puede moverse fácilmente por la web.
+  -->
+  <nav>
+    <ul>
+      <li><a href="final/">Inicio</a></li> <!-- Enlace a la página de inicio -->
+      <li><a href="#">Cursos</a></li>      <!-- Enlace a la sección de cursos (aún sin destino real) -->
+      <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
+      <li><a href="#">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
+    </ul>
+  </nav>
+
+  <main>
+    <section>
+      <!--
+        FORMULARIO PRINCIPAL:
+        Aquí el usuario puede registrarse llenando sus datos. Los fieldset agrupan campos relacionados.
+        Lee los comentarios de cada parte para entender cómo funciona.
+      -->
+      <form action="#" method="post">
+        <fieldset>
+          <legend>Registro de Usuario</legend>
+
+          <!--
+            Cada grupo de campos tiene su propio div para que el label quede arriba del input.
+            Esto mejora la legibilidad y la experiencia de usuario.
+          -->
+          <div class="form-group">
+            <label for="username">Nombre de Usuario:</label>
+            <input class="form-input" type="text" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input class="form-input" type="email" id="email" name="email" required oninput="document.getElementById('email-error').style.display='none'">
+            <span id="email-error" style="color: #ff6b6b; display: none;">El correo debe contener un @</span>
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input class="form-input" type="password" id="password" name="password" required>
+          </div>
+
+          <!--
+            GÉNERO:
+            Usa radio buttons para que el usuario solo pueda elegir una opción.
+            Los labels están en línea para que se vean ordenados.
+          -->
+          <fieldset>
+            <legend>Género</legend>
+            <div>
+              <input type="radio" value="m" name="genero" id="g-m">
+              <label for="g-m">Masculino</label><br>
+
+              <input type="radio" value="f" name="genero" id="g-f">
+              <label for="g-f">Femenino</label><br>
+
+              <input type="radio" value="o" name="genero" id="g-o">
+              <label for="g-o">Otro</label><br>
+
+              <input type="radio" value="n" name="genero" id="g-n">
+              <label for="g-n">Prefiero no decirlo</label>
+            </div>
+          </fieldset>
+
+          <!--
+            AVATAR DE GÉNERO:
+            Muestra una imagen que cambia según la selección de género.
+            Además, si pasas el mouse sobre el avatar, gira 360° (ver CSS para la animación).
+          -->
+          <fieldset>
+            <legend style="visibility: hidden; height: 0; margin: 0; padding: 0;"></legend>
+            <div style="display: flex;">
+              <div id="avatar-genero"
+                style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; margin-left: 10px; margin-top: 0px;">
+                <img id="img-avatar-genero"
+                  src="https://images.icon-icons.com/343/PNG/512/Male_35764.png"
+                  alt="Avatar Género"
+                  style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+              </div>
+            </div>
+          </fieldset>
+
+          <!--
+            INTERESES:
+            Usa checkboxes para que el usuario pueda elegir varios intereses.
+            Al seleccionar un interés, la imagen correspondiente se ilumina (ver JS y CSS).
+            Si seleccionas Star Wars, aparece un mensaje especial que se desvanece (ver JS y CSS).
+          -->
+          <fieldset>
+            <legend>Seleccione sus intereses:</legend>
+            <div style="display: flex; align-items: flex-start; gap: 32px;">
+              <!-- Opciones de intereses -->
+              <div>
+                <input type="checkbox" name="intereses" id="interes1" value="programacion">
+                <label for="interes1">Programación</label><br>
+
+                <input type="checkbox" name="intereses" id="interes2" value="diseño">
+                <label for="interes2">Diseño Gráfico</label><br>
+
+                <input type="checkbox" name="intereses" id="interes3" value="marketing">
+                <label for="interes3">Marketing Digital</label><br>
+
+                <input type="checkbox" name="intereses" id="interes4" value="ciencia">
+                <label for="interes4">Ciencia de Datos</label><br>
+
+                <input type="checkbox" name="intereses" id="interes5" value="basketball">
+                <label for="interes5">Basketball</label><br>
+
+                <input type="checkbox" name="intereses" id="interes6" value="musica">
+                <label for="interes6">Música</label><br>
+
+                <input type="checkbox" name="intereses" id="interes7" value="starwars">
+                <label for="interes7">Star Wars</label>
+              </div>
+              <!-- Cajas para imágenes de intereses -->
+              <div style="display: flex; gap: 16px; margin-left: -160px; margin-top: 12vw; margin-bottom: 40px;">
+                <div id="imgbox1"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-programacion"
+                    src="https://images.icon-icons.com/1859/PNG/512/codinghtml_117947.png"
+                    alt="Programación"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox2"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-diseno"
+                    src="https://images.icon-icons.com/537/PNG/512/paint-brush-2_icon-icons.com_52930.png"
+                    alt="Diseño Gráfico"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox3"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-marketing"
+                    src="https://images.icon-icons.com/2069/PNG/512/coin_dollar_finance_icon_125510.png"
+                    alt="Marketing Digital"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox4"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-ciencia"
+                    src="https://images.icon-icons.com/4277/PNG/512/finance_business_analysis_analytics_science_data_icon_266082.png"
+                    alt="Ciencia de Datos"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox5"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-basketball"
+                    src="https://images.icon-icons.com/553/PNG/512/basketball_icon-icons.com_53566.png"
+                    alt="Basketball"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox6"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-musica"
+                    src="https://images.icon-icons.com/270/PNG/512/Music_29918.png"
+                    alt="Música"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+                <div id="imgbox7"
+                  style="width: 70px; height: 70px; background: #23232b; border-radius: 8px; border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                  <img id="img-starwars"
+                    src="https://images.icon-icons.com/335/PNG/256/Death_Star_2nd_35408.png"
+                    alt="Star Wars"
+                    style="width: 62px; height: 62px; filter: grayscale(1); opacity: 0.1; transition: filter 0.2s, opacity 0.2s;">
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <button class="submit-button" type="submit">Registrar</button>
+        </fieldset>
+      </form>
+    </section>
+
+    <!--
+      VIDEO EMBEBIDO DE YOUTUBE:
+      Para insertar un video de YouTube, ve al video, haz clic en "Compartir" y luego en "Insertar".
+      Copia el código <iframe> y pégalo aquí. Así puedes mostrar videos fácilmente en tu web.
+      TIP: Algunos videos pueden tener restricciones y no verse fuera de YouTube.
+    -->
+    <section class="video-centrado">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/k-Ua033oKAk"
+        title="Video Incrustado" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </section>
+
+    <!--
+    PODCASTS EDUCATIVOS:
+    Sección final con dos podcasts recomendados para aprender más sobre HTML y CSS.
+    Los videos se muestran uno al lado del otro usando flexbox.
+  -->
+  <section class="podcasts-educativos">
+    <h2>Aprende más con nuestros Podcasts</h2>
+    <div class="podcast-videos">
+      <div class="podcast-item">
+        <iframe width="480" height="270" src="https://www.youtube.com/embed/UVfJnSb844c" title="HTML e CSS para Principiantes – Explicado com Analogias (Portugués)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <p>HTML e CSS para Principiantes – Explicado com Analogias (Portugués)</p>
+      </div>
+      <div class="podcast-item">
+        <iframe width="480" height="270" src="https://www.youtube.com/embed/4kIwc6nm5rg" title="HTML y CSS para Principiantes – Explicado con Analogías (Español)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <p>HTML y CSS para Principiantes – Explicado con Analogías (Español)</p>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2023 Plataforma Educativa Universidad Central</p>
+    <p>Contacto: <a href="mailto:allan.villalobos.calderon@gmail.com">Allan</a></p>
+  </footer>
+
+  <!--
+    Caja informativa:
+    Este bloque invita a los usuarios a aprender más de HTML. El enlace lleva a W3Schools, un sitio recomendado para principiantes.
+    TIP: Usa recursos externos para complementar tu aprendizaje.
+  -->
+  <div style="margin: 40px auto 20px auto; max-width: 500px; background: #23232b; border-radius: 12px; border: 2px solid #6366f1; padding: 24px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
+    <h2 style="color: #a5b4fc; margin-bottom: 12px;">¿Quieres aprender más de HTML?</h2>
+    <p style="color: #f3f4f6; margin-bottom: 16px;">
+      Visita el siguiente recurso recomendado para profundizar tus conocimientos:
+    </p>
+    <a href="https://www.w3schools.com/html/default.asp" 
+       target="_blank" 
+       style="display: inline-block; background: #2563eb; color: #fff; padding: 10px 28px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: background 0.2s;">
+      Aprende más de HTML en W3Schools
+    </a>
+  </div>
+
+  <script>
+    // Validación de correo electrónico: muestra un mensaje si el correo no contiene "@"
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const emailInput = document.getElementById('email');
+      const errorSpan = document.getElementById('email-error');
+      if (!emailInput.value.includes('@')) {
+        e.preventDefault();
+        errorSpan.style.display = 'inline';
+        emailInput.focus();
+      } else {
+        errorSpan.style.display = 'none';
+      }
+    });
+
+    // Ilumina la imagen del interés seleccionado
+    function toggleInterestImage(checkboxId, imgId) {
+      document.getElementById(checkboxId).addEventListener('change', function() {
+        const img = document.getElementById(imgId);
+        if (img) {
+          if (this.checked) {
+            img.style.filter = 'none';
+            img.style.opacity = '1';
+          } else {
+            img.style.filter = 'grayscale(1)';
+            img.style.opacity = '0.2';
+          }
+        }
+      });
+    }
+
+    toggleInterestImage('interes1', 'img-programacion');
+    toggleInterestImage('interes2', 'img-diseno');
+    toggleInterestImage('interes3', 'img-marketing');
+    toggleInterestImage('interes4', 'img-ciencia');
+    toggleInterestImage('interes5', 'img-basketball');
+    toggleInterestImage('interes6', 'img-musica');
+    toggleInterestImage('interes7', 'img-starwars');
+
+    // Curiosidad: Mensaje especial de Star Wars con fade
+    // Si seleccionas Star Wars, aparece un mensaje amarillo que se desvanece suavemente.
+    const starWarsCheckbox = document.getElementById('interes7');
+    let fuerzaMsg = document.createElement('div');
+    fuerzaMsg.id = 'fuerza-msg';
+    fuerzaMsg.textContent = 'La fuerza está en tí';
+    starWarsCheckbox.parentNode.appendChild(fuerzaMsg);
+    let fuerzaTimeout, fuerzaFadeTimeout;
+    starWarsCheckbox.addEventListener('change', function() {
+      clearTimeout(fuerzaTimeout);
+      clearTimeout(fuerzaFadeTimeout);
+      fuerzaMsg.classList.remove('fade');
+      fuerzaMsg.style.removeProperty('--fuerza-opacity');
+      if (this.checked) {
+        fuerzaMsg.classList.add('visible');
+        // Mantener visible 5s, luego iniciar desvanecimiento de 5s
+        fuerzaTimeout = setTimeout(() => {
+          fuerzaMsg.classList.add('fade');
+          fuerzaMsg.style.setProperty('--fuerza-opacity', '0');
+        }, 5000);
+        // Quitar visible y fade después de 10s
+        fuerzaFadeTimeout = setTimeout(() => {
+          fuerzaMsg.classList.remove('visible', 'fade');
+          fuerzaMsg.style.removeProperty('--fuerza-opacity');
+        }, 10000);
+      } else {
+        fuerzaMsg.classList.remove('visible', 'fade');
+        fuerzaMsg.style.removeProperty('--fuerza-opacity');
+      }
+    });
+
+    // Curiosidad: Avatar de género con giro 360°
+    // Si cambias el género, la imagen del avatar cambia. Si pasas el mouse sobre el avatar, gira completamente.
+    const generoRadios = document.getElementsByName('genero');
+    const avatarImg = document.getElementById('img-avatar-genero');
+    const avatarSources = {
+      'm': 'https://images.icon-icons.com/343/PNG/512/Male_35764.png',
+      'f': 'https://images.icon-icons.com/343/PNG/512/Female_35792.png',
+      'o': 'https://images.icon-icons.com/72/PNG/256/contact_people_14393.png',
+      'n': 'https://images.icon-icons.com/47/PNG/128/Errorstopoutput_error_parada_10120.png'
+    };
+
+    generoRadios.forEach(radio => {
+      radio.addEventListener('change', function () {
+        avatarImg.src = avatarSources[this.value];
+        avatarImg.style.filter = 'none';
+        avatarImg.style.opacity = '1';
+      });
+    });
+  </script>
+
+</body>
+
+</html>
