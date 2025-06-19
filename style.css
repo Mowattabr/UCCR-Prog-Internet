@@ -44,6 +44,11 @@ body {
   font-family: Arial, sans-serif;
 }
 
+main {
+  margin: 0 25%; /* Centra el contenido horizontalmente */
+  padding: 20px; /* Espacio interno alrededor del contenido */
+}
+
 /*
   .form-group label:
   Los títulos de los campos principales (nombre, correo, contraseña) aparecen arriba de sus cajas de texto.
@@ -157,8 +162,10 @@ nav a {
   transition: background 0.2s;
 }
 
+/* Main BG add transp / Registro de usuario centrado / avillal1*/
 nav a:hover {
-  background: #2a2a27;
+  background: #f18b32 ;
+  /* opacity: 0.1; */
 }
 
 /*
@@ -303,7 +310,16 @@ label {
 }
 
 div:hover { /* Pseudoclase */
-  background-color: #000000;
+  /* background-color: rgba(24, 24, 27, 0.5); */
+  background: linear-gradient(
+    to bottom,
+  rgba(0, 0, 0, 0.5)0%, 
+  rgba(0, 0, 0, 0.5)5%,
+  rgba(73, 72, 72, 0.25) 15%,
+  rgba(0, 0, 0, 0.5)95%, 
+  rgba(0, 0, 0, 0.5)100%
+  );
+
 }
 
 #caja-ejemplo::before { /* Pseudoelemento */
@@ -365,6 +381,7 @@ fieldset label {
 */
 .form-group {
   margin-bottom: 16px;
+  /* align-items: center; */
 }
 
 /*
@@ -451,4 +468,25 @@ fieldset label {
   margin-top: 12px;
   color: #f3f4f6;
   font-size: 1.1em;
+}
+
+img{
+  width: 62px; 
+  height: 62px; 
+  filter: grayscale(1); 
+  opacity: 0.1; 
+  transition: filter 0.2s, opacity 0.2s;  
+}
+
+img_box{
+  width: 70px; 
+  height: 70px; 
+  background: #23232b; 
+  border-radius: 8px; 
+  border: 2px solid #fff; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  margin-left: 10px; 
+  margin-top: 0px;
 }
