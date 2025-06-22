@@ -162,7 +162,6 @@ nav a {
   transition: background 0.2s;
 }
 
-/* Main BG add transp / Registro de usuario centrado / avillal1*/
 nav a:hover {
   background: #f18b32 ;
   /* opacity: 0.1; */
@@ -238,7 +237,7 @@ label {
 }
 
 #avatar-genero:hover {
-  transform: rotateX(360deg);
+  transform: rotateY(360deg);
 }
 
 /*
@@ -478,15 +477,46 @@ img{
   transition: filter 0.2s, opacity 0.2s;  
 }
 
-img_box{
-  width: 70px; 
-  height: 70px; 
-  background: #23232b; 
-  border-radius: 8px; 
-  border: 2px solid #fff; 
-  display: flex; 
-  align-items: center; 
+/* Responsive container for interest boxes */
+.interests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+/* Corrected selector for interest image boxes */
+.img_box {
+  width: 70px;
+  height: 70px;
+  background: #23232b;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  margin-left: 10px; 
+  margin-left: 10px;
   margin-top: 0px;
 }
+
+/* Responsive adjustments for small screens */
+@media (max-width: 600px) {
+  .interests-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .img_box {
+    width: 100%;
+    max-width: 250px;
+    margin-left: 0;
+  }
+}
+
+/* Desactiva el hover solo en la sección de cursos (todas las columnas y listas) */
+#cursos div:hover, #cursos ul:hover, #cursos li:hover {
+  background: none !important;
+  box-shadow: none !important;
+}
+

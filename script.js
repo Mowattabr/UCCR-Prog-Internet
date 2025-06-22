@@ -57,3 +57,34 @@ generoRadios.forEach(radio => {
     avatarImg.style.opacity = '1';             // Hace la imagen totalmente visible
   });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Ayuda
+  var ayudaLink = document.querySelector('a[href="#ayuda"]');
+  var ayudaSection = document.getElementById('ayuda');
+  var cerrarAyuda = document.getElementById('cerrar-ayuda');
+  if (ayudaLink && ayudaSection && cerrarAyuda) {
+    ayudaLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      ayudaSection.style.display = 'block';
+      window.scrollTo({top: ayudaSection.offsetTop, behavior: 'smooth'});
+    });
+    cerrarAyuda.addEventListener('click', function() {
+      ayudaSection.style.display = 'none';
+    });
+  }
+  // Cursos
+  var cursosLink = document.querySelector('a[href="#cursos"]');
+  var cursosSection = document.getElementById('cursos');
+  var cerrarCursos = document.getElementById('cerrar-cursos');
+  if (cursosLink && cursosSection && cerrarCursos) {
+    cursosLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      cursosSection.style.display = 'block';
+      window.scrollTo({top: cursosSection.offsetTop, behavior: 'smooth'});
+    });
+    cerrarCursos.addEventListener('click', function() {
+      cursosSection.style.display = 'none';
+    });
+  }
+});
