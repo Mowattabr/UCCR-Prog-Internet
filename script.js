@@ -37,6 +37,25 @@ toggleInterestImage('interes5', 'img-basketball');
 toggleInterestImage('interes6', 'img-musica');
 toggleInterestImage('interes7', 'img-starwars');
 
+// Mostrar/ocultar el mensaje especial de la fuerza al seleccionar Star Wars
+const fuerzaMsg = document.getElementById('fuerza-msg');
+const starWarsCheckbox = document.getElementById('interes7');
+if (fuerzaMsg && starWarsCheckbox) {
+  starWarsCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      fuerzaMsg.classList.add('visible');
+      fuerzaMsg.classList.remove('fade');
+      // Después de 3 segundos, inicia el fade out
+      setTimeout(() => {
+        fuerzaMsg.classList.add('fade');
+        fuerzaMsg.classList.remove('visible');
+      }, 3000);
+    } else {
+      fuerzaMsg.classList.remove('visible', 'fade');
+    }
+  });
+}
+
 // Este bloque permite cambiar el avatar mostrado según el género seleccionado por el usuario.
 // Cada vez que el usuario selecciona un radio button de género, se cambia la imagen del avatar.
 const generoRadios = document.getElementsByName('genero');
