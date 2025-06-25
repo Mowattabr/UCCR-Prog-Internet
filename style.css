@@ -520,3 +520,55 @@ img{
   box-shadow: none !important;
 }
 
+/* Separación visual para filas de tablas de estudiantes y profesores */
+.tabla-separada tbody tr {
+  border-bottom: 1px solid #444;
+}
+.tabla-separada tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Tablas de subpáginas (estudiantes, profesores, cursos) */
+.tabla-separada {
+  width: 100%;
+  border-collapse: collapse;
+  background: #23232b;
+  color: #fff;
+}
+.tabla-cursos {
+  width: 80%;
+  border-collapse: collapse;
+  background: #23232b;
+  color: #fff;
+  margin: auto;
+}
+.tabla-separada th,
+.tabla-cursos th {
+  padding: 10px;
+  border-bottom: 2px solid #6366f1;
+}
+.tabla-separada th.descripcion,
+.tabla-separada td.descripcion {
+  padding-right: 24px;
+}
+.tabla-separada th.materia,
+.tabla-separada td.materia {
+  padding-left: 24px;
+}
+.tabla-cursos th.cuatrimestre,
+.tabla-cursos td.cuatrimestre {
+  text-align: center;
+}
+.tabla-cursos th.curso,
+.tabla-cursos td.curso {
+  text-align: left;
+}
+.tabla-separada tbody tr,
+.tabla-cursos tbody tr {
+  border-bottom: 1px solid #444;
+}
+.tabla-separada tbody tr:last-child,
+.tabla-cursos tbody tr:last-child {
+  border-bottom: none;
+}
+

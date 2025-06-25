@@ -87,4 +87,32 @@ document.addEventListener('DOMContentLoaded', function() {
       cursosSection.style.display = 'none';
     });
   }
+  // Estudiantes
+  var estudiantesLink = document.querySelector('a[href="#estudiantes"]');
+  var estudiantesSection = document.getElementById('estudiantes');
+  var cerrarEstudiantes = document.getElementById('cerrar-estudiantes');
+  if (estudiantesLink && estudiantesSection && cerrarEstudiantes) {
+    estudiantesLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      estudiantesSection.style.display = 'block';
+      window.scrollTo({top: estudiantesSection.offsetTop, behavior: 'smooth'});
+    });
+    cerrarEstudiantes.addEventListener('click', function() {
+      estudiantesSection.style.display = 'none';
+    });
+  }
+  // Profesores
+  var profesoresLink = document.querySelector('a[href="#profesores"]');
+  var profesoresSection = document.getElementById('profesores');
+  var cerrarProfesores = document.getElementById('cerrar-profesores');
+  if (profesoresLink && profesoresSection && cerrarProfesores) {
+    profesoresLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      profesoresSection.style.display = 'block';
+      window.scrollTo({top: profesoresSection.offsetTop, behavior: 'smooth'});
+    });
+    cerrarProfesores.addEventListener('click', function() {
+      profesoresSection.style.display = 'none';
+    });
+  }
 });
