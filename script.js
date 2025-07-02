@@ -77,61 +77,24 @@ generoRadios.forEach(radio => {
   });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Ayuda
-  var ayudaLink = document.querySelector('a[href="#ayuda"]');
-  var ayudaSection = document.getElementById('ayuda');
-  var cerrarAyuda = document.getElementById('cerrar-ayuda');
-  if (ayudaLink && ayudaSection && cerrarAyuda) {
-    ayudaLink.addEventListener('click', function(e) {
+function setupSectionToggle(linkSelector, sectionId, closeBtnId) {
+  var link = document.querySelector(linkSelector);
+  var section = document.getElementById(sectionId);
+  var closeBtn = document.getElementById(closeBtnId);
+  if (link && section && closeBtn) {
+    link.addEventListener('click', function(e) {
       e.preventDefault();
-      ayudaSection.style.display = 'block';
-      window.scrollTo({top: ayudaSection.offsetTop, behavior: 'smooth'});
+      section.style.display = 'block';
+      window.scrollTo({top: section.offsetTop, behavior: 'smooth'});
     });
-    cerrarAyuda.addEventListener('click', function() {
-      ayudaSection.style.display = 'none';
+    closeBtn.addEventListener('click', function() {
+      section.style.display = 'none';
     });
   }
-  // Cursos
-  var cursosLink = document.querySelector('a[href="#cursos"]');
-  var cursosSection = document.getElementById('cursos');
-  var cerrarCursos = document.getElementById('cerrar-cursos');
-  if (cursosLink && cursosSection && cerrarCursos) {
-    cursosLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      cursosSection.style.display = 'block';
-      window.scrollTo({top: cursosSection.offsetTop, behavior: 'smooth'});
-    });
-    cerrarCursos.addEventListener('click', function() {
-      cursosSection.style.display = 'none';
-    });
-  }
-  // Estudiantes
-  var estudiantesLink = document.querySelector('a[href="#estudiantes"]');
-  var estudiantesSection = document.getElementById('estudiantes');
-  var cerrarEstudiantes = document.getElementById('cerrar-estudiantes');
-  if (estudiantesLink && estudiantesSection && cerrarEstudiantes) {
-    estudiantesLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      estudiantesSection.style.display = 'block';
-      window.scrollTo({top: estudiantesSection.offsetTop, behavior: 'smooth'});
-    });
-    cerrarEstudiantes.addEventListener('click', function() {
-      estudiantesSection.style.display = 'none';
-    });
-  }
-  // Profesores
-  var profesoresLink = document.querySelector('a[href="#profesores"]');
-  var profesoresSection = document.getElementById('profesores');
-  var cerrarProfesores = document.getElementById('cerrar-profesores');
-  if (profesoresLink && profesoresSection && cerrarProfesores) {
-    profesoresLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      profesoresSection.style.display = 'block';
-      window.scrollTo({top: profesoresSection.offsetTop, behavior: 'smooth'});
-    });
-    cerrarProfesores.addEventListener('click', function() {
-      profesoresSection.style.display = 'none';
-    });
-  }
-});
+}
+
+// Uso para cada sección:
+setupSectionToggle('a[href="#ayuda"]', 'ayuda', 'cerrar-ayuda');
+setupSectionToggle('a[href="#cursos"]', 'cursos', 'cerrar-cursos');
+setupSectionToggle('a[href="#estudiantes"]', 'estudiantes', 'cerrar-estudiantes');
+setupSectionToggle('a[href="#profesores"]', 'profesores', 'cerrar-profesores');

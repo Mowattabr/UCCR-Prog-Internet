@@ -27,9 +27,9 @@
   <nav>
     <ul>
       <li><a href="index.html">Inicio</a></li> <!-- Enlace a la página de inicio -->
-      <li><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
-      <li><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
-      <li><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
+      <li class="nav-privado" style="display:none;"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
+      <li class="nav-privado" style="display:none;"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
+      <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
       <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
       <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
     </ul>
@@ -153,41 +153,92 @@
           <th class="materia">Materia</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td><b>Dr. Gordon Moore</b></td><td class="descripcion">Cofundador de Intel y creador de la Ley de Moore</td><td class="materia">Arquitectura de Computadoras</td>
-        </tr>
-        <tr>
-          <td><b>Dra. Ada Lovelace</b></td><td class="descripcion">Primera programadora de la historia, visionaria del software</td><td class="materia">Programación de Cómputo I/II/III</td>
-        </tr>
-        <tr>
-          <td><b>MSc. Donald Knuth</b></td><td class="descripcion">Autor de la obra clásica 'The Art of Computer Programming'</td><td class="materia">Estructura de Datos y Algoritmos</td>
-        </tr>
-        <tr>
-          <td><b>MSc. Grace Hopper</b></td><td class="descripcion">Pionera en lenguajes de programación, desarrolladora de COBOL</td><td class="materia">Sistemas Operativos</td>
-        </tr>
-        <tr>
-          <td><b>Dr. Tim Berners-Lee</b></td><td class="descripcion">Inventor de la World Wide Web</td><td class="materia">Programación Internet / Telemática</td>
-        </tr>
-        <tr>
-          <td><b>MSc. Katherine Johnson</b></td><td class="descripcion">Matemática de la NASA, clave en misiones espaciales</td><td class="materia">Matemática / Cálculo / Métodos Estadísticos</td>
-        </tr>
-        <tr>
-          <td><b>Lic. Philip Kotler</b></td><td class="descripcion">Padre del marketing moderno y autor reconocido en todo el mundo</td><td class="materia">Marketing Digital / Finanzas para Ingeniería</td>
-        </tr>
-        <tr>
-          <td><b>Dr. Alan Turing</b></td><td class="descripcion">Criptógrafo británico y pionero de la computación moderna</td><td class="materia">Organización de Archivos / Administración TI</td>
-        </tr>
-        <tr>
-          <td><b>Fabián Chinchilla Mayorga</b></td><td class="descripcion">Especialista en desarrollo web, HTML semántico y flujos de trabajo colaborativos con GitHub</td><td class="materia">Programación Internet</td>
-        </tr>
-        <tr>
-          <td><b>Dra. Margaret Hamilton</b></td><td class="descripcion">Desarrolladora del software de la misión Apolo 11</td><td class="materia">Análisis y Diseño de Sistemas</td>
-        </tr>
+      <tbody id="profesores-tbody">
+        <!-- Filas de profesores se llenan por JS -->
       </tbody>
     </table>
     <button id="cerrar-profesores" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
   </section>
+  <script>
+    // --- Profesores dinámico con materias únicas ---
+    document.addEventListener('DOMContentLoaded', function() {
+      // Lista de cursos desde la tabla de cursos
+      const cursos = [
+        'Inglés I','Matemática I','Introducción a la Informática','Comunicación',
+        'Administración I','Contabilidad para Ingeniería','Inglés II','Programación de Cómputo I',
+        'Arquitectura de Computadoras','Programación Internet','Sistemas Computacionales (C)','Cálculo I',
+        'Métodos Estadísticos I','Finanzas para Ingeniería','Estructura de Datos y Algoritmos','Programación Computadoras II (Visual Basic)',
+        'Economía para Ingeniería','Organización de Archivos','Programación de Computadoras III (Visual Basic Avanzado)','Sistemas Operativos I',
+        'Diseño y Optimización de Base de Datos','Análisis y Diseño de Sistemas I','Telemática','Administración de Proyectos',
+        'Análisis y Diseño de Sistemas II','Investigación de Operaciones I','Administración de Centros de Cómputo','Telemática II',
+        'Investigación de Operaciones II','Auditoría de Sistemas Computacionales','Programación de Lenguaje de 4ta Generación','Seminario de Graduación'
+      ];
+
+      // Profesores iniciales (nombre, descripcion, materia)
+      let profesores = [
+        ['Dr. Gordon Moore','Cofundador de Intel y creador de la Ley de Moore','Arquitectura de Computadoras'],
+        ['Dra. Ada Lovelace','Primera programadora de la historia, visionaria del software','Programación de Cómputo I'],
+        ['MSc. Donald Knuth','Autor de la obra clásica \'The Art of Computer Programming\'','Estructura de Datos y Algoritmos'],
+        ['MSc. Grace Hopper','Pionera en lenguajes de programación, desarrolladora de COBOL','Sistemas Operativos I'],
+        ['Dr. Tim Berners-Lee','Inventor de la World Wide Web','Programación Internet'],
+        ['MSc. Katherine Johnson','Matemática de la NASA, clave en misiones espaciales','Matemática I'],
+        ['Lic. Philip Kotler','Padre del marketing moderno y autor reconocido en todo el mundo','Administración I'],
+        ['Dr. Alan Turing','Criptógrafo británico y pionero de la computación moderna','Organización de Archivos'],
+        ['Fabián Chinchilla Mayorga','Especialista en desarrollo web, HTML semántico y flujos de trabajo colaborativos con GitHub','Programación Internet'],
+        ['Dra. Margaret Hamilton','Desarrolladora del software de la misión Apolo 11','Análisis y Diseño de Sistemas I']
+      ];
+
+      const tbody = document.getElementById('profesores-tbody');
+      function renderProfesores() {
+        tbody.innerHTML = '';
+        // Obtener materias ya asignadas
+        const materiasAsignadas = profesores.map(p => p[2]);
+        profesores.forEach((prof, idx) => {
+          const tr = document.createElement('tr');
+          // Opciones: la materia actual + todas las no asignadas
+          const materiaActual = prof[2];
+          // Materias disponibles: la actual + las no asignadas
+          const materiasDisponibles = cursos.filter(curso => curso === materiaActual || !materiasAsignadas.includes(curso));
+          // Si la materia actual no está en cursos (ej: "Programación de Cómputo I/II/III"), solo mostrar esa opción
+          let materiaOptions = '';
+          if (!cursos.includes(materiaActual)) {
+            materiaOptions = `<option value="${materiaActual}" selected>${materiaActual}</option>`;
+          } else {
+            materiasDisponibles.forEach(materia => {
+              materiaOptions += `<option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>`;
+            });
+          }
+          tr.innerHTML = `
+            <td><b>${prof[0]}</b></td>
+            <td class="descripcion">${prof[1]}</td>
+            <td class="materia">
+              <select class="materia-select" data-prof-idx="${idx}"${!cursos.includes(materiaActual) ? ' disabled' : ''}>
+                ${materiaOptions}
+              </select>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+        // Asignar eventos a los selects
+        tbody.querySelectorAll('.materia-select').forEach(select => {
+          select.addEventListener('change', function() {
+            const idx = parseInt(this.getAttribute('data-prof-idx'));
+            const nuevaMateria = this.value;
+            // Verificar que la materia no esté asignada a otro profesor
+            const yaAsignada = profesores.some((p, i) => i !== idx && p[2] === nuevaMateria);
+            if (yaAsignada) {
+              alert('Esta materia ya está asignada a otro profesor.');
+              renderProfesores();
+              return;
+            }
+            profesores[idx][2] = nuevaMateria;
+            renderProfesores();
+          });
+        });
+      }
+      renderProfesores();
+    });
+  </script>
 
   <main>
     <section>
@@ -197,13 +248,40 @@
         Lee los comentarios de cada parte para entender cómo funciona.
       -->
       <form action="#" method="post">
-        <fieldset>
-          <legend>Registro de Usuario</legend>
+
+        <!--
+          MENSAJE DE SALUDO (Greeting):
+          Este div se muestra arriba del fieldset de Login rápido cuando el usuario inicia sesión.
+        -->
+
+        <div id="login-rapido-wrapper">
+          <div id="login-msg" style="display:none; font-weight:bold; color:#22c55e; margin-bottom:12px;"></div>
+          <!--
+            FIELDSET DE LOGIN RÁPIDO:
+            Permite a los usuarios iniciar sesión rápidamente sin llenar el formulario completo de registro.
+          -->
+          <fieldset style="margin-bottom: 24px;">
+            <legend>Login rápido</legend>
+            <div class="form-group">
+              <label for="login-username">Nombre de usuario:</label>
+              <input class="form-input" type="text" id="login-username" name="login-username" autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Contraseña:</label>
+              <input class="form-input" type="password" id="login-password" name="login-password" autocomplete="current-password">
+            </div>
+            <button type="button" class="submit-button">Iniciar sesión</button>
+            <button type="button" class="submit-button" style="background:#f18b32; color:#fff; margin-left:10px;">Iniciar como Administrador</button>
+          </fieldset>
+        </div>
 
           <!--
             Cada grupo de campos tiene su propio div para que el label quede arriba del input.
             Esto mejora la legibilidad y la experiencia de usuario.
           -->
+
+          <fieldset>
+          <legend>Registro de usuario</legend>
           <div class="form-group">
             <label for="username">Nombre de Usuario:</label>
             <input class="form-input" type="text" id="username" name="username" required>
@@ -217,6 +295,8 @@
             <label for="password">Contraseña:</label>
             <input class="form-input" type="password" id="password" name="password" required>
           </div>
+
+
 
           <!--
             GÉNERO:
@@ -240,6 +320,8 @@
             </div>
           </fieldset>
 
+
+          
           <!--
             AVATAR DE GÉNERO:
             Muestra una imagen que cambia según la selección de género.
@@ -346,7 +428,7 @@
             </div>
           </fieldset>
 
-          <button class="submit-button" type="button" style="margin-right: 12px;">Login</button>
+          <!-- <button class="submit-button" type="button" style="margin-right: 12px;">Login</button> -->
           <button class="submit-button" type="submit">Registrar</button>
         </fieldset>
       </form>
@@ -408,6 +490,93 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Función para activar modo administrador si usuario y contraseña son 'admin'
+    document.addEventListener('DOMContentLoaded', function() {
+
+      function hideRegistroUsuario() {
+        // Oculta el fieldset de registro de usuario
+        var fieldsets = document.querySelectorAll('fieldset');
+        fieldsets.forEach(function(fs) {
+          if (fs.querySelector('legend') && fs.querySelector('legend').textContent.trim().toLowerCase() === 'registro de usuario') {
+            fs.style.display = 'none';
+          }
+        });
+      }
+
+
+      function mostrarPrivados() {
+        document.querySelectorAll('.nav-privado').forEach(function(el) {
+          el.style.display = '';
+        });
+        // También puedes mostrar otras secciones privadas aquí si lo deseas
+      }
+
+      function setAdminMode() {
+        document.body.classList.add('admin-mode');
+        hideRegistroUsuario();
+        showLoginMsg();
+        mostrarPrivados();
+        // Puedes mostrar un mensaje, cambiar estilos, o mostrar secciones exclusivas aquí
+        alert('¡Modo administrador activado!');
+      }
+
+      function setUserMode() {
+        hideRegistroUsuario();
+        showLoginMsg();
+        mostrarPrivados();
+        // alert('¡Sesión iniciada!'); // Mensaje eliminado
+      }
+
+
+      function showLoginMsg() {
+        var userInput = document.getElementById('login-username');
+        var passInput = document.getElementById('login-password');
+        var user = userInput.value;
+        var msg = document.getElementById('login-msg');
+        if (msg) {
+          msg.textContent = 'Hola, ' + (user ? user : 'usuario');
+          msg.style.display = 'block';
+          msg.style.fontSize = '2rem'; 
+        }
+        // Limpiar los campos de usuario y contraseña después de login
+        if (userInput) userInput.value = '';
+        if (passInput) passInput.value = '';
+      }
+
+      // Login rápido (usuario y contraseña requeridos)
+      const loginBtn = document.querySelector('button.submit-button[type="button"]');
+      if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+          const user = document.getElementById('login-username').value.trim();
+          const pass = document.getElementById('login-password').value.trim();
+          if (!user || !pass) {
+            alert('Por favor, ingrese usuario y contraseña.');
+            return;
+          }
+          setUserMode();
+        });
+      }
+
+      // Login como Administrador (usuario y contraseña requeridos)
+      const adminBtn = document.querySelectorAll('button.submit-button[type="button"]')[1];
+      if (adminBtn) {
+        adminBtn.addEventListener('click', function() {
+          const user = document.getElementById('login-username').value.trim();
+          const pass = document.getElementById('login-password').value.trim();
+          if (!user || !pass) {
+            alert('Por favor, ingrese usuario y contraseña.');
+            return;
+          }
+          if (user === 'admin' && pass === 'admin') {
+            setAdminMode();
+          } else {
+            alert('Usuario o contraseña incorrectos.');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
