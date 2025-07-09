@@ -246,10 +246,10 @@
           // Si la materia actual no está en cursos (ej: "Programación de Cómputo I/II/III"), solo mostrar esa opción
           let materiaOptions = '';
           if (!cursos.includes(materiaActual)) {
-            materiaOptions = <option value="${materiaActual}" selected>${materiaActual}</option>;
+            materiaOptions = `<option value="${materiaActual}" selected>${materiaActual}</option>`;
           } else {
             materiasDisponibles.forEach(materia => {
-              materiaOptions += <option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>;
+              materiaOptions += `<option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>`;
             });
           }
           tr.innerHTML = `
