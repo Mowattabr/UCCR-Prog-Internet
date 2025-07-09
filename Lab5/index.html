@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 5 - Allan VillaLobos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .card {
+            background-color: #333333 !important;
+            border-color: #555555 !important;
+        }
+        
+        .card-header {
+            background-color: #444444 !important;
+            border-color: #555555 !important;
+            color: #ffffff !important;
+        }
+        
+        .card-body {
+            background-color: #333333 !important;
+            color: #ffffff !important;
+        }
+        
+        .form-control {
+            background-color: #555555 !important;
+            border-color: #777777 !important;
+            color: #ffffff !important;
+        }
+        
+        .form-control:focus {
+            background-color: #666666 !important;
+            border-color: #0d6efd !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25) !important;
+        }
+        
+        .form-control::placeholder {
+            color: #cccccc !important;
+        }
+        
+        .form-label, .form-check-label, legend {
+            color: #ffffff !important;
+        }
+        
+        .alert-info {
+            background-color: #0d6efd !important;
+            border-color: #0a58ca !important;
+            color: #ffffff !important;
+        }
+        
+        .navbar-light {
+            background-color: #333333 !important;
+        }
+        
+        .navbar-light .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-light .navbar-nav .nav-link:hover {
+            color: #0d6efd !important;
+        }
+        
+        .navbar-light .navbar-nav .nav-link.active {
+            color: #0d6efd !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- encabezado -->
+                <header class="bg-primary text-white p-4 rounded mb-4">
+                    <h1 class="display-5">Plataforma Educativa Universidad Central</h1>
+                    <p class="lead">Laboratorio 5 - Formularios Bootstrap</p>
+                </header>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded mb-4">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="../index.html">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Cursos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Contacto</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="../index.html">Página Principal</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- info del lab -->
+                <!-- alert-info para notificaciones -->
+                <div class="alert alert-info" role="alert">
+                    <h5 class="alert-heading">Información del Laboratorio</h5>
+                    <p><strong>Estudiante:</strong> Allan VillaLobos</p>
+                    <p class="mb-0"><strong>Curso:</strong> Programación de Internet</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <!-- formulario principal -->
+                <div class="card">
+                    <!-- card-header para el titulo -->
+                    <div class="card-header">
+                        <h3>Registro de Usuario</h3>
+                    </div>
+                    <!-- card-body para el contenido -->
+                    <div class="card-body">
+                        <form>
+                            <!-- campos usuario y contraseña -->
+                            <!-- row y col para organizar en columnas -->
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <!-- mb-3 para margin bottom -->
+                                    <div class="mb-3">
+                                        <!-- form-label para etiquetas -->
+                                        <label for="username" class="form-label">Nombre de Usuario:</label>
+                                        <!-- form-control para inputs -->
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Ingrese su nombre de usuario">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Correo Electrónico:</label>
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="ejemplo@universidad.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña:</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Ingrese su contraseña">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Verificar Contraseña:</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirme su contraseña">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <fieldset class="mb-3">
+                                <legend class="form-label">Género</legend>
+                                <!-- form-check para radio buttons -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="g-m" value="m">
+                                    <label class="form-check-label" for="g-m">Masculino</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="g-f" value="f">
+                                    <label class="form-check-label" for="g-f">Femenino</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="g-o" value="o">
+                                    <label class="form-check-label" for="g-o">Otro</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="genero" id="g-n" value="n">
+                                    <label class="form-check-label" for="g-n">Prefiero no decirlo</label>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="mb-3">
+                                <legend class="form-label">Seleccione sus intereses:</legend>
+                                <!-- form-check para checkboxes -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes1" value="programacion">
+                                    <label class="form-check-label" for="interes1">Programación</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes2" value="diseno">
+                                    <label class="form-check-label" for="interes2">Diseño Gráfico</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes3" value="marketing">
+                                    <label class="form-check-label" for="interes3">Marketing Digital</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes4" value="ciencia">
+                                    <label class="form-check-label" for="interes4">Ciencia de Datos</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes5" value="basketball">
+                                    <label class="form-check-label" for="interes5">Basketball</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes6" value="musica">
+                                    <label class="form-check-label" for="interes6">Música</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="intereses" id="interes7" value="starwars">
+                                    <label class="form-check-label" for="interes7">Star Wars</label>
+                                </div>
+                            </fieldset>
+
+                            <!-- botones con bootstrap -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <!-- btn para botones -->
+                                <button type="reset" class="btn btn-outline-secondary me-md-2">Limpiar</button>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

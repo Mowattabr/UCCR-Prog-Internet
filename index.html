@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shared Web Page</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -32,6 +33,7 @@
       <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
       <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
       <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
+      <li><a href="#laboratorios">Laboratorios</a></li>  <!-- Enlace a la sección de laboratorios -->
     </ul>
   </nav>
 
@@ -159,6 +161,48 @@
     </table>
     <button id="cerrar-profesores" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
   </section>
+
+  <!-- Página de Laboratorios como subpágina -->
+  <section id="laboratorios" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+    <h2 style="color:#f18b32; margin-bottom:18px;">Laboratorios</h2>
+    <table class="tabla-separada">
+      <thead>
+        <tr style="background:#1e293b; color:#f18b32;">
+          <th>Laboratorio</th>
+          <th class="descripcion">Descripción</th>
+          <th>Enlace</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Laboratorio 1</b></td>
+          <td class="descripcion">Primer laboratorio de programación web</td>
+          <td><a href="Lab1/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 1</a></td>
+        </tr>
+        <tr>
+          <td><b>Laboratorio 2</b></td>
+          <td class="descripcion">Segundo laboratorio de programación web</td>
+          <td><a href="Lab2/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 2</a></td>
+        </tr>
+        <tr>
+          <td><b>Laboratorio 3</b></td>
+          <td class="descripcion">Tercer laboratorio de programación web</td>
+          <td><a href="Lab3/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 3</a></td>
+        </tr>
+        <tr>
+          <td><b>Laboratorio 4</b></td>
+          <td class="descripcion">Cuarto laboratorio de programación web</td>
+          <td><a href="Lab4/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 4</a></td>
+        </tr>
+        <tr>
+          <td><b>Laboratorio 5</b></td>
+          <td class="descripcion">Quinto laboratorio de programación web</td>
+          <td><a href="Lab5/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 5</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <button id="cerrar-laboratorios" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+  </section>
   <script>
     // --- Profesores dinámico con materias únicas ---
     document.addEventListener('DOMContentLoaded', function() {
@@ -202,10 +246,10 @@
           // Si la materia actual no está en cursos (ej: "Programación de Cómputo I/II/III"), solo mostrar esa opción
           let materiaOptions = '';
           if (!cursos.includes(materiaActual)) {
-            materiaOptions = `<option value="${materiaActual}" selected>${materiaActual}</option>`;
+            materiaOptions = <option value="${materiaActual}" selected>${materiaActual}</option>;
           } else {
             materiasDisponibles.forEach(materia => {
-              materiaOptions += `<option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>`;
+              materiaOptions += <option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>;
             });
           }
           tr.innerHTML = `
@@ -262,16 +306,26 @@
           -->
           <fieldset style="margin-bottom: 24px;">
             <legend>Login rápido</legend>
-            <div class="form-group">
-              <label for="login-username">Nombre de usuario:</label>
-              <input class="form-input" type="text" id="login-username" name="login-username" autocomplete="username">
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="login-username" class="form-label">Nombre de usuario:</label>
+                  <input class="form-control" type="text" id="login-username" name="login-username" autocomplete="username">
+                </div>
+                <div class="mb-3">
+                  <label for="login-password" class="form-label">Contraseña:</label>
+                  <input class="form-control" type="password" id="login-password" name="login-password" autocomplete="current-password">
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="login-password">Contraseña:</label>
-              <input class="form-input" type="password" id="login-password" name="login-password" autocomplete="current-password">
+            <div class="row">
+              <div class="col-12">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                  <button type="button" class="btn btn-primary me-md-2">Iniciar sesión</button>
+                  <button type="button" class="btn" style="background:#f18b32; color:#fff;">Iniciar como Administrador</button>
+                </div>
+              </div>
             </div>
-            <button type="button" class="submit-button">Iniciar sesión</button>
-            <button type="button" class="submit-button" style="background:#f18b32; color:#fff; margin-left:10px;">Iniciar como Administrador</button>
           </fieldset>
         </div>
 
@@ -282,18 +336,33 @@
 
           <fieldset>
           <legend>Registro de usuario</legend>
-          <div class="form-group">
-            <label for="username">Nombre de Usuario:</label>
-            <input class="form-input" type="text" id="username" name="username" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Correo Electrónico:</label>
-            <input class="form-input" type="email" id="email" name="email" required oninput="document.getElementById('email-error').style.display='none'">
-            <span id="email-error" style="color: #ff6b6b; display: none;">El correo debe contener un @</span>
-          </div>
-          <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input class="form-input" type="password" id="password" name="password" required>
+          
+          <!-- Row y Col: Sistema de columnas para organizar el contenido en filas y columnas -->
+          <div class="row">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <!-- Form-label: Etiqueta que describe el camop de entrada -->
+                <label for="username" class="form-label">Nombre de Usuario:</label>
+                <!-- Form-control: Estilo para campos de entrada como text, email, password -->
+                <input class="form-control" type="text" id="username" name="username" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico:</label>
+                <input class="form-control" type="email" id="email" name="email" required oninput="document.getElementById('email-error').style.display='none'">
+                <span id="email-error" style="color: #ff6b6b; display: none;">El correo debe contener un @</span>
+              </div>
+            </div>
+            
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input class="form-control" type="password" id="password" name="password" required>
+              </div>
+              <div class="mb-3">
+                <label for="confirm-password" class="form-label">Confirmar Contraseña:</label>
+                <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
+              </div>
+            </div>
           </div>
 
 
@@ -303,20 +372,26 @@
             Usa radio buttons para que el usuario solo pueda elegir una opción.
             Los labels están en línea para que se vean ordenados.
           -->
-          <fieldset>
+          <fieldset class="mt-4">
             <legend>Género</legend>
-            <div>
-              <input type="radio" value="m" name="genero" id="g-m">
-              <label for="g-m">Masculino</label><br>
-
-              <input type="radio" value="f" name="genero" id="g-f">
-              <label for="g-f">Femenino</label><br>
-
-              <input type="radio" value="o" name="genero" id="g-o">
-              <label for="g-o">Otro</label><br>
-
-              <input type="radio" value="n" name="genero" id="g-n">
-              <label for="g-n">Prefiero no decirlo</label>
+            <!-- Form-check: Contenedor para radio buttons y checkboxes -->
+            <div class="form-check">
+              <!-- Form-check-input: Radio buttons para seleccionar una opcion -->
+              <input class="form-check-input" type="radio" value="m" name="genero" id="g-m">
+              <!-- Form-check-label: Etiqueta para radio buttons y checkboxes -->
+              <label class="form-check-label" for="g-m">Masculino</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="f" name="genero" id="g-f">
+              <label class="form-check-label" for="g-f">Femenino</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="o" name="genero" id="g-o">
+              <label class="form-check-label" for="g-o">Otro</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" value="n" name="genero" id="g-n">
+              <label class="form-check-label" for="g-n">Prefiero no decirlo</label>
             </div>
           </fieldset>
 
@@ -346,31 +421,40 @@
             Al seleccionar un interés, la imagen correspondiente se ilumina (ver JS y CSS).
             Si seleccionas Star Wars, aparece un mensaje especial que se desvanece (ver JS y CSS).
           -->
-          <fieldset>
+          <fieldset class="mt-4">
             <legend>Seleccione sus intereses:</legend>
             <div>
               <!-- Opciones de intereses -->
               <div>
-                <input type="checkbox" name="intereses" id="interes1" value="programacion">
-                <label for="interes1">Programación</label><br>
-
-                <input type="checkbox" name="intereses" id="interes2" value="diseño">
-                <label for="interes2">Diseño Gráfico</label><br>
-
-                <input type="checkbox" name="intereses" id="interes3" value="marketing">
-                <label for="interes3">Marketing Digital</label><br>
-
-                <input type="checkbox" name="intereses" id="interes4" value="ciencia">
-                <label for="interes4">Ciencia de Datos</label><br>
-
-                <input type="checkbox" name="intereses" id="interes5" value="basketball">
-                <label for="interes5">Basketball</label><br>
-
-                <input type="checkbox" name="intereses" id="interes6" value="musica">
-                <label for="interes6">Música</label><br>
-
-                <input type="checkbox" name="intereses" id="interes7" value="starwars">
-                <label for="interes7">Star Wars</label>
+                <div class="form-check">
+                  <!-- Checkbox: Permite seleccionar multiples opciones -->
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes1" value="programacion">
+                  <label class="form-check-label" for="interes1">Programación</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes2" value="diseño">
+                  <label class="form-check-label" for="interes2">Diseño Gráfico</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes3" value="marketing">
+                  <label class="form-check-label" for="interes3">Marketing Digital</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes4" value="ciencia">
+                  <label class="form-check-label" for="interes4">Ciencia de Datos</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes5" value="basketball">
+                  <label class="form-check-label" for="interes5">Basketball</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes6" value="musica">
+                  <label class="form-check-label" for="interes6">Música</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="intereses" id="interes7" value="starwars">
+                  <label class="form-check-label" for="interes7">Star Wars</label>
+                </div>
               </div>
               <!-- Cajas para imágenes de intereses -->
               <div class="interests-container" style="margin-top: 16px; margin-bottom: 40px;">
@@ -429,10 +513,13 @@
           </fieldset>
 
           <!-- <button class="submit-button" type="button" style="margin-right: 12px;">Login</button> -->
-          <button class="submit-button" type="submit">Registrar</button>
+          <!-- Btn: Boton estilizado con diferentes variantes (primary, secondary, etc.) -->
+          <button class="btn btn-primary" type="submit">Registrar</button>
         </fieldset>
       </form>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!--
       VIDEO EMBEBIDO DE YOUTUBE:
@@ -490,93 +577,6 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    // Función para activar modo administrador si usuario y contraseña son 'admin'
-    document.addEventListener('DOMContentLoaded', function() {
-
-      function hideRegistroUsuario() {
-        // Oculta el fieldset de registro de usuario
-        var fieldsets = document.querySelectorAll('fieldset');
-        fieldsets.forEach(function(fs) {
-          if (fs.querySelector('legend') && fs.querySelector('legend').textContent.trim().toLowerCase() === 'registro de usuario') {
-            fs.style.display = 'none';
-          }
-        });
-      }
-
-
-      function mostrarPrivados() {
-        document.querySelectorAll('.nav-privado').forEach(function(el) {
-          el.style.display = '';
-        });
-        // También puedes mostrar otras secciones privadas aquí si lo deseas
-      }
-
-      function setAdminMode() {
-        document.body.classList.add('admin-mode');
-        hideRegistroUsuario();
-        showLoginMsg();
-        mostrarPrivados();
-        // Puedes mostrar un mensaje, cambiar estilos, o mostrar secciones exclusivas aquí
-        alert('¡Modo administrador activado!');
-      }
-
-      function setUserMode() {
-        hideRegistroUsuario();
-        showLoginMsg();
-        mostrarPrivados();
-        // alert('¡Sesión iniciada!'); // Mensaje eliminado
-      }
-
-
-      function showLoginMsg() {
-        var userInput = document.getElementById('login-username');
-        var passInput = document.getElementById('login-password');
-        var user = userInput.value;
-        var msg = document.getElementById('login-msg');
-        if (msg) {
-          msg.textContent = 'Hola, ' + (user ? user : 'usuario');
-          msg.style.display = 'block';
-          msg.style.fontSize = '2rem'; 
-        }
-        // Limpiar los campos de usuario y contraseña después de login
-        if (userInput) userInput.value = '';
-        if (passInput) passInput.value = '';
-      }
-
-      // Login rápido (usuario y contraseña requeridos)
-      const loginBtn = document.querySelector('button.submit-button[type="button"]');
-      if (loginBtn) {
-        loginBtn.addEventListener('click', function() {
-          const user = document.getElementById('login-username').value.trim();
-          const pass = document.getElementById('login-password').value.trim();
-          if (!user || !pass) {
-            alert('Por favor, ingrese usuario y contraseña.');
-            return;
-          }
-          setUserMode();
-        });
-      }
-
-      // Login como Administrador (usuario y contraseña requeridos)
-      const adminBtn = document.querySelectorAll('button.submit-button[type="button"]')[1];
-      if (adminBtn) {
-        adminBtn.addEventListener('click', function() {
-          const user = document.getElementById('login-username').value.trim();
-          const pass = document.getElementById('login-password').value.trim();
-          if (!user || !pass) {
-            alert('Por favor, ingrese usuario y contraseña.');
-            return;
-          }
-          if (user === 'admin' && pass === 'admin') {
-            setAdminMode();
-          } else {
-            alert('Usuario o contraseña incorrectos.');
-          }
-        });
-      }
-    });
-  </script>
 </body>
 
 </html>
