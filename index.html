@@ -296,7 +296,10 @@
         Aquí el usuario puede registrarse llenando sus datos. Los fieldset agrupan campos relacionados.
         Lee los comentarios de cada parte para entender cómo funciona.
       -->
-      <form action="#" method="post">
+
+      <!-- Mensaje de registro -->
+      <div id="registro-msg" style="display:none; font-weight:bold; margin-bottom:16px;"></div>
+      <form id="registro-form" action="procesar.php" method="post">
 
         <!--
           MENSAJE DE SALUDO (Greeting):
@@ -382,20 +385,20 @@
             <!-- Form-check: Contenedor para radio buttons y checkboxes -->
             <div class="form-check">
               <!-- Form-check-input: Radio buttons para seleccionar una opcion -->
-              <input class="form-check-input" type="radio" value="m" name="genero" id="g-m">
+              <input class="form-check-input" type="radio" value="m" name="gender" id="g-m">
               <!-- Form-check-label: Etiqueta para radio buttons y checkboxes -->
               <label class="form-check-label" for="g-m">Masculino</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="f" name="genero" id="g-f">
+              <input class="form-check-input" type="radio" value="f" name="gender" id="g-f">
               <label class="form-check-label" for="g-f">Femenino</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="o" name="genero" id="g-o">
+              <input class="form-check-input" type="radio" value="o" name="gender" id="g-o">
               <label class="form-check-label" for="g-o">Otro</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="n" name="genero" id="g-n">
+              <input class="form-check-input" type="radio" value="n" name="gender" id="g-n">
               <label class="form-check-label" for="g-n">Prefiero no decirlo</label>
             </div>
           </fieldset>
@@ -433,31 +436,31 @@
               <div>
                 <div class="form-check">
                   <!-- Checkbox: Permite seleccionar multiples opciones -->
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes1" value="programacion">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes1" value="programacion">
                   <label class="form-check-label" for="interes1">Programación</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes2" value="diseño">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes2" value="diseño">
                   <label class="form-check-label" for="interes2">Diseño Gráfico</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes3" value="marketing">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes3" value="marketing">
                   <label class="form-check-label" for="interes3">Marketing Digital</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes4" value="ciencia">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes4" value="ciencia">
                   <label class="form-check-label" for="interes4">Ciencia de Datos</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes5" value="basketball">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes5" value="basketball">
                   <label class="form-check-label" for="interes5">Basketball</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes6" value="musica">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes6" value="musica">
                   <label class="form-check-label" for="interes6">Música</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses" id="interes7" value="starwars">
+                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes7" value="starwars">
                   <label class="form-check-label" for="interes7">Star Wars</label>
                 </div>
               </div>
@@ -522,6 +525,8 @@
           <button class="btn btn-primary" type="submit">Registrar</button>
         </fieldset>
       </form>
+
+      
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -583,5 +588,4 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>

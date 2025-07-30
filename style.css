@@ -1,3 +1,14 @@
+/* Avatar de género: siempre centrado y contenido */
+#avatar-genero img {
+  max-width: 100%;
+  max-height: 110px;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: none !important;
+  opacity: 1 !important;
+}
 /*
   === Guía rápida de conceptos CSS para principiantes ===
 
