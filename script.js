@@ -236,6 +236,20 @@ document.addEventListener('DOMContentLoaded', function() {
   toggleInterestImage('interes6', 'img-musica');
   toggleInterestImage('interes7', 'img-starwars');
 
+  // Set all interest images to grayscale initially
+  const interestImages = [
+    'img-programacion', 'img-diseno', 'img-marketing', 'img-ciencia', 
+    'img-basketball', 'img-musica', 'img-starwars'
+  ];
+  
+  interestImages.forEach(imgId => {
+    const img = document.getElementById(imgId);
+    if (img) {
+      img.style.filter = 'grayscale(1)';
+      img.style.opacity = '0.2';
+    }
+  });
+
   // Mostrar/ocultar el mensaje especial de la fuerza al seleccionar Star Wars
   const fuerzaMsg = document.getElementById('fuerza-msg');
   const starWarsCheckbox = document.getElementById('interes7');
@@ -279,4 +293,170 @@ document.addEventListener('DOMContentLoaded', function() {
   setupSectionToggle('a[href="#estudiantes"]', 'estudiantes', 'cerrar-estudiantes');
   setupSectionToggle('a[href="#profesores"]', 'profesores', 'cerrar-profesores');
   setupSectionToggle('a[href="#laboratorios"]', 'laboratorios', 'cerrar-laboratorios');
+
+  // --- Profesores dinámico con materias únicas ---
+  // Lista de cursos desde la tabla de cursos
+  const cursos = [
+    'Inglés I','Matemática I','Introducción a la Informática','Comunicación',
+    'Administración I','Contabilidad para Ingeniería','Inglés II','Programación de Cómputo I',
+    'Arquitectura de Computadoras','Programación Internet','Sistemas Computacionales (C)','Cálculo I',
+    'Métodos Estadísticos I','Finanzas para Ingeniería','Estructura de Datos y Algoritmos','Programación Computadoras II (Visual Basic)',
+    'Economía para Ingeniería','Organización de Archivos','Programación de Computadoras III (Visual Basic Avanzado)','Sistemas Operativos I',
+    'Diseño y Optimización de Base de Datos','Análisis y Diseño de Sistemas I','Telemática','Administración de Proyectos',
+    'Análisis y Diseño de Sistemas II','Investigación de Operaciones I','Administración de Centros de Cómputo','Telemática II',
+    'Investigación de Operaciones II','Auditoría de Sistemas Computacionales','Programación de Lenguaje de 4ta Generación','Seminario de Graduación'
+  ];
+
+  // Profesores iniciales (nombre, descripcion, materia)
+  let profesores = [
+    ['Dr. Gordon Moore','Cofundador de Intel y creador de la Ley de Moore','Arquitectura de Computadoras'],
+    ['Dra. Ada Lovelace','Primera programadora de la historia, visionaria del software','Programación de Cómputo I'],
+    ['MSc. Donald Knuth','Autor de la obra clásica \'The Art of Computer Programming\'','Estructura de Datos y Algoritmos'],
+    ['MSc. Grace Hopper','Pionera en lenguajes de programación, desarrolladora de COBOL','Sistemas Operativos I'],
+    ['Dr. Tim Berners-Lee','Inventor de la World Wide Web','Programación Internet'],
+    ['MSc. Katherine Johnson','Matemática de la NASA, clave en misiones espaciales','Matemática I'],
+    ['Lic. Philip Kotler','Padre del marketing moderno y autor reconocido en todo el mundo','Administración I'],
+    ['Dr. Alan Turing','Criptógrafo británico y pionero de la computación moderna','Organización de Archivos'],
+    ['Fabián Chinchilla Mayorga','Especialista en desarrollo web, HTML semántico y flujos de trabajo colaborativos con GitHub','Programación Internet'],
+    ['Dra. Margaret Hamilton','Desarrolladora del software de la misión Apolo 11','Análisis y Diseño de Sistemas I']
+  ];
+
+  const tbody = document.getElementById('profesores-tbody');
+  function renderProfesores() {
+    tbody.innerHTML = '';
+    // Obtener materias ya asignadas
+    const materiasAsignadas = profesores.map(p => p[2]);
+    profesores.forEach((prof, idx) => {
+      const tr = document.createElement('tr');
+      // Opciones: la materia actual + todas las no asignadas
+      const materiaActual = prof[2];
+      // Materias disponibles: la actual + las no asignadas
+      const materiasDisponibles = cursos.filter(curso => curso === materiaActual || !materiasAsignadas.includes(curso));
+      // Si la materia actual no está en cursos (ej: "Programación de Cómputo I/II/III"), solo mostrar esa opción
+      let materiaOptions = '';
+      if (!cursos.includes(materiaActual)) {
+        materiaOptions = `<option value="${materiaActual}" selected>${materiaActual}</option>`;
+      } else {
+        materiasDisponibles.forEach(materia => {
+          materiaOptions += `<option value="${materia}"${materia === materiaActual ? ' selected' : ''}>${materia}</option>`;
+        });
+      }
+      tr.innerHTML = `
+        <td><b>${prof[0]}</b></td>
+        <td class="descripcion">${prof[1]}</td>
+        <td class="materia">
+          <select class="materia-select" data-prof-idx="${idx}"${!cursos.includes(materiaActual) ? ' disabled' : ''}>
+          </select>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    // Asignar eventos a los selects
+    tbody.querySelectorAll('.materia-select').forEach(select => {
+      select.addEventListener('change', function() {
+        const idx = parseInt(this.getAttribute('data-prof-idx'));
+        const nuevaMateria = this.value;
+        // Verificar que la materia no esté asignada a otro profesor
+        const yaAsignada = profesores.some((p, i) => i !== idx && p[2] === nuevaMateria);
+        if (yaAsignada) {
+          alert('Esta materia ya está asignada a otro profesor.');
+          renderProfesores();
+          return;
+        }
+        profesores[idx][2] = nuevaMateria;
+        renderProfesores();
+      });
+    });
+  }
+  renderProfesores();
+
+  // Validación del formulario de registro
+  const form = document.getElementById('registro-form');
+  const emailInput = document.getElementById('email');
+  const emailError = document.getElementById('email-error');
+  const passwordInput = document.getElementById('password');
+  const confirmPasswordInput = document.getElementById('confirm-password');
+  const usernameInput = document.getElementById('username');
+  const genderInputs = document.querySelectorAll('input[name="gender"]');
+  const registroMsg = document.getElementById('registro-msg');
+
+  form.addEventListener('submit', function(e) {
+    let valid = true;
+    let messages = [];
+
+    // Validar nombre de usuario
+    if (!usernameInput.value.trim()) {
+      valid = false;
+      messages.push('El nombre de usuario es obligatorio.');
+    }
+
+    // Validar email
+    if (!emailInput.value.includes('@')) {
+      valid = false;
+      emailError.style.display = 'inline';
+      messages.push('El correo debe contener un @.');
+    } else {
+      emailError.style.display = 'none';
+    }
+
+    // Validar contraseña
+    if (!passwordInput.value) {
+      valid = false;
+      messages.push('La contraseña es obligatoria.');
+    }
+    if (passwordInput.value !== confirmPasswordInput.value) {
+      valid = false;
+      messages.push('Las contraseñas no coinciden.');
+    }
+
+    // Validar género
+    let genderSelected = false;
+    genderInputs.forEach(input => { if (input.checked) genderSelected = true; });
+    if (!genderSelected) {
+      valid = false;
+      messages.push('Debe seleccionar un género.');
+    }
+
+    if (!valid) {
+      e.preventDefault();
+      registroMsg.style.display = 'block';
+      registroMsg.style.color = '#ff6b6b';
+      registroMsg.innerHTML = messages.join('<br>');
+    } else {
+      registroMsg.style.display = 'none';
+    }
+  });
+
+  // Avatar género grayscale effect
+  function applyAvatarGrayscale() {
+    const avatarGenero = document.getElementById('img-avatar-genero');
+    if (avatarGenero) {
+      console.log('Applying grayscale to avatar'); // Debug log
+      avatarGenero.style.filter = 'grayscale(100%)';
+      avatarGenero.style.webkitFilter = 'grayscale(100%)';
+      avatarGenero.style.opacity = '0.6';
+      console.log('Avatar styles applied:', avatarGenero.style.filter); // Debug log
+    } else {
+      console.log('Avatar element not found'); // Debug log
+    }
+  }
+
+  // Apply grayscale immediately
+  applyAvatarGrayscale();
+
+  // Also apply after a short delay to ensure image is loaded
+  setTimeout(applyAvatarGrayscale, 100);
+
+  // Remove grayscale filter when a gender is selected
+  const avatarGenderInputs = document.querySelectorAll('input[name="gender"]');
+  avatarGenderInputs.forEach(input => {
+    input.addEventListener('change', function() {
+      const avatarGenero = document.getElementById('img-avatar-genero');
+      if (avatarGenero) {
+        avatarGenero.style.filter = 'none';
+        avatarGenero.style.webkitFilter = 'none';
+        avatarGenero.style.opacity = '1';
+      }
+    });
+  });
 });
