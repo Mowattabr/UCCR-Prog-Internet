@@ -587,5 +587,65 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Validación del formulario de registro
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('registro-form');
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('email-error');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
+      const usernameInput = document.getElementById('username');
+      const genderInputs = document.querySelectorAll('input[name="gender"]');
+      const registroMsg = document.getElementById('registro-msg');
+
+      form.addEventListener('submit', function(e) {
+        let valid = true;
+        let messages = [];
+
+        // Validar nombre de usuario
+        if (!usernameInput.value.trim()) {
+          valid = false;
+          messages.push('El nombre de usuario es obligatorio.');
+        }
+
+        // Validar email
+        if (!emailInput.value.includes('@')) {
+          valid = false;
+          emailError.style.display = 'inline';
+          messages.push('El correo debe contener un @.');
+        } else {
+          emailError.style.display = 'none';
+        }
+
+        // Validar contraseña
+        if (!passwordInput.value) {
+          valid = false;
+          messages.push('La contraseña es obligatoria.');
+        }
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          valid = false;
+          messages.push('Las contraseñas no coinciden.');
+        }
+
+        // Validar género
+        let genderSelected = false;
+        genderInputs.forEach(input => { if (input.checked) genderSelected = true; });
+        if (!genderSelected) {
+          valid = false;
+          messages.push('Debe seleccionar un género.');
+        }
+
+        if (!valid) {
+          e.preventDefault();
+          registroMsg.style.display = 'block';
+          registroMsg.style.color = '#ff6b6b';
+          registroMsg.innerHTML = messages.join('<br>');
+        } else {
+          registroMsg.style.display = 'none';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
