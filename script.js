@@ -27,6 +27,19 @@
 // Función para activar modo administrador si usuario y contraseña son 'admin'
 document.addEventListener('DOMContentLoaded', function() {
 
+  // Función para verificar si un usuario existe en la base de datos
+  function checkUserExists(username, password, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'verificar_usuario.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        callback(xhr.responseText);
+      }
+    };
+    xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+  }
+
   function hideRegistroUsuario() {
     // Oculta el fieldset de registro de usuario
     var fieldsets = document.querySelectorAll('fieldset');
@@ -84,12 +97,25 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Por favor, ingrese usuario y contraseña.');
         return;
       }
+      
       // Restricción: el usuario "admin" no puede iniciar sesión como usuario normal
       if (user === 'admin') {
         alert('El usuario "admin" solo puede acceder en modo administrador. Use el botón "Administrador".');
         return;
       }
-      setUserMode();
+      
+      // Verificar si el usuario existe en la base de datos SQL
+      checkUserExists(user, pass, function(response) {
+        if (response === 'USER_NOT_EXISTS') {
+          alert('El usuario "' + user + '" no existe.');
+        } else if (response === 'WRONG_PASSWORD') {
+          alert('Contraseña incorrecta para el usuario "' + user + '".');
+        } else if (response === 'SUCCESS') {
+          setUserMode();
+        } else {
+          alert('Error al verificar el usuario.');
+        }
+      });
     });
   }
 
