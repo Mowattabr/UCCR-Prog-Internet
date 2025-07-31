@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
           // Reset avatar to default
           var avatar = document.getElementById('img-avatar-genero');
           if (avatar) {
-            avatar.src = 'images/Male_35764.png';
+            avatar.src = 'images/Male.png';
             avatar.style.filter = 'none';
             avatar.style.opacity = '1';
           }
@@ -147,10 +147,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const generoRadios = document.querySelectorAll('input[name="gender"]');
   const avatarImg = document.getElementById('img-avatar-genero');
   const avatarMap = {
-    m: 'images/Male_35764.png',
-    f: 'images/Female_35792.png',
-    o: 'images/gender_sex_icon_131294.png',
-    n: 'images/incognito_icon_135478.png'
+    m: 'images/Male.png',
+    f: 'images/Female.png',
+    o: 'images/Other.png',
+    n: 'images/incognito.png'
   };
   generoRadios.forEach(radio => {
     radio.addEventListener('change', function() {

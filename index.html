@@ -16,198 +16,13 @@
     Aquí va el título principal de la página. Sirve para que el usuario sepa dónde está y da identidad al sitio.
     Puedes poner el nombre de la plataforma, el logo o ambos.
   -->
-  <header>
-    <h1>Plataforma Educativa Universidad Central</h1>
-  </header>
-
-  <!--
-    NAV (Navegación):
-    Este bloque contiene el menú principal. Usamos una lista (<ul>) para organizar los enlaces (<li>).
-    Cada enlace (<a>) lleva a una sección diferente. Así el usuario puede moverse fácilmente por la web.
-  -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Inicio</a></li> <!-- Enlace a la página de inicio -->
-      <li class="nav-privado" style="display:none;"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
-      <li class="nav-privado" style="display:none;"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
-      <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
-      <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
-      <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
-      <li><a href="#laboratorios">Laboratorios</a></li>  <!-- Enlace a la sección de laboratorios -->
-    </ul>
-  </nav>
-
-  <!-- Página de Ayuda como subpágina -->
-  <section id="ayuda" style="display:none; padding:40px 20px; max-width:600px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-    <h2 style="color:#f18b32; margin-bottom:18px;">Ayuda</h2>
-    <p>Esta es una <b>página de prueba</b> que emula el registro para la Universidad Central de Costa Rica (UCCR).</p>
-    <p>No ingreses datos personales reales, ya que esta página es solo para fines de demostración.</p>
-    <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
-    <button id="cerrar-ayuda" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
-  </section>
-
-  <!-- Página de Cursos como subpágina -->
-  <section id="cursos" style="display:none; padding:40px 20px; max-width:900px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-    <h2 style="color:#f18b32; margin-bottom:18px;">Cursos</h2>
-    <div style="display:flex; justify-content:center;">
-      <table class="tabla-cursos" >
-        <thead>
-          <tr style="background:#1e293b; color:#f18b32;">
-            <th class="cuatrimestre">Cuatrimestre</th>
-            <th class="curso">Curso</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="cuatrimestre">I</td><td class="curso">Inglés I</td></tr>
-          <tr><td class="cuatrimestre">I</td><td class="curso">Matemática I</td></tr>
-          <tr><td class="cuatrimestre">I</td><td class="curso">Introducción a la Informática</td></tr>
-          <tr><td class="cuatrimestre">I</td><td class="curso">Comunicación</td></tr>
-          <tr><td class="cuatrimestre">II</td><td class="curso">Administración I</td></tr>
-          <tr><td class="cuatrimestre">II</td><td class="curso">Contabilidad para Ingeniería</td></tr>
-          <tr><td class="cuatrimestre">II</td><td class="curso">Inglés II</td></tr>
-          <tr><td class="cuatrimestre">II</td><td class="curso">Programación de Cómputo I</td></tr>
-          <tr><td class="cuatrimestre">III</td><td class="curso">Arquitectura de Computadoras</td></tr>
-          <tr><td class="cuatrimestre">III</td><td class="curso">Programación Internet</td></tr>
-          <tr><td class="cuatrimestre">III</td><td class="curso">Sistemas Computacionales (C)</td></tr>
-          <tr><td class="cuatrimestre">III</td><td class="curso">Cálculo I</td></tr>
-          <tr><td class="cuatrimestre">IV</td><td class="curso">Métodos Estadísticos I</td></tr>
-          <tr><td class="cuatrimestre">IV</td><td class="curso">Finanzas para Ingeniería</td></tr>
-          <tr><td class="cuatrimestre">IV</td><td class="curso">Estructura de Datos y Algoritmos</td></tr>
-          <tr><td class="cuatrimestre">IV</td><td class="curso">Programación Computadoras II (Visual Basic)</td></tr>
-          <tr><td class="cuatrimestre">V</td><td class="curso">Economía para Ingeniería</td></tr>
-          <tr><td class="cuatrimestre">V</td><td class="curso">Organización de Archivos</td></tr>
-          <tr><td class="cuatrimestre">V</td><td class="curso">Programación de Computadoras III (Visual Basic Avanzado)</td></tr>
-          <tr><td class="cuatrimestre">V</td><td class="curso">Sistemas Operativos I</td></tr>
-          <tr><td class="cuatrimestre">VI</td><td class="curso">Diseño y Optimización de Base de Datos</td></tr>
-          <tr><td class="cuatrimestre">VI</td><td class="curso">Análisis y Diseño de Sistemas I</td></tr>
-          <tr><td class="cuatrimestre">VI</td><td class="curso">Telemática</td></tr>
-          <tr><td class="cuatrimestre">VI</td><td class="curso">Administración de Proyectos</td></tr>
-          <tr><td class="cuatrimestre">VII</td><td class="curso">Análisis y Diseño de Sistemas II</td></tr>
-          <tr><td class="cuatrimestre">VII</td><td class="curso">Investigación de Operaciones I</td></tr>
-          <tr><td class="cuatrimestre">VII</td><td class="curso">Administración de Centros de Cómputo</td></tr>
-          <tr><td class="cuatrimestre">VII</td><td class="curso">Telemática II</td></tr>
-          <tr><td class="cuatrimestre">VIII</td><td class="curso">Investigación de Operaciones II</td></tr>
-          <tr><td class="cuatrimestre">VIII</td><td class="curso">Auditoría de Sistemas Computacionales</td></tr>
-          <tr><td class="cuatrimestre">VIII</td><td class="curso">Programación de Lenguaje de 4ta Generación</td></tr>
-          <tr><td class="cuatrimestre">VIII</td><td class="curso">Seminario de Graduación</td></tr>
-        </tbody>
-      </table>
+  <header style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 20px;">
+    <img src="images/Magna.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
+    <div style="text-align: center;">
+      <h1 style="color: #C0C0C0; margin-bottom: 5px; margin-top: 0;">Galaxia Magna Academy</h1>
+      <h2 style="font-style: italic; font-weight: normal; font-size: 1.8em; margin-top: 0; color: #C0C0C0; margin-bottom: 0;">Sapientia per Stellam</h2>
     </div>
-    <button id="cerrar-cursos" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
-  </section>
-
-  <!-- Página de Estudiantes como subpágina -->
-  <section id="estudiantes" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-    <h2 style="color:#f18b32; margin-bottom:18px;">Estudiantes</h2>
-    <table class="tabla-separada" >
-      <thead>
-        <tr style="background:#1e293b; color:#f18b32;">
-          <th>Nombre</th>
-          <th class="descripcion">Descripción</th>
-          <th class="materia">Materia</th>
-          <th>Profesor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>R2-D2</b></td><td class="descripcion">Especialista en interfaces y circuitos desde hace galaxias</td><td class="materia">Arquitectura de Computadoras</td><td>Dr. Gordon Moore</td>
-        </tr>
-        <tr>
-          <td><b>Neo (Matrix)</b></td><td class="descripcion">Puede manipular la realidad, pero todavía batalla con los for loops</td><td class="materia">Programación de Cómputo I/II/III</td><td>Dra. Ada Lovelace</td>
-        </tr>
-        <tr>
-          <td><b>Data (Star Trek)</b></td><td class="descripcion">Busca comprender la eficiencia de estructuras recursivas</td><td class="materia">Estructura de Datos y Algoritmos</td><td>MSc. Donald Knuth</td>
-        </tr>
-        <tr>
-          <td><b>Tron</b></td><td class="descripcion">Salido de la red, desea entender cómo se ejecutan procesos en SO reales</td><td class="materia">Sistemas Operativos</td><td>MSc. Grace Hopper</td>
-        </tr>
-        <tr>
-          <td><b>Miles Morales (Spider-Man)</b></td><td class="descripcion">Estudiante de STEM que crea su propia página en HTML para su traje</td><td class="materia">Programación Internet / Telemática</td><td>Dr. Tim Berners-Lee</td>
-        </tr>
-        <tr>
-          <td><b>Megamind</b></td><td class="descripcion">Le encantan las matemáticas... si son para conquistar el mundo</td><td class="materia">Matemática / Cálculo / Estadística</td><td>MSc. Katherine Johnson</td>
-        </tr>
-        <tr>
-          <td><b>Bruce Banner (Hulk)</b></td><td class="descripcion">Calcula riesgos financieros... antes de enojarse</td><td class="materia">Marketing Digital / Finanzas</td><td>Lic. Philip Kotler</td>
-        </tr>
-        <tr>
-          <td><b>T-800 (Terminator)</b></td><td class="descripcion">Necesita aprender organización de datos humanos para su próxima misión</td><td class="materia">Organización de Archivos / Administración TI</td><td>Dr. Alan Turing</td>
-        </tr>
-        <tr>
-          <td><b>Gwen Stacy (Spider-Gwen)</b></td><td class="descripcion">Diseñadora web y activista, domina GitHub como su telaraña</td><td class="materia">Programación Internet</td><td>Fabián Chinchilla Mayorga</td>
-        </tr>
-        <tr>
-          <td><b>Cortana (Halo)</b></td><td class="descripcion">Quiere mejorar su capacidad de planificación de misiones complejas</td><td class="materia">Análisis y Diseño de Sistemas</td><td>Dra. Margaret Hamilton</td>
-        </tr>
-      </tbody>
-    </table>
-    <button id="cerrar-estudiantes" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
-  </section>
-
-  <!-- Página de Profesores como subpágina -->
-  <section id="profesores" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-    <h2 style="color:#f18b32; margin-bottom:18px;">Profesores</h2>
-    <table class="tabla-separada" >
-      <thead>
-        <tr style="background:#1e293b; color:#f18b32;">
-          <th>Nombre</th>
-          <th class="descripcion">Descripción</th>
-          <th class="materia">Materia</th>
-        </tr>
-      </thead>
-      <tbody id="profesores-tbody">
-        <!-- Filas de profesores se llenan por JS -->
-      </tbody>
-    </table>
-    <button id="cerrar-profesores" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
-  </section>
-
-  <!-- Página de Laboratorios como subpágina -->
-  <section id="laboratorios" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-    <h2 style="color:#f18b32; margin-bottom:18px;">Laboratorios</h2>
-    <table class="tabla-separada">
-      <thead>
-        <tr style="background:#1e293b; color:#f18b32;">
-          <th>Laboratorio</th>
-          <th class="descripcion">Descripción</th>
-          <th>Enlace</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>Laboratorio 1</b></td>
-          <td class="descripcion">Primer laboratorio de programación web</td>
-          <td><a href="Lab1/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 1</a></td>
-        </tr>
-        <tr>
-          <td><b>Laboratorio 2</b></td>
-          <td class="descripcion">Segundo laboratorio de programación web</td>
-          <td><a href="Lab2/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 2</a></td>
-        </tr>
-        <tr>
-          <td><b>Laboratorio 3</b></td>
-          <td class="descripcion">Tercer laboratorio de programación web</td>
-          <td><a href="Lab3/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 3</a></td>
-        </tr>
-        <tr>
-          <td><b>Laboratorio 4</b></td>
-          <td class="descripcion">Cuarto laboratorio de programación web</td>
-          <td><a href="Lab4/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 4</a></td>
-        </tr>
-        <tr>
-          <td><b>Laboratorio 5</b></td>
-          <td class="descripcion">Quinto laboratorio de programación web</td>
-          <td><a href="Lab5/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 5</a></td>
-        </tr>
-          <tr>
-          <td><b>Laboratorio 6 PHP</b></td>
-          <td class="descripcion">Sexto laboratorio de programación web en PHP</td>
-          <td><a href="Lab6/index.php" style="color:#5b79ff; text-decoration:none;">Ver Lab 6</a></td>
-        </tr>
-      </tbody>
-    </table>
-    <button id="cerrar-laboratorios" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
-  </section>
+  </header>
 
   <main>
     <section>
@@ -219,7 +34,7 @@
 
       <!-- Mensaje de registro -->
       <div id="registro-msg" style="display:none; font-weight:bold; margin-bottom:16px;"></div>
-      <form id="registro-form" action="procesar.php" method="post">
+      <form id="registro-form" action="registro.php" method="post">
 
         <!--
           MENSAJE DE SALUDO (Greeting):
@@ -228,6 +43,20 @@
 
         <div id="login-rapido-wrapper">
           <div id="login-msg" style="display:none; font-weight:bold; color:#22c55e; margin-bottom:12px;"></div>
+          
+          <!-- Navigation moved here to align with Login section -->
+          <nav style="margin-bottom: 20px;">
+            <ul>
+              <li><a href="index.html">Inicio</a></li> <!-- Enlace a la página de inicio -->
+              <li class="nav-privado" style="display:none;"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
+              <li class="nav-privado" style="display:none;"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
+              <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
+              <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
+              <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
+              <li><a href="#laboratorios">Laboratorios</a></li>  <!-- Enlace a la sección de laboratorios -->
+            </ul>
+          </nav>
+          
           <!--
             FIELDSET DE LOGIN RÁPIDO:
             Permite a los usuarios iniciar sesión rápidamente sin llenar el formulario completo de registro.
@@ -336,7 +165,7 @@
               <div id="avatar-genero"
                 class="img_box">
                 <img id="img-avatar-genero"
-                  src="images/incognito_icon_135478.png"
+                  src="images/GMA.png"
                   alt="Avatar Género"
                   >
               </div>
@@ -430,7 +259,7 @@
                 <div id="imgbox7"
                   class="img_box">
                   <img id="img-starwars"
-                    src="https://images.icon-icons.com/335/PNG/256/Death_Star_2nd_35408.png"
+                    src="images/banner.png"
                     alt="Star Wars"
                     >
                 </div>
@@ -449,20 +278,179 @@
       
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!--
-      VIDEO EMBEBIDO DE YOUTUBE:
-      Para insertar un video de YouTube, ve al video, haz clic en "Compartir" y luego en "Insertar".
-      Copia el código <iframe> y pégalo aquí. Así puedes mostrar videos fácilmente en tu web.
-      TIP: Algunos videos pueden tener restricciones y no verse fuera de YouTube.
-    -->
-    <section class="video-centrado">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/k-Ua033oKAk"
-        title="Video Incrustado" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <!-- Página de Ayuda como subpágina -->
+    <section id="ayuda" style="display:none; padding:40px 20px; max-width:600px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+      <h2 style="color:#f18b32; margin-bottom:18px;">Ayuda</h2>
+      <p>Esta es una <b>página de prueba</b> que emula el registro para la Universidad Central de Costa Rica (UCCR).</p>
+      <p>No ingreses datos personales reales, ya que esta página es solo para fines de demostración.</p>
+      <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
+      <button id="cerrar-ayuda" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
     </section>
+
+    <!-- Página de Cursos como subpágina -->
+    <section id="cursos" style="display:none; padding:40px 20px; max-width:900px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+      <h2 style="color:#f18b32; margin-bottom:18px;">Cursos</h2>
+      <div style="display:flex; justify-content:center;">
+        <table class="tabla-cursos" >
+          <thead>
+            <tr style="background:#1e293b; color:#f18b32;">
+              <th class="cuatrimestre">Cuatrimestre</th>
+              <th class="curso">Curso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="cuatrimestre">I</td><td class="curso">Inglés I</td></tr>
+            <tr><td class="cuatrimestre">I</td><td class="curso">Matemática I</td></tr>
+            <tr><td class="cuatrimestre">I</td><td class="curso">Introducción a la Informática</td></tr>
+            <tr><td class="cuatrimestre">I</td><td class="curso">Comunicación</td></tr>
+            <tr><td class="cuatrimestre">II</td><td class="curso">Administración I</td></tr>
+            <tr><td class="cuatrimestre">II</td><td class="curso">Contabilidad para Ingeniería</td></tr>
+            <tr><td class="cuatrimestre">II</td><td class="curso">Inglés II</td></tr>
+            <tr><td class="cuatrimestre">II</td><td class="curso">Programación de Cómputo I</td></tr>
+            <tr><td class="cuatrimestre">III</td><td class="curso">Arquitectura de Computadoras</td></tr>
+            <tr><td class="cuatrimestre">III</td><td class="curso">Programación Internet</td></tr>
+            <tr><td class="cuatrimestre">III</td><td class="curso">Sistemas Computacionales (C)</td></tr>
+            <tr><td class="cuatrimestre">III</td><td class="curso">Cálculo I</td></tr>
+            <tr><td class="cuatrimestre">IV</td><td class="curso">Métodos Estadísticos I</td></tr>
+            <tr><td class="cuatrimestre">IV</td><td class="curso">Finanzas para Ingeniería</td></tr>
+            <tr><td class="cuatrimestre">IV</td><td class="curso">Estructura de Datos y Algoritmos</td></tr>
+            <tr><td class="cuatrimestre">IV</td><td class="curso">Programación Computadoras II (Visual Basic)</td></tr>
+            <tr><td class="cuatrimestre">V</td><td class="curso">Economía para Ingeniería</td></tr>
+            <tr><td class="cuatrimestre">V</td><td class="curso">Organización de Archivos</td></tr>
+            <tr><td class="cuatrimestre">V</td><td class="curso">Programación de Computadoras III (Visual Basic Avanzado)</td></tr>
+            <tr><td class="cuatrimestre">V</td><td class="curso">Sistemas Operativos I</td></tr>
+            <tr><td class="cuatrimestre">VI</td><td class="curso">Diseño y Optimización de Base de Datos</td></tr>
+            <tr><td class="cuatrimestre">VI</td><td class="curso">Análisis y Diseño de Sistemas I</td></tr>
+            <tr><td class="cuatrimestre">VI</td><td class="curso">Telemática</td></tr>
+            <tr><td class="cuatrimestre">VI</td><td class="curso">Administración de Proyectos</td></tr>
+            <tr><td class="cuatrimestre">VII</td><td class="curso">Análisis y Diseño de Sistemas II</td></tr>
+            <tr><td class="cuatrimestre">VII</td><td class="curso">Investigación de Operaciones I</td></tr>
+            <tr><td class="cuatrimestre">VII</td><td class="curso">Administración de Centros de Cómputo</td></tr>
+            <tr><td class="cuatrimestre">VII</td><td class="curso">Telemática II</td></tr>
+            <tr><td class="cuatrimestre">VIII</td><td class="curso">Investigación de Operaciones II</td></tr>
+            <tr><td class="cuatrimestre">VIII</td><td class="curso">Auditoría de Sistemas Computacionales</td></tr>
+            <tr><td class="cuatrimestre">VIII</td><td class="curso">Programación de Lenguaje de 4ta Generación</td></tr>
+            <tr><td class="cuatrimestre">VIII</td><td class="curso">Seminario de Graduación</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button id="cerrar-cursos" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+    </section>
+
+    <!-- Página de Estudiantes como subpágina -->
+    <section id="estudiantes" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+      <h2 style="color:#f18b32; margin-bottom:18px;">Estudiantes</h2>
+      <table class="tabla-separada" >
+        <thead>
+          <tr style="background:#1e293b; color:#f18b32;">
+            <th>Nombre</th>
+            <th class="descripcion">Descripción</th>
+            <th class="materia">Materia</th>
+            <th>Profesor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>R2-D2</b></td><td class="descripcion">Especialista en interfaces y circuitos desde hace galaxias</td><td class="materia">Arquitectura de Computadoras</td><td>Dr. Gordon Moore</td>
+          </tr>
+          <tr>
+            <td><b>Neo (Matrix)</b></td><td class="descripcion">Puede manipular la realidad, pero todavía batalla con los for loops</td><td class="materia">Programación de Cómputo I/II/III</td><td>Dra. Ada Lovelace</td>
+          </tr>
+          <tr>
+            <td><b>Data (Star Trek)</b></td><td class="descripcion">Busca comprender la eficiencia de estructuras recursivas</td><td class="materia">Estructura de Datos y Algoritmos</td><td>MSc. Donald Knuth</td>
+          </tr>
+          <tr>
+            <td><b>Tron</b></td><td class="descripcion">Salido de la red, desea entender cómo se ejecutan procesos en SO reales</td><td class="materia">Sistemas Operativos</td><td>MSc. Grace Hopper</td>
+          </tr>
+          <tr>
+            <td><b>Miles Morales (Spider-Man)</b></td><td class="descripcion">Estudiante de STEM que crea su propia página en HTML para su traje</td><td class="materia">Programación Internet / Telemática</td><td>Dr. Tim Berners-Lee</td>
+          </tr>
+          <tr>
+            <td><b>Megamind</b></td><td class="descripcion">Le encantan las matemáticas... si son para conquistar el mundo</td><td class="materia">Matemática / Cálculo / Estadística</td><td>MSc. Katherine Johnson</td>
+          </tr>
+          <tr>
+            <td><b>Bruce Banner (Hulk)</b></td><td class="descripcion">Calcula riesgos financieros... antes de enojarse</td><td class="materia">Marketing Digital / Finanzas</td><td>Lic. Philip Kotler</td>
+          </tr>
+          <tr>
+            <td><b>T-800 (Terminator)</b></td><td class="descripcion">Necesita aprender organización de datos humanos para su próxima misión</td><td class="materia">Organización de Archivos / Administración TI</td><td>Dr. Alan Turing</td>
+          </tr>
+          <tr>
+            <td><b>Gwen Stacy (Spider-Gwen)</b></td><td class="descripcion">Diseñadora web y activista, domina GitHub como su telaraña</td><td class="materia">Programación Internet</td><td>Fabián Chinchilla Mayorga</td>
+          </tr>
+          <tr>
+            <td><b>Cortana (Halo)</b></td><td class="descripcion">Quiere mejorar su capacidad de planificación de misiones complejas</td><td class="materia">Análisis y Diseño de Sistemas</td><td>Dra. Margaret Hamilton</td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="cerrar-estudiantes" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+    </section>
+
+    <!-- Página de Profesores como subpágina -->
+    <section id="profesores" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+      <h2 style="color:#f18b32; margin-bottom:18px;">Profesores</h2>
+      <table class="tabla-separada" >
+        <thead>
+          <tr style="background:#1e293b; color:#f18b32;">
+            <th>Nombre</th>
+            <th class="descripcion">Descripción</th>
+            <th class="materia">Materia</th>
+          </tr>
+        </thead>
+        <tbody id="profesores-tbody">
+          <!-- Filas de profesores se llenan por JS -->
+        </tbody>
+      </table>
+      <button id="cerrar-profesores" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+    </section>
+
+    <!-- Página de Laboratorios como subpágina -->
+    <section id="laboratorios" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
+      <h2 style="color:#f18b32; margin-bottom:18px;">Laboratorios</h2>
+      <table class="tabla-separada">
+        <thead>
+          <tr style="background:#1e293b; color:#f18b32;">
+            <th>Laboratorio</th>
+            <th class="descripcion">Descripción</th>
+            <th>Enlace</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Laboratorio 1</b></td>
+            <td class="descripcion">Primer laboratorio de programación web</td>
+            <td><a href="Lab1/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 1</a></td>
+          </tr>
+          <tr>
+            <td><b>Laboratorio 2</b></td>
+            <td class="descripcion">Segundo laboratorio de programación web</td>
+            <td><a href="Lab2/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 2</a></td>
+          </tr>
+          <tr>
+            <td><b>Laboratorio 3</b></td>
+            <td class="descripcion">Tercer laboratorio de programación web</td>
+            <td><a href="Lab3/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 3</a></td>
+          </tr>
+          <tr>
+            <td><b>Laboratorio 4</b></td>
+            <td class="descripcion">Cuarto laboratorio de programación web</td>
+            <td><a href="Lab4/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 4</a></td>
+          </tr>
+          <tr>
+            <td><b>Laboratorio 5</b></td>
+            <td class="descripcion">Quinto laboratorio de programación web</td>
+            <td><a href="Lab5/index.html" style="color:#f18b32; text-decoration:none;">Ver Lab 5</a></td>
+          </tr>
+            <tr>
+            <td><b>Laboratorio 6 PHP</b></td>
+            <td class="descripcion">Sexto laboratorio de programación web en PHP</td>
+            <td><a href="Lab6/index.php" style="color:#5b79ff; text-decoration:none;">Ver Lab 6</a></td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="cerrar-laboratorios" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!--
     PODCASTS EDUCATIVOS:
@@ -485,8 +473,6 @@
   </main>
 
   <footer>
-    <p>&copy; 2023 Plataforma Educativa Universidad Central</p>
-    <p>Contacto: <a href="mailto:allan.villalobos.calderon@gmail.com">Allan</a></p>
   </footer>
 
   <!--

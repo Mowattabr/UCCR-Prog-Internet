@@ -1,6 +1,6 @@
 <?php
 // Conexión a MySQL (XAMPP default: root, no password)
-$conn = new mysqli('localhost', 'root', '', 'universidad');
+$conn = new mysqli('localhost', 'root', '', 'University-GMA');
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
@@ -27,7 +27,7 @@ if (is_array($intereses)) {
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 // Insertar datos usando prepared statements
-$stmt = $conn->prepare("INSERT INTO users (username, email, password, gender, intereses) VALUES (?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO users (username, email, password, gender, interests) VALUES (?, ?, ?, ?, ?)");
 $stmt->bind_param("sssss", $username, $email, $hashed_password, $gender, $intereses_str);
 
 if ($stmt->execute()) {
