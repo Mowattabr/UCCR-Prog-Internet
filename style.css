@@ -37,16 +37,35 @@
   background-size: cover; hace que la imagen cubra toda la pantalla.
 */
 body {
-  background: linear-gradient(rgba(24, 24, 27, 0.5), rgba(24, 24, 27, 0.5)),
-    url('https://wallpaperaccess.com/full/1537805.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background: linear-gradient(rgb(1, 1, 14), rgb(0, 0, 0));
+  background-size: 50%; 
+  background-color: #18181b;
   color: #f3f4f6;
   font-family: Arial, sans-serif;
 }
 
 main {
-  margin: 0 25%; /* Centra el contenido horizontalmente */
-  padding: 20px; /* Espacio interno alrededor del contenido */
+  position: relative;
+  margin: 0 25%;
+  padding: 20px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('images/banner.png') no-repeat center center fixed;
+  background-size: 80%;
+  filter: blur(2px);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+main > * {
+  position: relative;
+  z-index: 1;
 }
 
 /*
