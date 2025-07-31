@@ -496,6 +496,15 @@ img{
   transition: filter 0.2s, opacity 0.2s;  
 }
 
+/* Header images: Override general img styles to be fully visible */
+header img {
+  width: 80px !important;
+  height: 80px !important;
+  filter: none !important;
+  opacity: 1 !important;
+  object-fit: contain !important;
+}
+
 /* Avatar de género: Override general img styles - MUST come after general img rule */
 #avatar-genero img {
   max-width: 100%;
