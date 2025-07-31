@@ -126,7 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
         msgDiv.style.color = xhr.responseText.includes('exitoso') ? '#22c55e' : '#ff6b6b';
         msgDiv.textContent = xhr.responseText;
         if (xhr.responseText.includes('exitoso')) {
-          alert('¡Registro exitoso!');
+          var username = formData.get('username') || 'usuario';
+          alert('¡Registro exitoso para ' + username + '!');
+          location.reload(); // Refresh the page after clicking OK
           form.reset();
           // Reset avatar to default
           var avatar = document.getElementById('img-avatar-genero');
