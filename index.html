@@ -29,13 +29,10 @@
     <section>
       <!--
         FORMULARIO PRINCIPAL:
-        Aquí el usuario puede registrarse llenando sus datos. Los fieldset agrupan campos relacionados.
-        Lee los comentarios de cada parte para entender cómo funciona.
+        Aquí el usuario puede iniciar sesión rápidamente.
       -->
 
-      <!-- Mensaje de registro -->
-      <div id="registro-msg" style="display:none; font-weight:bold; margin-bottom:16px;"></div>
-      <form id="registro-form" action="registro.php" method="post">
+      <form id="login-form">
 
         <!--
           MENSAJE DE SALUDO (Greeting):
@@ -79,200 +76,13 @@
               <div class="col-12">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                   <button type="button" class="btn btn-primary me-md-2">Iniciar sesión</button>
-                  <button type="button" class="btn" style="background:#f18b32; color:#fff;">Iniciar como Administrador</button>
+                  <a href="registro.html" class="btn" style="background:#f18b32; color:#fff; text-decoration: none;">Registro</a>
                 </div>
               </div>
             </div>
           </fieldset>
         </div>
 
-          <!--
-            Cada grupo de campos tiene su propio div para que el label quede arriba del input.
-            Esto mejora la legibilidad y la experiencia de usuario.
-          -->
-
-          <fieldset>
-          <legend>Registro de usuario</legend>
-          
-          <!-- Row y Col: Sistema de columnas para organizar el contenido en filas y columnas -->
-          <div class="row">
-            <div class="col-md-8">
-              <div class="mb-3">
-                <!-- Form-label: Etiqueta que describe el camop de entrada -->
-                <label for="username" class="form-label">Nombre de Usuario:</label>
-                <!-- Form-control: Estilo para campos de entrada como text, email, password -->
-                <input class="form-control" type="text" id="username" name="username" required>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico:</label>
-                <input class="form-control" type="email" id="email" name="email" required oninput="document.getElementById('email-error').style.display='none'">
-                <span id="email-error" style="color: #ff6b6b; display: none;">El correo debe contener un @</span>
-              </div>
-            </div>
-            
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input class="form-control" type="password" id="password" name="password" required>
-              </div>
-              <div class="mb-3">
-                <label for="confirm-password" class="form-label">Confirmar Contraseña:</label>
-                <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
-              </div>
-            </div>
-          </div>
-
-
-
-          <!--
-            GÉNERO:
-            Usa radio buttons para que el usuario solo pueda elegir una opción.
-            Los labels están en línea para que se vean ordenados.
-          -->
-          <fieldset class="mt-4">
-            <legend>Género</legend>
-            <!-- Form-check: Contenedor para radio buttons y checkboxes -->
-            <div class="form-check">
-              <!-- Form-check-input: Radio buttons para seleccionar una opcion -->
-              <input class="form-check-input" type="radio" value="m" name="gender" id="g-m">
-              <!-- Form-check-label: Etiqueta para radio buttons y checkboxes -->
-              <label class="form-check-label" for="g-m">Masculino</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" value="f" name="gender" id="g-f">
-              <label class="form-check-label" for="g-f">Femenino</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" value="o" name="gender" id="g-o">
-              <label class="form-check-label" for="g-o">Otro</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" value="n" name="gender" id="g-n">
-              <label class="form-check-label" for="g-n">Prefiero no decirlo</label>
-            </div>
-          </fieldset>
-
-
-          
-          <!--
-            AVATAR DE GÉNERO:
-            Muestra una imagen que cambia según la selección de género.
-            Además, si pasas el mouse sobre el avatar, gira 360° (ver CSS para la animación).
-          -->
-          <fieldset>
-            <legend style="visibility: hidden; height: 0; margin: 0; padding: 0;"></legend>
-            <div style="display: flex;">
-              <div id="avatar-genero"
-                class="img_box">
-                <img id="img-avatar-genero"
-                  src="images/GMA.png"
-                  alt="Avatar Género"
-                  >
-              </div>
-            </div>
-          </fieldset>
-
-          <!--
-            INTERESES:
-            Usa checkboxes para que el usuario pueda elegir varios intereses.
-            Al seleccionar un interés, la imagen correspondiente se ilumina (ver JS y CSS).
-            Si seleccionas Star Wars, aparece un mensaje especial que se desvanece (ver JS y CSS).
-          -->
-          <fieldset class="mt-4">
-            <legend>Seleccione sus intereses:</legend>
-            <div>
-              <!-- Opciones de intereses -->
-              <div>
-                <div class="form-check">
-                  <!-- Checkbox: Permite seleccionar multiples opciones -->
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes1" value="programacion">
-                  <label class="form-check-label" for="interes1">Programación</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes2" value="diseño">
-                  <label class="form-check-label" for="interes2">Diseño Gráfico</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes3" value="marketing">
-                  <label class="form-check-label" for="interes3">Marketing Digital</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes4" value="ciencia">
-                  <label class="form-check-label" for="interes4">Ciencia de Datos</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes5" value="basketball">
-                  <label class="form-check-label" for="interes5">Basketball</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes6" value="musica">
-                  <label class="form-check-label" for="interes6">Música</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes7" value="starwars">
-                  <label class="form-check-label" for="interes7">Star Wars</label>
-                </div>
-              </div>
-              <!-- Cajas para imágenes de intereses -->
-              <div class="interests-container" style="margin-top: 16px; margin-bottom: 40px;">
-                <div id="imgbox1" class="img_box">
-                  <img id="img-programacion"
-                    src="https://images.icon-icons.com/1859/PNG/512/codinghtml_117947.png"
-                    alt="Programación"
-                    >
-                </div>
-                <div id="imgbox2"
-                  class="img_box">
-                  <img id="img-diseno"
-                    src="https://images.icon-icons.com/537/PNG/512/paint-brush-2_icon-icons.com_52930.png"
-                    alt="Diseño Gráfico"
-                    >
-                </div>
-                <div id="imgbox3"
-                  class="img_box">
-                  <img id="img-marketing"
-                    src="https://images.icon-icons.com/2069/PNG/512/coin_dollar_finance_icon_125510.png"
-                    alt="Marketing Digital"
-                    >
-                </div>
-                <div id="imgbox4"
-                  class="img_box">
-                  <img id="img-ciencia"
-                    src="https://images.icon-icons.com/4277/PNG/512/finance_business_analysis_analytics_science_data_icon_266082.png"
-                    alt="Ciencia de Datos"
-                    >
-                </div>
-                <div id="imgbox5"
-                  class="img_box">
-                  <img id="img-basketball"
-                    src="https://images.icon-icons.com/553/PNG/512/basketball_icon-icons.com_53566.png"
-                    alt="Basketball"
-                    >
-                </div>
-                <div id="imgbox6"
-                  class="img_box">
-                  <img id="img-musica"
-                    src="https://images.icon-icons.com/270/PNG/512/Music_29918.png"
-                    alt="Música"
-                    >
-                </div>
-                <div id="imgbox7"
-                  class="img_box">
-                  <img id="img-starwars"
-                    src="images/banner.png"
-                    alt="Star Wars"
-                    >
-                </div>
-              </div>
-              <!-- Mensaje especial de la fuerza -->
-              <div id="fuerza-msg">May the force be with you!</div>
-            </div>
-          </fieldset>
-
-          <!-- <button class="submit-button" type="button" style="margin-right: 12px;">Login</button> -->
-          <!-- Btn: Boton estilizado con diferentes variantes (primary, secondary, etc.) -->
-          <button class="btn btn-primary" type="submit">Registrar</button>
-        </fieldset>
       </form>
 
       

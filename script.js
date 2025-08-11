@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Función para verificar si un usuario existe en la base de datos
   function checkUserExists(username, password, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'verificar_usuario.php', true);
+    xhr.open('POST', 'https://backend-kt0bm09wc-mowattabrs-projects.vercel.app/api/index.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onload = function() {
       if (xhr.status === 200) {

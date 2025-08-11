@@ -25,33 +25,43 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Backend**: PHP
+- **Backend**: PHP (deployed on Vercel)
 - **Base de Datos**: MySQL
 - **Frameworks**: Bootstrap 5.3
-- **Servidor**: XAMPP/LAMP
+- **Hosting**: Vercel (Frontend & Backend)
 
 ## 📁 Estructura del Proyecto
 
 ```
-├── index.html              # Página principal
+├── index.html              # Página principal con login
+├── registro.html           # Página de registro (solo administradores)
 ├── style.css               # Estilos principales
 ├── script.js               # Lógica de frontend
-├── registro.php            # Procesamiento de registro
-├── verificar_usuario.php   # Validación de login
+├── backend/                # Backend para Vercel
+│   ├── api/
+│   │   └── index.php       # API backend en Vercel
+│   └── vercel.json         # Configuración de Vercel
 ├── images/                 # Recursos gráficos
 │   ├── banner.png
 │   ├── Magna.png
 │   ├── GMA.png
 │   └── avatares/
+├── xampp-backup/           # Archivos PHP antiguos de XAMPP
 └── Lab1-7/                 # Laboratorios anteriores
 ```
 
 ## 🎮 Funcionalidades
 
 ### Sistema de Usuario
-- **Registro**: Formulario con validación de email, confirmación de contraseña y selección de género
-- **Login**: Autenticación contra base de datos con mensajes de error específicos
+- **Login**: Autenticación rápida en página principal
+- **Registro de usuarios**: Página dedicada accesible solo para administradores
+- **Validación**: Email, confirmación de contraseña y selección de género
 - **Avatares**: Cambio dinámico según género seleccionado
+
+### Panel de Administración
+- **Acceso**: Botón "Iniciar como Administrador" lleva a registro.html
+- **Registro completo**: Formulario con todos los campos e intereses
+- **Navegación**: Enlaces para volver al inicio o acceder a ayuda
 
 ### Interactividad
 - **Intereses**: Selección visual con efectos de iluminación
@@ -64,26 +74,44 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 
 ## 🔧 Instalación y Uso
 
-1. **Configurar servidor local** (XAMPP recomendado)
-2. **Crear base de datos** `University-GMA`
-3. **Importar estructura** de tabla `users`
-4. **Colocar archivos** en directorio del servidor
-5. **Acceder** via `localhost/proyecto`
+### Para Development Local
+1. **Clonar repositorio**
+2. **Abrir index.html** en navegador web
+3. **Backend ya está en Vercel**: No necesita configuración local
+
+### Para Production
+- **Frontend**: Desplegado en Vercel o cualquier hosting estático
+- **Backend**: Ya desplegado en Vercel (https://backend-kt0bm09wc-mowattabrs-projects.vercel.app)
 
 ### Credenciales de Prueba
 - **Usuario Admin**: `admin` / `admin`
 - **Usuarios de prueba**: Registrar nuevos usuarios a través del formulario
 
-## 📖 Comentarios Educativos
+## � Migración a Vercel
+
+Este proyecto fue migrado de XAMPP local a Vercel para production. Los archivos PHP originales están en `xampp-backup/` para referencia.
+
+**Cambios realizados:**
+- ✅ Backend PHP desplegado en Vercel
+- ✅ Frontend actualizado para usar API de Vercel
+- ✅ Archivos XAMPP movidos a backup
+- ✅ README actualizado con nueva arquitectura
+
+## �📖 Comentarios Educativos
 
 El código incluye extensos comentarios explicativos que amplían las explicaciones de clase, facilitando el aprendizaje y consulta futura de conceptos como:
 - Modelo de caja CSS
 - Manipulación del DOM
 - AJAX y comunicación asíncrona
 - Validación de formularios
-- Seguridad en PHP
+- Arquitectura serverless con Vercel
 
 ---
 
 **Universidad Central de Costa Rica - Segundo Cuatrimestre 2025**  
 *"Sapientia per Stellam" - Galaxia Magna Academy*
+
+
+
+https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
+https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
