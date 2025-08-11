@@ -11,43 +11,45 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 
 ## 🚀 Descripción del Proyecto
 
-**Galaxia Magna Academy** es una aplicación web completa que simula una plataforma universitaria. Combina tecnologías frontend y backend para crear una experiencia de usuario interactiva y funcional.
+**Galaxia Magna Academy** es una aplicación web completa con arquitectura moderna cloud-first. Utiliza Vercel como backend y Go Live para desarrollo frontend, eliminando dependencias de servidores locales.
 
 ### ✨ Características Principales
 
-- **Sistema de Registro**: Formulario completo con validación en tiempo real
-- **Autenticación de Usuarios**: Login con verificación contra base de datos MySQL
-- **Modo Administrador**: Panel especializado con credenciales `admin/admin`
-- **Interfaz Dinámica**: Avatares por género, efectos visuales y animaciones CSS
-- **Base de Datos**: Almacenamiento persistente de usuarios registrados
-- **Diseño Responsive**: Compatible con diferentes dispositivos
+- **Sistema de Login**: Autenticación de usuarios integrada con backend Vercel
+- **Registro Avanzado**: Formulario completo con campos especializados y auto-generación de códigos
+- **Control de Roles**: Sistema de roles con validación por contraseña (Estudiante, Profesor, Administrador)
+- **Generación Automática**: Códigos de usuario únicos basados en fecha y rol
+- **Efectos Especiales**: Sonido de lightsaber para selección Star Wars
+- **Diseño Responsive**: Bootstrap 5.3 con interfaz moderna
+- **Validación en Tiempo Real**: Feedback inmediato en formularios
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Backend**: PHP (deployed on Vercel)
-- **Base de Datos**: MySQL
-- **Frameworks**: Bootstrap 5.3
-- **Hosting**: Vercel (Frontend & Backend)
+- **Frontend**: HTML5, CSS3, JavaScript ES6+
+- **Backend**: PHP desplegado en Vercel
+- **Framework CSS**: Bootstrap 5.3
+- **Desarrollo**: VS Code con Go Live Extension
+- **Hosting**: Vercel para API backend
+- **Audio**: HTML5 Audio API
 
 ## 📁 Estructura del Proyecto
 
 ```
-├── index.html              # Página principal con login
-├── registro.html           # Página de registro (solo administradores)
-├── style.css               # Estilos principales
-├── script.js               # Lógica de frontend
-├── backend/                # Backend para Vercel
+├── index.html              # Página principal de login
+├── registro.html           # Formulario de registro de usuarios
+├── style.css               # Estilos principales y animaciones
+├── script.js               # Lógica frontend y comunicación API
+├── backend/                # Backend desplegado en Vercel
 │   ├── api/
-│   │   └── index.php       # API backend en Vercel
-│   └── vercel.json         # Configuración de Vercel
+│   │   └── index.php       # API endpoint principal
+│   └── vercel.json         # Configuración de deployment
 ├── images/                 # Recursos gráficos
-│   ├── banner.png
-│   ├── Magna.png
-│   ├── GMA.png
-│   └── avatares/
-├── xampp-backup/           # Archivos PHP antiguos de XAMPP
-└── Lab1-7/                 # Laboratorios anteriores
+│   ├── GAM_transparent.png # Logo principal
+│   ├── banner.png          # Banner Star Wars
+│   └── avatares/           # Imágenes de género
+├── misc/                   # Archivos multimedia
+│   └── lightsaber-ignition-6816.mp3
+└── Lab07/                  # Laboratorio actual
 ```
 
 ## 🎮 Funcionalidades

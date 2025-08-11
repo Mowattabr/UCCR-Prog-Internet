@@ -75,8 +75,8 @@
             <div class="row">
               <div class="col-12">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                  <button type="button" class="btn btn-primary me-md-2">Iniciar sesión</button>
-                  <a href="registro.html" class="btn" style="background:#f18b32; color:#fff; text-decoration: none;">Registro</a>
+                  <button type="button" class="btn btn-primary me-md-2" onclick="iniciarSesion()">Iniciar sesión</button>
+                  <a href="registro.html" class="btn" style="background:#f18b32; color:#fff; text-decoration: none;">Formulario de registro</a>
                 </div>
               </div>
             </div>
@@ -256,5 +256,91 @@
   </div>
 
   <script src="script.js"></script>
+  
+  <script>
+    // Función para iniciar sesión usando Vercel backend
+    function iniciarSesion() {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const loginMsg = document.getElementById('login-msg');
+      
+      // Validar que los campos no estén vacíos
+      if (!username || !password) {
+        mostrarMensaje('Por favor, ingresa usuario y contraseña.', 'error');
+        return;
+      }
+      
+      // Mostrar mensaje de carga
+      mostrarMensaje('Verificando credenciales...', 'info');
+      
+      // Crear datos para enviar
+      const formData = new FormData();
+      formData.append('login-username', username);
+      formData.append('login-password', password);
+      formData.append('action', 'login');
+      
+      // Enviar a Vercel backend
+      fetch('https://backend-kt0bm09wc-mowattabrs-projects.vercel.app/api/index.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('Respuesta del servidor:', data);
+        
+        // Procesar respuesta del servidor
+        if (data.includes('success') || data.includes('válido') || data.includes('correcto')) {
+          mostrarMensaje('¡Inicio de sesión exitoso! Bienvenido, ' + username, 'success');
+          mostrarNavegacionPrivada();
+        } else {
+          mostrarMensaje('Usuario o contraseña incorrectos.', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error al conectar con el servidor:', error);
+        mostrarMensaje('Error de conexión. Verifica tu conexión a internet.', 'error');
+      });
+    }
+    
+    // Función para mostrar mensajes al usuario
+    function mostrarMensaje(mensaje, tipo) {
+      const loginMsg = document.getElementById('login-msg');
+      loginMsg.textContent = mensaje;
+      loginMsg.style.display = 'block';
+      
+      // Cambiar color según el tipo de mensaje
+      switch(tipo) {
+        case 'success':
+          loginMsg.style.color = '#22c55e'; // Verde
+          break;
+        case 'error':
+          loginMsg.style.color = '#ef4444'; // Rojo
+          break;
+        case 'info':
+          loginMsg.style.color = '#3b82f6'; // Azul
+          break;
+        default:
+          loginMsg.style.color = '#22c55e';
+      }
+    }
+    
+    // Función para mostrar navegación privada después del login
+    function mostrarNavegacionPrivada() {
+      const navPrivados = document.querySelectorAll('.nav-privado');
+      navPrivados.forEach(nav => {
+        nav.style.display = 'block';
+      });
+    }
+    
+    // Permitir login con Enter
+    document.addEventListener('DOMContentLoaded', function() {
+      const passwordField = document.getElementById('login-password');
+      passwordField.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          iniciarSesion();
+        }
+      });
+    });
+  </script>
 </body>
 </html>

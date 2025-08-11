@@ -59,7 +59,7 @@
           
           <!-- Row y Col: Sistema de columnas para organizar el contenido en filas y columnas -->
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
               <div class="mb-3">
                 <!-- Form-label: Etiqueta que describe el campo de entrada -->
                 <label for="username" class="form-label">Nombre de Usuario:</label>
@@ -71,9 +71,13 @@
                 <input class="form-control" type="email" id="email" name="email" required oninput="document.getElementById('email-error').style.display='none'">
                 <span id="email-error" style="color: #ff6b6b; display: none;">El correo debe contener un @</span>
               </div>
+              <div class="mb-3">
+                <label for="telefono" class="form-label">Teléfono de Contacto:</label>
+                <input class="form-control" type="tel" id="telefono" name="telefono" placeholder="Ej: 8888-8888">
+              </div>
             </div>
             
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña:</label>
                 <input class="form-control" type="password" id="password" name="password" required>
@@ -81,6 +85,44 @@
               <div class="mb-3">
                 <label for="confirm-password" class="form-label">Confirmar Contraseña:</label>
                 <input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
+              </div>
+              <div class="mb-3">
+                <label for="fecha-nacimiento" class="form-label">Fecha de Nacimiento:</label>
+                <input class="form-control" type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Segunda fila: Rol, Fecha de Inscripción y Código -->
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="rol" class="form-label">Rol:</label>
+                <select class="form-select" id="rol" name="rol" required onchange="manejarCambioRol()">
+                  <option value="">Seleccione un rol</option>
+                  <option value="estudiante">Estudiante</option>
+                  <option value="profesor">Profesor</option>
+                  <option value="administrador">Administrador</option>
+                </select>
+              </div>
+              <!-- Campo de contraseña para roles especiales -->
+              <div class="mb-3" id="password-rol-container" style="display: none;">
+                <label for="password-rol" class="form-label">Contraseña del rol:</label>
+                <input class="form-control" type="password" id="password-rol" name="password-rol" placeholder="Ingrese la contraseña del rol">
+                <small class="form-text text-muted" id="password-rol-hint"></small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="fecha-inscripcion" class="form-label">Fecha de Inscripción:</label>
+                <input class="form-control" type="date" id="fecha-inscripcion" name="fecha-inscripcion" required onchange="generarCodigoEstudiante()">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="codigo-estudiante" class="form-label">Código de Usuario:</label>
+                <input class="form-control" type="text" id="codigo-estudiante" name="codigo-estudiante" readonly placeholder="Se genera automáticamente" style="background-color: #f8f9fa;">
+                <small class="form-text text-muted">Formato: AAAA_MM_ROL_0001</small>
               </div>
             </div>
           </div>
@@ -257,5 +299,201 @@
   -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+  
+  <script>
+    // Contraseñas para roles especiales
+    const ROL_PASSWORDS = {
+      'profesor': 'profesor',
+      'administrador': 'admin'
+    };
+    
+    // Variable para controlar si el rol está validado
+    let rolValidado = false;
+    
+    // Función para manejar cambios en el selector de rol
+    function manejarCambioRol() {
+      const rol = document.getElementById('rol').value;
+      const passwordContainer = document.getElementById('password-rol-container');
+      const passwordInput = document.getElementById('password-rol');
+      const passwordHint = document.getElementById('password-rol-hint');
+      
+      // Resetear validación
+      rolValidado = false;
+      
+      if (rol === 'profesor' || rol === 'administrador') {
+        // Mostrar campo de contraseña para roles especiales
+        passwordContainer.style.display = 'block';
+        passwordInput.required = true;
+        passwordInput.value = '';
+        
+        // Configurar hint según el rol
+        if (rol === 'profesor') {
+          passwordHint.textContent = 'Contraseña requerida para rol Profesor';
+        } else if (rol === 'administrador') {
+          passwordHint.textContent = 'Contraseña requerida para rol Administrador';
+        }
+        
+        // Agregar validación en tiempo real
+        passwordInput.addEventListener('input', validarPasswordRol);
+        
+      } else {
+        // Ocultar campo de contraseña para estudiante
+        passwordContainer.style.display = 'none';
+        passwordInput.required = false;
+        passwordInput.value = '';
+        rolValidado = true; // Estudiante no necesita validación especial
+      }
+      
+      // Generar código solo si el rol está validado
+      if (rolValidado || rol === 'estudiante') {
+        generarCodigoEstudiante();
+      } else {
+        document.getElementById('codigo-estudiante').value = '';
+      }
+    }
+    
+    // Función para validar la contraseña del rol
+    function validarPasswordRol() {
+      const rol = document.getElementById('rol').value;
+      const passwordInput = document.getElementById('password-rol');
+      const password = passwordInput.value;
+      
+      if (ROL_PASSWORDS[rol] && password === ROL_PASSWORDS[rol]) {
+        // Contraseña correcta
+        passwordInput.style.borderColor = '#28a745';
+        passwordInput.style.backgroundColor = '#d4edda';
+        rolValidado = true;
+        generarCodigoEstudiante();
+      } else if (password.length > 0) {
+        // Contraseña incorrecta
+        passwordInput.style.borderColor = '#dc3545';
+        passwordInput.style.backgroundColor = '#f8d7da';
+        rolValidado = false;
+        document.getElementById('codigo-estudiante').value = '';
+      } else {
+        // Campo vacío
+        passwordInput.style.borderColor = '';
+        passwordInput.style.backgroundColor = '';
+        rolValidado = false;
+        document.getElementById('codigo-estudiante').value = '';
+      }
+    }
+    
+    // Función para generar código único de estudiante (modificada)
+    function generarCodigoEstudiante() {
+      const fechaInscripcion = document.getElementById('fecha-inscripcion').value;
+      const rol = document.getElementById('rol').value;
+      const codigoInput = document.getElementById('codigo-estudiante');
+      
+      // Verificar si el rol necesita validación y si está validado
+      if ((rol === 'profesor' || rol === 'administrador') && !rolValidado) {
+        codigoInput.value = '';
+        return;
+      }
+      
+      if (fechaInscripcion && rol) {
+        const fecha = new Date(fechaInscripcion);
+        const año = fecha.getFullYear();
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        
+        // Definir prefijo según el rol
+        let prefijo;
+        switch (rol) {
+          case 'estudiante':
+            prefijo = 'A';
+            break;
+          case 'profesor':
+            prefijo = 'P';
+            break;
+          case 'administrador':
+            prefijo = 'ADM';
+            break;
+          default:
+            prefijo = 'A';
+        }
+        
+        // Generar número secuencial (simulado)
+        const numeroSecuencial = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+        
+        // Formato: AAAA_MM_ROL_0001
+        const codigo = `${año}_${mes}_${prefijo}_${numeroSecuencial}`;
+        codigoInput.value = codigo;
+      } else {
+        codigoInput.value = '';
+      }
+    }
+    
+    // Función para reproducir sonido de lightsaber cuando se selecciona Star Wars
+    function playLightsaberSound() {
+      const audio = new Audio('misc/lightsaber-ignition-6816.mp3');
+      audio.volume = 0.5; // Volumen al 50%
+      audio.play().catch(function(error) {
+        console.log('Error al reproducir el sonido:', error);
+      });
+    }
+
+    // Función para validar formulario antes de enviar
+    function validarFormulario(event) {
+      const rol = document.getElementById('rol').value;
+      
+      // Verificar si es un rol especial y si está validado
+      if ((rol === 'profesor' || rol === 'administrador') && !rolValidado) {
+        event.preventDefault();
+        alert('Debe ingresar la contraseña correcta para el rol ' + rol);
+        return false;
+      }
+      
+      // Verificar que el código de estudiante esté generado
+      const codigo = document.getElementById('codigo-estudiante').value;
+      if (!codigo) {
+        event.preventDefault();
+        alert('Error: No se ha generado el código. Verifique todos los campos.');
+        return false;
+      }
+      
+      return true;
+    }
+    
+    // Auto-generar código cuando la página carga si ya hay datos
+    document.addEventListener('DOMContentLoaded', function() {
+      // Establecer fecha actual como fecha de inscripción por defecto
+      const fechaInscripcion = document.getElementById('fecha-inscripcion');
+      const hoy = new Date().toISOString().split('T')[0];
+      fechaInscripcion.value = hoy;
+      
+      // Agregar validación al formulario
+      const form = document.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', validarFormulario);
+      }
+      
+      // Configurar validación inicial del rol
+      manejarCambioRol();
+      
+      // Generar código inicial si hay rol seleccionado
+      generarCodigoEstudiante();
+      
+      // Agregar event listener para Star Wars checkbox
+      const starWarsCheckbox = document.getElementById('interes7');
+      if (starWarsCheckbox) {
+        starWarsCheckbox.addEventListener('change', function() {
+          if (this.checked) {
+            playLightsaberSound();
+            // Mostrar mensaje de la fuerza (si existe en el CSS)
+            const fuerzaMsg = document.getElementById('fuerza-msg');
+            if (fuerzaMsg) {
+              fuerzaMsg.style.display = 'block';
+              fuerzaMsg.style.opacity = '1';
+              // Fade out después de 3 segundos
+              setTimeout(function() {
+                fuerzaMsg.style.transition = 'opacity 2s';
+                fuerzaMsg.style.opacity = '0';
+              }, 3000);
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
