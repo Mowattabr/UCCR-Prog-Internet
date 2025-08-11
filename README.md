@@ -11,43 +11,59 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 
 ## 🚀 Descripción del Proyecto
 
-**Galaxia Magna Academy** es una aplicación web completa con arquitectura moderna cloud-first. Utiliza Vercel como backend y Go Live para desarrollo frontend, eliminando dependencias de servidores locales.
+**Galaxia Magna Academy** es una aplicación web completa con arquitectura moderna cloud-first. Utiliza **Vercel** como backend y **Supabase** como base de datos, eliminando dependencias de servidores locales.
 
 ### ✨ Características Principales
 
-- **Sistema de Login**: Autenticación de usuarios integrada con backend Vercel
-- **Registro Avanzado**: Formulario completo con campos especializados y auto-generación de códigos
-- **Control de Roles**: Sistema de roles con validación por contraseña (Estudiante, Profesor, Administrador)
+- **Sistema de Login Dual**: Autenticación por código de usuario o email/contraseña
+- **Base de Datos Supabase**: Gestión completa de usuarios con campos personalizados
+- **Perfil de Usuario**: Sistema completo de gestión de perfiles con campos editables
+- **Registro Avanzado**: Formulario completo con validación en tiempo real
+- **Control de Roles**: Sistema de roles con validación (Estudiante, Profesor, Administrador)
 - **Generación Automática**: Códigos de usuario únicos basados en fecha y rol
+- **Avatares Dinámicos**: Cambio automático según género seleccionado
 - **Efectos Especiales**: Sonido de lightsaber para selección Star Wars
-- **Diseño Responsive**: Bootstrap 5.3 con interfaz moderna
+- **Diseño Responsive**: Bootstrap 5.3 con interfaz moderna y dark theme
 - **Validación en Tiempo Real**: Feedback inmediato en formularios
 
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend**: HTML5, CSS3, JavaScript ES6+
 - **Backend**: PHP desplegado en Vercel
+- **Base de Datos**: Supabase (PostgreSQL)
 - **Framework CSS**: Bootstrap 5.3
-- **Desarrollo**: VS Code con Go Live Extension
+- **Iconos**: FontAwesome 6.0
+- **Desarrollo**: VS Code con extensiones
 - **Hosting**: Vercel para API backend
 - **Audio**: HTML5 Audio API
 
 ## 📁 Estructura del Proyecto
 
 ```
-├── index.html              # Página principal de login
+├── index.html              # Página principal con login dual
+├── profile.html            # Sistema de gestión de perfiles
 ├── registro.html           # Formulario de registro de usuarios
 ├── style.css               # Estilos principales y animaciones
 ├── script.js               # Lógica frontend y comunicación API
 ├── backend/                # Backend desplegado en Vercel
 │   ├── api/
 │   │   └── index.php       # API endpoint principal
+│   ├── Lab08/
+│   │   ├── app.js          # Aplicación Node.js
+│   │   └── usuarios.php    # Gestión de usuarios
 │   └── vercel.json         # Configuración de deployment
 ├── images/                 # Recursos gráficos
 │   ├── GAM_transparent.png # Logo principal
 │   ├── banner.png          # Banner Star Wars
-│   └── avatares/           # Imágenes de género
+│   ├── Male.png            # Avatar masculino
+│   ├── Female.png          # Avatar femenino
+│   ├── Other.png           # Avatar otro género
+│   ├── incognito.png       # Avatar por defecto
+│   └── Magna.png           # Logo alternativo
 ├── misc/                   # Archivos multimedia
+│   └── lightsaber-ignition-6816.mp3
+└── Lab07/                  # Laboratorio actual
+```
 │   └── lightsaber-ignition-6816.mp3
 └── Lab07/                  # Laboratorio actual
 ```
@@ -55,78 +71,167 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 ## 🎮 Funcionalidades
 
 ### Sistema de Usuario
-- **Login**: Autenticación rápida en página principal
-- **Registro de usuarios**: Página dedicada accesible solo para administradores
-- **Validación**: Email, confirmación de contraseña y selección de género
-- **Avatares**: Cambio dinámico según género seleccionado
+- **Login Dual**: 
+  - Por código de usuario (formato: 2025_08_ROL_XXXX)
+  - Por email y contraseña
+- **Gestión de Perfiles**: Sistema completo de edición de datos personales
+- **Validación**: Email, confirmación de contraseña y campos requeridos
+- **Avatares Dinámicos**: Cambio automático según género seleccionado
+- **Persistencia**: Sesiones guardadas en localStorage
 
-### Panel de Administración
-- **Acceso**: Botón "Iniciar como Administrador" lleva a registro.html
-- **Registro completo**: Formulario con todos los campos e intereses
-- **Navegación**: Enlaces para volver al inicio o acceder a ayuda
+### Perfil de Usuario (profile.html)
+- **Información Personal**: Nombre, email, teléfono editables
+- **Datos Demográficos**: Género, intereses, fecha de nacimiento
+- **Información del Sistema**: Rol, código de usuario, fecha de inscripción
+- **Edición en Línea**: Click para editar con botones guardar/cancelar
+- **Validación de Campos**: Verificación en tiempo real
+- **Auto-guardado**: Cambios se guardan automáticamente en Supabase
+
+### Sistema de Registro
+- **Formulario Completo**: Todos los campos con validación
+- **Generación de Códigos**: Automática basada en fecha y rol
+- **Selección de Intereses**: Checkboxes múltiples con efectos visuales
+- **Contraseñas de Rol**: Validación específica por tipo de usuario
+- **Detección de Duplicados**: Verificación de email único
+
+### Base de Datos Supabase
+- **Tabla lista_usuarios**: Gestión completa de usuarios
+- **Campos disponibles**:
+  - username (nombre completo)
+  - email (único)
+  - password (encriptada)
+  - telefono
+  - fecha_nacimiento
+  - rol (estudiante/profesor/administrador)
+  - fecha_inscripcion
+  - codigo_usuario (único)
+  - genero (m/f/o/n)
+  - intereses (CSV)
 
 ### Interactividad
-- **Intereses**: Selección visual con efectos de iluminación
-- **Mensaje Star Wars**: Easter egg especial con fade effect
-- **Navegación**: Secciones expandibles (Cursos, Estudiantes, Profesores)
+- **Efectos Visuales**: Animaciones CSS y transiciones suaves
+- **Mensaje Star Wars**: Easter egg especial con efecto de sonido
+- **Navegación Intuitiva**: Enlaces contextuales y breadcrumbs
+- **Feedback Inmediato**: Mensajes de éxito/error en tiempo real
 
 ### Administración
 - **Panel Admin**: Acceso exclusivo con credenciales especiales
-- **Gestión de Profesores**: Asignación dinámica de materias
+- **Gestión de Usuarios**: Creación, edición y visualización
+- **Debug Tools**: Herramientas de diagnóstico (removidas en producción)
 
 ## 🔧 Instalación y Uso
 
 ### Para Development Local
 1. **Clonar repositorio**
-2. **Abrir index.html** en navegador web
-3. **Backend ya está en Vercel**: No necesita configuración local
+2. **Abrir index.html** en navegador web moderno
+3. **Backend en Vercel**: No necesita configuración local
+4. **Base de datos Supabase**: Conectada automáticamente
 
 ### Para Production
-- **Frontend**: Desplegado en Vercel o cualquier hosting estático
-- **Backend**: Ya desplegado en Vercel (https://backend-kt0bm09wc-mowattabrs-projects.vercel.app)
+- **Frontend**: Servir archivos estáticos (Vercel, Netlify, etc.)
+- **Backend**: Desplegado en Vercel
+- **Database**: Supabase PostgreSQL
+
+### URLs del Proyecto
+- **Backend API**: https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
+- **Supabase**: Configurado con credenciales incluidas
+- **GitHub Repo**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
 
 ### Credenciales de Prueba
 
-**Para el Profesor - Usuario Administrador de Prueba:**
-- **Usuario**: `direct_admin`
-- **Email**: `directadmin@test.com`
-- **Rol**: Administrador
-- **Código**: `2025_08_ADM_0003`
+**Usuario de Prueba Principal:**
+- **Código**: `2025_08_A_2909`
+- **Username**: `t`
+- **Email**: `t@a.com`
+- **Rol**: Estudiante
 
-**Usuarios del Sistema:**
-- **Login Admin**: `admin` / `admin` (página principal)
-- **Registro**: Crear nuevos usuarios través del formulario de registro
+**Para el Sistema:**
+- **Login Admin**: Usar código o email/contraseña
+- **Registro**: Crear nuevos usuarios através del formulario
 - **Contraseñas de Rol**:
+  - Estudiante: `estudiante`
   - Profesor: `profesor`
   - Administrador: `admin`
 
-**Nota**: El usuario `direct_admin` fue creado automáticamente para pruebas del profesor y está disponible en la base de datos `lista_usuarios`.
+**Nota**: Todos los usuarios se almacenan en Supabase y son persistentes.
 
-## � Migración a Vercel
+## 🔄 Migración a Arquitectura Cloud
 
-Este proyecto fue migrado de XAMPP local a Vercel para production. Los archivos PHP originales están en `xampp-backup/` para referencia.
+Este proyecto fue completamente migrado de XAMPP local a una arquitectura serverless moderna:
 
-**Cambios realizados:**
-- ✅ Backend PHP desplegado en Vercel
-- ✅ Frontend actualizado para usar API de Vercel
-- ✅ Archivos XAMPP movidos a backup
-- ✅ README actualizado con nueva arquitectura
+**Migración Realizada:**
+- ✅ **Backend PHP** desplegado en Vercel
+- ✅ **Base de datos** migrada a Supabase (PostgreSQL)
+- ✅ **Frontend** actualizado para APIs REST
+- ✅ **Sistema de perfiles** implementado con edición en línea
+- ✅ **Autenticación dual** por código o email/contraseña
+- ✅ **Gestión de sesiones** con localStorage
+- ✅ **Validación robusta** con manejo de errores
+- ✅ **Archivos XAMPP** movidos a backup para referencia
 
-## �📖 Comentarios Educativos
+**Beneficios de la Nueva Arquitectura:**
+- **Escalabilidad**: Supabase maneja cualquier carga
+- **Performance**: APIs optimizadas y CDN global
+- **Mantenimiento**: Sin servidores que mantener
+- **Desarrollo**: Desarrollo local simplificado
+- **Producción**: Deployment automático
+- **Backup**: Datos seguros en Supabase
+
+## 🎯 Funcionalidades Destacadas
+
+### 1. Sistema de Login Dual
+```javascript
+// Login por código de usuario
+codigo: "2025_08_A_2909"
+
+// Login por email/contraseña
+email: "t@a.com"
+password: "userpass"
+```
+
+### 2. Perfil Editable
+- **Click para editar**: Cualquier campo se puede modificar
+- **Guardado automático**: Los cambios se sincronizan con Supabase
+- **Validación en tiempo real**: Errores mostrados inmediatamente
+- **Avatares dinámicos**: Cambio automático según género
+
+### 3. Base de Datos Supabase
+```sql
+-- Estructura de la tabla lista_usuarios
+CREATE TABLE lista_usuarios (
+  username TEXT,
+  email TEXT UNIQUE,
+  password TEXT,
+  telefono TEXT,
+  fecha_nacimiento DATE,
+  rol TEXT,
+  fecha_inscripcion DATE,
+  codigo_usuario TEXT UNIQUE,
+  genero CHAR(1),
+  intereses TEXT
+);
+```
+
+## 📖 Comentarios Educativos
 
 El código incluye extensos comentarios explicativos que amplían las explicaciones de clase, facilitando el aprendizaje y consulta futura de conceptos como:
-- Modelo de caja CSS
-- Manipulación del DOM
-- AJAX y comunicación asíncrona
-- Validación de formularios
-- Arquitectura serverless con Vercel
+- **Arquitectura Serverless** con Vercel y Supabase
+- **APIs REST** y comunicación asíncrona
+- **Manipulación del DOM** con JavaScript moderno
+- **Gestión de estado** con localStorage
+- **Validación de formularios** en tiempo real
+- **Manejo de errores** y experiencia de usuario
+- **Responsive Design** con Bootstrap 5.3
+- **Seguridad** en aplicaciones web
 
 ---
 
 **Universidad Central de Costa Rica - Segundo Cuatrimestre 2025**  
 *"Sapientia per Stellam" - Galaxia Magna Academy*
 
+## 🔗 Enlaces Importantes
 
-
-https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
-https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
+- **Backend API**: https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
+- **GitHub Repo**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
+- **Supabase Dashboard**: Configurado para el proyecto
+- **Documentación**: Incluida en comentarios del código

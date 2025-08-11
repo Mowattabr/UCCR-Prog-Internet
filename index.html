@@ -49,6 +49,7 @@
               <li class="nav-privado" style="display:none;"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
               <li class="nav-privado" style="display:none;"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
               <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
+              <li class="nav-privado" style="display:none;"><a href="profile.html">Mi Perfil</a></li>      <!-- Enlace al perfil del usuario -->
               <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
               <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
             </ul>
@@ -95,6 +96,15 @@
       <p>Esta es una <b>página de prueba</b> que emula el registro para la Universidad Central de Costa Rica (UCCR).</p>
       <p>No ingreses datos personales reales, ya que esta página es solo para fines de demostración.</p>
       <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
+      
+      <!-- Botón para login como invitado -->
+      <div style="margin:20px 0; text-align:center; padding:20px; background:#2d2d35; border-radius:8px; border:1px solid #4a4a55;">
+        <p style="color:#c9c9c9; margin-bottom:12px;">¿Quieres explorar el sistema sin registrarte?</p>
+        <button onclick="loginComoInvitadoDirecto()" style="padding:12px 24px; border-radius:8px; background:#22c55e; color:#fff; border:none; font-weight:bold; cursor:pointer; font-size:14px;">
+          Logeate como invitado
+        </button>
+      </div>
+      
       <button id="cerrar-ayuda" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
     </section>
 
@@ -274,8 +284,19 @@
       mostrarMensaje('Verificando credenciales...', 'info');
       
       try {
-        // Buscar usuario en lista_usuarios por email o codigo_usuario
-        let searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?or=(email.eq.${encodeURIComponent(usernameOrEmail)},codigo_usuario.eq.${encodeURIComponent(usernameOrEmail)})`;
+        // FIXED: Search by email first, then by codigo_usuario if not found
+        let searchUrl;
+        let user = null;
+        
+        // Try email first (more specific)
+        if (usernameOrEmail.includes('@')) {
+          searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(usernameOrEmail)}`;
+        } else {
+          // If no @, assume it's a user code
+          searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?codigo_usuario=eq.${encodeURIComponent(usernameOrEmail)}`;
+        }
+        
+        console.log('Login search URL:', searchUrl);
         
         const response = await fetch(searchUrl, {
           method: 'GET',
@@ -294,17 +315,32 @@
             
             // Verificar contraseña - comparar la contraseña ingresada con la almacenada
             if (user.password && user.password === password) {
-              // Si encontró el usuario y la contraseña coincide, mostrar éxito
-              mostrarMensaje(`¡Bienvenido, ${user.username}! (${user.rol})`, 'success');
-              mostrarNavegacionPrivada();
+              // Si encontró el usuario y la contraseña coincide, guardar sesión COMPLETA y redirigir
+              console.log('Full user data from database:', user);
               
-              // Opcional: guardar datos del usuario en localStorage para sesión
               localStorage.setItem('currentUser', JSON.stringify({
                 username: user.username,
                 email: user.email,
                 rol: user.rol,
-                codigo: user.codigo_usuario
+                codigo: user.codigo_usuario,
+                // Guardar datos completos para que profile.html los encuentre siempre
+                telefono: user.telefono,
+                genero: user.genero,
+                intereses: user.intereses,
+                fecha_nacimiento: user.fecha_nacimiento,
+                fecha_inscripcion: user.fecha_inscripcion,
+                // Marcar que es una sesión completa desde database
+                fromDatabase: true,
+                databaseId: user.id || null
               }));
+              
+              console.log('Session saved with complete data');
+              
+              // Mostrar mensaje de éxito y redirigir a perfil
+              mostrarMensaje('¡Login exitoso! Datos completos cargados. Redirigiendo...', 'success');
+              setTimeout(() => {
+                window.location.href = 'profile.html';
+              }, 1000);
               
             } else {
               mostrarMensaje('Contraseña incorrecta. Verifica tus credenciales.', 'error');
@@ -344,12 +380,44 @@
       }
     }
     
-    // Función para mostrar navegación privada después del login
-    function mostrarNavegacionPrivada() {
-      const navPrivados = document.querySelectorAll('.nav-privado');
-      navPrivados.forEach(nav => {
-        nav.style.display = 'block';
-      });
+    // Función para login como invitado
+    function loginComoInvitado() {
+      // Guardar datos del invitado en localStorage
+      localStorage.setItem('currentUser', JSON.stringify({
+        username: 'Invitado',
+        email: 'guest@gma.cr',
+        rol: 'invitado',
+        codigo: 'GUEST_2025'
+      }));
+      
+      // Mostrar mensaje y redirigir a perfil
+      mostrarMensaje('¡Bienvenido, Invitado! Redirigiendo...', 'success');
+      setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, 1000);
+    }
+    
+    // Función para login directo como invitado desde la página de ayuda
+    function loginComoInvitadoDirecto() {
+      loginComoInvitado();
+      // Cerrar la página de ayuda después del login
+      document.getElementById('ayuda').style.display = 'none';
+    }
+    
+    // Función para mostrar opciones de login rápido en Ayuda
+    function mostrarOpcionesLoginRapido() {
+      const opciones = confirm(
+        "¿Deseas acceder como invitado para explorar el sistema?\n\n" +
+        "• OK = Entrar como invitado\n" +
+        "• Cancelar = Ver ayuda normal"
+      );
+      
+      if (opciones) {
+        loginComoInvitado();
+        return false; // No mostrar ayuda normal
+      } else {
+        return true; // Mostrar ayuda normal
+      }
     }
     
     // Permitir login con Enter
@@ -360,6 +428,23 @@
           iniciarSesion();
         }
       });
+      
+      // Interceptar clic en enlace de Ayuda para mostrar la página directamente
+      const ayudaLink = document.querySelector('a[href="#ayuda"]');
+      if (ayudaLink) {
+        ayudaLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('ayuda').style.display = 'block';
+        });
+      }
+      
+      // Hacer que el botón Cerrar de Ayuda funcione
+      const cerrarAyudaBtn = document.getElementById('cerrar-ayuda');
+      if (cerrarAyudaBtn) {
+        cerrarAyudaBtn.addEventListener('click', function() {
+          document.getElementById('ayuda').style.display = 'none';
+        });
+      }
     });
   </script>
 </body>

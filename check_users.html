@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Usuarios - Supabase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1a1a1f;
+            color: #fff;
+        }
+        .container {
+            background: #23232b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #f18b32;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-section {
+            background: #2d2d35;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .user-list {
+            background: #2d2d35;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .user-item {
+            background: #1a1a1f;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #f18b32;
+        }
+        .user-item h4 {
+            color: #f18b32;
+            margin: 0 0 10px 0;
+        }
+        .user-item p {
+            margin: 5px 0;
+            color: #c9c9c9;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #4a4a55;
+            background: #1a1a1f;
+            color: #fff;
+        }
+        button {
+            background: #22c55e;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #16a34a;
+        }
+        .add-user-btn {
+            background: #f18b32;
+        }
+        .add-user-btn:hover {
+            background: #d97d2a;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .success { background: #22c55e; color: white; }
+        .error { background: #ef4444; color: white; }
+        .info { background: #3b82f6; color: white; }
+        .warning { background: #f59e0b; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Verificar Usuarios en Supabase</h1>
+        
+        <div class="search-section">
+            <h3 style="color: #f18b32;">Buscar Usuario Específico:</h3>
+            <input type="text" id="emailSearch" placeholder="Ingresa email para buscar..." style="width: 70%;">
+            <button onclick="searchSpecificUser()">🔍 Buscar</button>
+            <br><br>
+            <button onclick="loadAllUsers()" class="add-user-btn">📋 Ver Todos los Usuarios</button>
+            <button onclick="addCurrentUser()" class="add-user-btn">➕ Agregar Usuario Actual al DB</button>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="user-list" id="usersList">
+            <h3 style="color: #f18b32;">Usuarios en la Base de Datos:</h3>
+            <p style="color: #c9c9c9;">Haz clic en "Ver Todos los Usuarios" para cargar la lista...</p>
+        </div>
+
+        <div class="search-section">
+            <h3 style="color: #f18b32;">Usuario Actual de la Sesión:</h3>
+            <div id="currentUserInfo">
+                <p style="color: #c9c9c9;">Cargando información de la sesión...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de Supabase
+        const SUPABASE_URL = 'https://qjtojggjtouvgljlozwr.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM';
+
+        // Función para mostrar mensajes
+        function showMessage(message, type) {
+            const messageArea = document.getElementById('messageArea');
+            messageArea.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+
+        // Cargar información del usuario actual de la sesión
+        function loadCurrentUserInfo() {
+            const userSession = localStorage.getItem('currentUser');
+            const currentUserInfo = document.getElementById('currentUserInfo');
+            
+            if (userSession) {
+                const user = JSON.parse(userSession);
+                currentUserInfo.innerHTML = `
+                    <div class="user-item">
+                        <h4>Usuario de la Sesión Activa:</h4>
+                        <p><strong>Username:</strong> ${user.username || 'No definido'}</p>
+                        <p><strong>Email:</strong> ${user.email || 'No definido'}</p>
+                        <p><strong>Rol:</strong> ${user.rol || 'No definido'}</p>
+                        <p><strong>Código:</strong> ${user.codigo || 'No definido'}</p>
+                    </div>
+                `;
+            } else {
+                currentUserInfo.innerHTML = '<p style="color: #ef4444;">No hay sesión activa</p>';
+            }
+        }
+
+        // Buscar usuario específico por email
+        async function searchSpecificUser() {
+            const email = document.getElementById('emailSearch').value.trim();
+            if (!email) {
+                showMessage('Por favor ingresa un email para buscar.', 'warning');
+                return;
+            }
+
+            try {
+                showMessage('Buscando usuario...', 'info');
+                
+                const searchUrl = `${SUPABASE_URL}/rest/v1/lista_usuarios?email.eq.${encodeURIComponent(email)}`;
+                console.log('Searching for:', email);
+                console.log('URL:', searchUrl);
+                
+                const response = await fetch(searchUrl, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+
+                if (response.ok) {
+                    const users = await response.json();
+                    console.log('Found users:', users);
+                    
+                    if (users && users.length > 0) {
+                        displayUsers(users, `Resultado para: ${email}`);
+                        showMessage(`✅ Usuario encontrado: ${users[0].username}`, 'success');
+                    } else {
+                        showMessage(`❌ No se encontró usuario con email: ${email}`, 'error');
+                        document.getElementById('usersList').innerHTML = `
+                            <h3 style="color: #f18b32;">Resultado de Búsqueda:</h3>
+                            <p style="color: #ef4444;">No se encontró usuario con email: ${email}</p>
+                        `;
+                    }
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error:', errorText);
+                    showMessage(`Error al buscar: ${response.status} - ${errorText}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        // Cargar todos los usuarios
+        async function loadAllUsers() {
+            try {
+                showMessage('Cargando todos los usuarios...', 'info');
+                
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/lista_usuarios`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const users = await response.json();
+                    console.log('All users:', users);
+                    
+                    if (users && users.length > 0) {
+                        displayUsers(users, 'Todos los Usuarios');
+                        showMessage(`✅ Se encontraron ${users.length} usuario(s)`, 'success');
+                    } else {
+                        showMessage('❌ No hay usuarios en la base de datos', 'warning');
+                    }
+                } else {
+                    const errorText = await response.text();
+                    showMessage(`Error al cargar usuarios: ${response.status} - ${errorText}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        // Mostrar lista de usuarios
+        function displayUsers(users, title) {
+            const usersList = document.getElementById('usersList');
+            let html = `<h3 style="color: #f18b32;">${title} (${users.length}):</h3>`;
+            
+            users.forEach((user, index) => {
+                html += `
+                    <div class="user-item">
+                        <h4>${user.username || 'Sin nombre'} (${user.email || 'Sin email'})</h4>
+                        <p><strong>Código:</strong> ${user.codigo_usuario || 'No definido'}</p>
+                        <p><strong>Rol:</strong> ${user.rol || 'No definido'}</p>
+                        <p><strong>Teléfono:</strong> ${user.telefono || 'No definido'}</p>
+                        <p><strong>Género:</strong> ${user.genero || 'No definido'}</p>
+                        <p><strong>Intereses:</strong> ${user.intereses || 'No definido'}</p>
+                        <p><strong>Fecha Nacimiento:</strong> ${user.fecha_nacimiento || 'No definido'}</p>
+                        <p><strong>Fecha Inscripción:</strong> ${user.fecha_inscripcion || 'No definido'}</p>
+                    </div>
+                `;
+            });
+            
+            usersList.innerHTML = html;
+        }
+
+        // Agregar usuario actual al DB
+        async function addCurrentUser() {
+            const userSession = localStorage.getItem('currentUser');
+            if (!userSession) {
+                showMessage('No hay sesión activa para agregar.', 'error');
+                return;
+            }
+
+            const sessionUser = JSON.parse(userSession);
+            
+            try {
+                showMessage('Agregando usuario actual a la base de datos...', 'info');
+
+                // Datos completos para el usuario
+                const userData = {
+                    username: sessionUser.username || 'Usuario',
+                    email: sessionUser.email || 'sin-email@example.com',
+                    password: 'temporal123', // Contraseña temporal
+                    telefono: '+506-0000-0000',
+                    fecha_nacimiento: '1990-01-01',
+                    rol: sessionUser.rol || 'estudiante',
+                    fecha_inscripcion: new Date().toISOString().split('T')[0],
+                    codigo_usuario: sessionUser.codigo || `USER_${Date.now()}`,
+                    genero: 'n',
+                    intereses: 'programacion'
+                };
+
+                console.log('Adding user data:', userData);
+
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/lista_usuarios`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('✅ Usuario agregado exitosamente a la base de datos!', 'success');
+                    console.log('User created:', result);
+                    
+                    // Recargar la lista de usuarios
+                    setTimeout(() => {
+                        loadAllUsers();
+                    }, 1000);
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error:', errorText);
+                    
+                    if (response.status === 409 || errorText.includes('duplicate')) {
+                        showMessage('⚠️ El usuario ya existe en la base de datos.', 'warning');
+                    } else {
+                        showMessage(`❌ Error al agregar usuario: ${response.status} - ${errorText}`, 'error');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        // Cargar información al iniciar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCurrentUserInfo();
+        });
+
+        // Permitir buscar con Enter
+        document.getElementById('emailSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchSpecificUser();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Usuario Invitado - Supabase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1a1a1f;
+            color: #fff;
+        }
+        .container {
+            background: #23232b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #f18b32;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .user-data {
+            background: #2d2d35;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .user-data h3 {
+            color: #f18b32;
+            margin-top: 0;
+        }
+        .user-data p {
+            margin: 8px 0;
+            color: #c9c9c9;
+        }
+        .user-data strong {
+            color: #fff;
+        }
+        button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #16a34a;
+        }
+        button:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .success {
+            background: #22c55e;
+            color: white;
+        }
+        .error {
+            background: #ef4444;
+            color: white;
+        }
+        .info {
+            background: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Usuario Invitado a Supabase</h1>
+        
+        <div class="user-data">
+            <h3>Datos del Usuario Invitado:</h3>
+            <p><strong>Nombre de Usuario:</strong> Invitado</p>
+            <p><strong>Email:</strong> guest@gma.cr</p>
+            <p><strong>Contraseña:</strong> guest123</p>
+            <p><strong>Teléfono:</strong> +506-0000-0000</p>
+            <p><strong>Fecha de Nacimiento:</strong> 1990-01-01</p>
+            <p><strong>Rol:</strong> invitado</p>
+            <p><strong>Código de Usuario:</strong> GUEST_2025</p>
+            <p><strong>Género:</strong> n (Prefiero no decir)</p>
+            <p><strong>Intereses:</strong> programacion,diseño</p>
+        </div>
+
+        <button id="addUserBtn" onclick="addGuestUser()">
+            Agregar Usuario Invitado a Supabase
+        </button>
+
+        <button id="checkUserBtn" onclick="checkIfUserExists()">
+            Verificar si el Usuario Ya Existe
+        </button>
+
+        <button id="deleteUserBtn" onclick="deleteGuestUser()" style="background: #ef4444;">
+            🗑️ Eliminar Usuario GUEST_2025 (para recrearlo)
+        </button>
+
+        <button id="updateUserBtn" onclick="updateGuestUser()" style="background: #f59e0b; display: none;">
+            🔄 Actualizar Usuario con Datos Correctos
+        </button>
+
+        <div id="messageArea"></div>
+    </div>
+
+    <script>
+        // Función para mostrar mensajes
+        function showMessage(message, type) {
+            const messageArea = document.getElementById('messageArea');
+            messageArea.innerHTML = `<div class="message ${type}">${message}</div>`;
+        }
+
+        // Función para verificar si el usuario ya existe
+        async function checkIfUserExists() {
+            try {
+                showMessage('Verificando si el usuario GUEST_2025 ya existe...', 'info');
+                
+                // Buscar por email Y código de usuario para estar seguros
+                const searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?or=(email.eq.guest@gma.cr,codigo_usuario.eq.GUEST_2025)`;
+                
+                console.log('Searching with URL:', searchUrl);
+                
+                const response = await fetch(searchUrl, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log('Check response status:', response.status);
+
+                if (response.ok) {
+                    const users = await response.json();
+                    console.log('Found users:', users);
+                    
+                    if (users && users.length > 0) {
+                        const user = users[0];
+                        showMessage('✅ Usuario encontrado en la base de datos. Aquí están los datos almacenados:', 'success');
+                        console.log('Usuario encontrado:', user);
+                        
+                        // Mostrar todos los datos del usuario encontrado
+                        const messageArea = document.getElementById('messageArea');
+                        messageArea.innerHTML += `
+                            <div class="message info" style="text-align: left; margin-top: 20px;">
+                                <h4>📊 Datos actuales en Supabase:</h4>
+                                <p><strong>Username:</strong> ${user.username || 'No definido'}</p>
+                                <p><strong>Email:</strong> ${user.email || 'No definido'}</p>
+                                <p><strong>Password:</strong> ${user.password || 'No definido'}</p>
+                                <p><strong>Teléfono:</strong> ${user.telefono || 'No definido'}</p>
+                                <p><strong>Fecha Nacimiento:</strong> ${user.fecha_nacimiento || 'No definido'}</p>
+                                <p><strong>Rol:</strong> ${user.rol || 'No definido'}</p>
+                                <p><strong>Código Usuario:</strong> ${user.codigo_usuario || 'No definido'}</p>
+                                <p><strong>Género:</strong> ${user.genero || 'No definido'}</p>
+                                <p><strong>Intereses:</strong> ${user.intereses || 'No definido'}</p>
+                                <p><strong>Fecha Inscripción:</strong> ${user.fecha_inscripcion || 'No definido'}</p>
+                            </div>
+                        `;
+                        
+                        // Deshabilitar el botón de agregar
+                        const addButton = document.getElementById('addUserBtn');
+                        addButton.disabled = true;
+                        addButton.textContent = '✅ Usuario Ya Existe - Ver datos arriba';
+                        addButton.style.background = '#22c55e';
+                        
+                    } else {
+                        showMessage('❌ El usuario GUEST_2025 NO existe en la base de datos. Haz clic en "Agregar Usuario" para crearlo.', 'warning');
+                        
+                        // Habilitar el botón de agregar
+                        const addButton = document.getElementById('addUserBtn');
+                        addButton.disabled = false;
+                        addButton.textContent = 'Agregar Usuario GUEST_2025';
+                        addButton.style.background = '#f18b32';
+                    }
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error checking user:', errorText);
+                    showMessage(`Error al verificar el usuario: ${response.status} - ${errorText}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error completo al verificar:', error);
+                showMessage('Error de conexión al verificar el usuario: ' + error.message, 'error');
+            }
+        }
+
+        // Función para agregar el usuario invitado
+        async function addGuestUser() {
+            try {
+                const addButton = document.getElementById('addUserBtn');
+                addButton.disabled = true;
+                addButton.textContent = 'Agregando usuario...';
+                
+                showMessage('Agregando usuario invitado a Supabase...', 'info');
+
+                // Datos del usuario invitado - exactamente como en registro.html
+                const guestUserData = {
+                    username: 'Invitado',
+                    email: 'guest@gma.cr',
+                    password: 'guest123',
+                    telefono: '+506-0000-0000',
+                    fecha_nacimiento: '1990-01-01',
+                    rol: 'invitado',
+                    fecha_inscripcion: '2025-08-11',
+                    codigo_usuario: 'GUEST_2025',
+                    genero: 'n',
+                    intereses: 'programacion,diseño'
+                };
+
+                console.log('Sending data to Supabase:', guestUserData);
+
+                const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify(guestUserData)
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('✅ ¡Usuario GUEST_2025 agregado exitosamente a Supabase!', 'success');
+                    console.log('Usuario creado exitosamente:', result);
+                    
+                    // Actualizar la interfaz
+                    addButton.textContent = '✅ Usuario Agregado Exitosamente';
+                    addButton.style.background = '#22c55e';
+                    
+                    // Verificar que se guardó correctamente
+                    setTimeout(() => {
+                        checkIfUserExists();
+                    }, 1000);
+                    
+                } else {
+                    const errorText = await response.text();
+                    console.error('Error response text:', errorText);
+                    console.error('Error status:', response.status);
+                    console.error('Error statusText:', response.statusText);
+                    
+                    if (response.status === 409 || response.status === 400) {
+                        if (errorText.includes('duplicate') || errorText.includes('already exists')) {
+                            showMessage('⚠️ El usuario GUEST_2025 ya existe en la base de datos.', 'warning');
+                        } else {
+                            showMessage(`❌ Error de validación: ${errorText}`, 'error');
+                        }
+                    } else {
+                        showMessage(`❌ Error al agregar usuario: ${response.status} - ${errorText}`, 'error');
+                    }
+                    
+                    addButton.disabled = false;
+                    addButton.textContent = 'Reintentar Agregar Usuario';
+                }
+            } catch (error) {
+                console.error('Error completo:', error);
+                showMessage('❌ Error de conexión al agregar el usuario: ' + error.message, 'error');
+                
+                const addButton = document.getElementById('addUserBtn');
+                addButton.disabled = false;
+                addButton.textContent = 'Reintentar Agregar Usuario';
+            }
+        }
+
+        // Función para eliminar el usuario invitado
+        async function deleteGuestUser() {
+            try {
+                if (!confirm('¿Estás seguro de que quieres eliminar el usuario GUEST_2025?')) {
+                    return;
+                }
+
+                showMessage('Eliminando usuario GUEST_2025...', 'info');
+                
+                const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?or=(email.eq.guest@gma.cr,codigo_usuario.eq.GUEST_2025)', {
+                    method: 'DELETE',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM'
+                    }
+                });
+
+                if (response.ok) {
+                    showMessage('✅ Usuario GUEST_2025 eliminado exitosamente. Ahora puedes agregarlo de nuevo.', 'success');
+                    setTimeout(() => {
+                        checkIfUserExists();
+                    }, 1000);
+                } else {
+                    const errorText = await response.text();
+                    showMessage(`❌ Error al eliminar usuario: ${response.status} - ${errorText}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error al eliminar:', error);
+                showMessage('❌ Error de conexión al eliminar usuario: ' + error.message, 'error');
+            }
+        }
+
+        // Función para actualizar el usuario invitado con los datos correctos
+        async function updateGuestUser() {
+            try {
+                showMessage('Actualizando usuario GUEST_2025...', 'info');
+
+                const guestUserData = {
+                    username: 'Invitado',
+                    email: 'guest@gma.cr',
+                    password: 'guest123',
+                    telefono: '+506-0000-0000',
+                    fecha_nacimiento: '1990-01-01',
+                    rol: 'invitado',
+                    fecha_inscripcion: '2025-08-11',
+                    codigo_usuario: 'GUEST_2025',
+                    genero: 'n',
+                    intereses: 'programacion,diseño'
+                };
+
+                const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?or=(email.eq.guest@gma.cr,codigo_usuario.eq.GUEST_2025)', {
+                    method: 'PATCH',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify(guestUserData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showMessage('✅ Usuario GUEST_2025 actualizado exitosamente!', 'success');
+                    console.log('Usuario actualizado:', result);
+                    setTimeout(() => {
+                        checkIfUserExists();
+                    }, 1000);
+                } else {
+                    const errorText = await response.text();
+                    showMessage(`❌ Error al actualizar usuario: ${response.status} - ${errorText}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error al actualizar:', error);
+                showMessage('❌ Error de conexión al actualizar usuario: ' + error.message, 'error');
+            }
+        }
+
+        // Verificar automáticamente al cargar la página
+        window.addEventListener('load', function() {
+            setTimeout(checkIfUserExists, 1000);
+        });
+    </script>
+</body>
+</html>

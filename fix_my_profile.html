@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arreglar Mi Perfil - Galaxia Magna Academy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a1f 0%, #2d2d35 100%);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #23232b;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+    .btn-primary {
+      background: #f18b32;
+      border-color: #f18b32;
+      font-weight: bold;
+    }
+    .btn-primary:hover {
+      background: #e07a21;
+      border-color: #e07a21;
+    }
+    .alert {
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .user-info {
+      background: #2d2d35;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border-left: 4px solid #f18b32;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center mb-4">
+      <h1 style="color: #f18b32;">🔧 Arreglar Mi Perfil</h1>
+      <p class="text-muted">Herramienta para agregar tu usuario a la base de datos de Supabase</p>
+    </div>
+
+    <div id="status-area"></div>
+
+    <div class="user-info" id="session-info" style="display: none;">
+      <h4 style="color: #f18b32;">📋 Información de Sesión Actual:</h4>
+      <div id="session-data"></div>
+    </div>
+
+    <div class="text-center">
+      <button id="checkSession" class="btn btn-primary btn-lg me-3" onclick="checkCurrentSession()">
+        🔍 Verificar Sesión Actual
+      </button>
+      <button id="createUser" class="btn btn-success btn-lg me-3" onclick="createMyUser()" style="display: none;">
+        ➕ Crear Mi Usuario en Base de Datos
+      </button>
+      <button class="btn btn-info btn-lg" onclick="window.open('profile.html', '_blank')">
+        👤 Ir a Mi Perfil
+      </button>
+    </div>
+
+    <div class="mt-4 text-center">
+      <a href="index.html" style="color: #f18b32;">← Volver al Inicio</a>
+    </div>
+  </div>
+
+  <script>
+    let currentSessionUser = null;
+
+    function showStatus(message, type = 'info') {
+      const statusArea = document.getElementById('status-area');
+      let alertClass = 'alert-info';
+      
+      switch(type) {
+        case 'success': alertClass = 'alert-success'; break;
+        case 'error': alertClass = 'alert-danger'; break;
+        case 'warning': alertClass = 'alert-warning'; break;
+      }
+
+      statusArea.innerHTML = `
+        <div class="alert ${alertClass}" role="alert">
+          ${message}
+        </div>
+      `;
+    }
+
+    function checkCurrentSession() {
+      try {
+        const userSession = localStorage.getItem('currentUser');
+        
+        if (!userSession) {
+          showStatus('❌ No hay sesión activa. Por favor, inicia sesión primero.', 'error');
+          return;
+        }
+
+        currentSessionUser = JSON.parse(userSession);
+        
+        document.getElementById('session-info').style.display = 'block';
+        document.getElementById('session-data').innerHTML = `
+          <p><strong>👤 Usuario:</strong> ${currentSessionUser.username || 'No especificado'}</p>
+          <p><strong>📧 Email:</strong> ${currentSessionUser.email || 'No especificado'}</p>
+          <p><strong>🏷️ Rol:</strong> ${currentSessionUser.rol || 'No especificado'}</p>
+          <p><strong>🔢 Código:</strong> ${currentSessionUser.codigo || 'No asignado'}</p>
+        `;
+
+        document.getElementById('createUser').style.display = 'inline-block';
+        showStatus('✅ Sesión encontrada. Ahora puedes crear tu usuario en la base de datos.', 'success');
+
+      } catch (error) {
+        console.error('Error checking session:', error);
+        showStatus('❌ Error al verificar la sesión: ' + error.message, 'error');
+      }
+    }
+
+    async function createMyUser() {
+      if (!currentSessionUser) {
+        showStatus('❌ No hay datos de sesión. Verifica tu sesión primero.', 'error');
+        return;
+      }
+
+      try {
+        showStatus('⏳ Creando tu usuario en la base de datos...', 'info');
+
+        // Generate a unique code if not present
+        const userCode = currentSessionUser.codigo || `USER_${Date.now()}`;
+
+        const userData = {
+          username: currentSessionUser.username || 'Allan VillaLobos Calderon',
+          email: currentSessionUser.email || 'allan.villalobos.calderon@gmail.com',
+          password: 'temporal123', // Temporary password
+          telefono: '+506-0000-0000',
+          fecha_nacimiento: '1990-01-01',
+          rol: currentSessionUser.rol || 'estudiante',
+          fecha_inscripcion: new Date().toISOString().split('T')[0],
+          codigo_usuario: userCode,
+          genero: 'n',
+          intereses: 'programacion'
+        };
+
+        console.log('Creating user with data:', userData);
+
+        const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios', {
+          method: 'POST',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('User created successfully:', result);
+          
+          // Update session with the new code
+          currentSessionUser.codigo = userCode;
+          localStorage.setItem('currentUser', JSON.stringify(currentSessionUser));
+          
+          showStatus(`🎉 ¡Usuario creado exitosamente! 
+                     <br><strong>📧 Email:</strong> ${userData.email}
+                     <br><strong>🔢 Código:</strong> ${userCode}
+                     <br><br>Ahora puedes ir a tu perfil y verás todos tus datos correctamente.`, 'success');
+          
+          // Hide create button and show success
+          document.getElementById('createUser').style.display = 'none';
+          
+        } else {
+          const errorText = await response.text();
+          console.error('Error creating user:', errorText);
+          
+          if (response.status === 409 || errorText.includes('duplicate')) {
+            showStatus('⚠️ Tu usuario ya existe en la base de datos. Ve a tu perfil para verificar.', 'warning');
+          } else {
+            showStatus(`❌ Error al crear usuario: ${response.status} - ${errorText}`, 'error');
+          }
+        }
+      } catch (error) {
+        console.error('Error creating user:', error);
+        showStatus('❌ Error de conexión al crear usuario: ' + error.message, 'error');
+      }
+    }
+
+    // Auto-check session on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      checkCurrentSession();
+    });
+  </script>
+</body>
+</html>
