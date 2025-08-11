@@ -86,8 +86,21 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 - **Backend**: Ya desplegado en Vercel (https://backend-kt0bm09wc-mowattabrs-projects.vercel.app)
 
 ### Credenciales de Prueba
-- **Usuario Admin**: `admin` / `admin`
-- **Usuarios de prueba**: Registrar nuevos usuarios a través del formulario
+
+**Para el Profesor - Usuario Administrador de Prueba:**
+- **Usuario**: `direct_admin`
+- **Email**: `directadmin@test.com`
+- **Rol**: Administrador
+- **Código**: `2025_08_ADM_0003`
+
+**Usuarios del Sistema:**
+- **Login Admin**: `admin` / `admin` (página principal)
+- **Registro**: Crear nuevos usuarios través del formulario de registro
+- **Contraseñas de Rol**:
+  - Profesor: `profesor`
+  - Administrador: `admin`
+
+**Nota**: El usuario `direct_admin` fue creado automáticamente para pruebas del profesor y está disponible en la base de datos `lista_usuarios`.
 
 ## � Migración a Vercel
 

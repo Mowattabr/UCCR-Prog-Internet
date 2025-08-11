@@ -87,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (passInput) passInput.value = '';
   }
 
-  // Login rápido (usuario y contraseña requeridos)
+  // Login rápido (usuario y contraseña requeridos) - DISABLED: Now handled directly in index.html
+  // Commented out to avoid conflicts with the new login system
+  /*
   const loginBtn = document.querySelector('button.btn-primary[type="button"]');
   if (loginBtn && loginBtn.textContent.includes('Iniciar sesión')) {
     loginBtn.addEventListener('click', function() {
@@ -118,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
+  */
 
   // Login como Administrador (usuario y contraseña requeridos)
   const adminBtn = document.querySelector('button[style*="background:#f18b32"]');

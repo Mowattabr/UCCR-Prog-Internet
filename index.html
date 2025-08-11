@@ -63,8 +63,9 @@
             <div class="row">
               <div class="col-12">
                 <div class="mb-3">
-                  <label for="login-username" class="form-label">Nombre de usuario:</label>
-                  <input class="form-control" type="text" id="login-username" name="login-username" autocomplete="username">
+                  <label for="login-username" class="form-label">Email o Código de Usuario:</label>
+                  <input class="form-control" type="text" id="login-username" name="login-username" autocomplete="username" placeholder="Ej: usuario@email.com o 2025_08_A_0001">
+                  <small class="form-text text-muted">Puedes usar tu email o código de usuario para iniciar sesión</small>
                 </div>
                 <div class="mb-3">
                   <label for="login-password" class="form-label">Contraseña:</label>
@@ -258,48 +259,67 @@
   <script src="script.js"></script>
   
   <script>
-    // Función para iniciar sesión usando Vercel backend
-    function iniciarSesion() {
-      const username = document.getElementById('login-username').value;
+    // Función para iniciar sesión usando base de datos lista_usuarios
+    async function iniciarSesion() {
+      const usernameOrEmail = document.getElementById('login-username').value;
       const password = document.getElementById('login-password').value;
-      const loginMsg = document.getElementById('login-msg');
       
       // Validar que los campos no estén vacíos
-      if (!username || !password) {
-        mostrarMensaje('Por favor, ingresa usuario y contraseña.', 'error');
+      if (!usernameOrEmail || !password) {
+        mostrarMensaje('Por favor, ingresa email/código de usuario y contraseña.', 'error');
         return;
       }
       
       // Mostrar mensaje de carga
       mostrarMensaje('Verificando credenciales...', 'info');
       
-      // Crear datos para enviar
-      const formData = new FormData();
-      formData.append('login-username', username);
-      formData.append('login-password', password);
-      formData.append('action', 'login');
-      
-      // Enviar a Vercel backend
-      fetch('https://backend-kt0bm09wc-mowattabrs-projects.vercel.app/api/index.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        console.log('Respuesta del servidor:', data);
+      try {
+        // Buscar usuario en lista_usuarios por email o codigo_usuario
+        let searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?or=(email.eq.${encodeURIComponent(usernameOrEmail)},codigo_usuario.eq.${encodeURIComponent(usernameOrEmail)})`;
         
-        // Procesar respuesta del servidor
-        if (data.includes('success') || data.includes('válido') || data.includes('correcto')) {
-          mostrarMensaje('¡Inicio de sesión exitoso! Bienvenido, ' + username, 'success');
-          mostrarNavegacionPrivada();
+        const response = await fetch(searchUrl, {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const users = await response.json();
+          
+          if (users && users.length > 0) {
+            const user = users[0];
+            
+            // Verificar contraseña - comparar la contraseña ingresada con la almacenada
+            if (user.password && user.password === password) {
+              // Si encontró el usuario y la contraseña coincide, mostrar éxito
+              mostrarMensaje(`¡Bienvenido, ${user.username}! (${user.rol})`, 'success');
+              mostrarNavegacionPrivada();
+              
+              // Opcional: guardar datos del usuario en localStorage para sesión
+              localStorage.setItem('currentUser', JSON.stringify({
+                username: user.username,
+                email: user.email,
+                rol: user.rol,
+                codigo: user.codigo_usuario
+              }));
+              
+            } else {
+              mostrarMensaje('Contraseña incorrecta. Verifica tus credenciales.', 'error');
+            }
+          } else {
+            mostrarMensaje('Usuario no encontrado. Verifica tu email o código de usuario.', 'error');
+          }
         } else {
-          mostrarMensaje('Usuario o contraseña incorrectos.', 'error');
+          mostrarMensaje('Error al conectar con la base de datos.', 'error');
         }
-      })
-      .catch(error => {
-        console.error('Error al conectar con el servidor:', error);
+        
+      } catch (error) {
+        console.error('Error al verificar credenciales:', error);
         mostrarMensaje('Error de conexión. Verifica tu conexión a internet.', 'error');
-      });
+      }
     }
     
     // Función para mostrar mensajes al usuario
