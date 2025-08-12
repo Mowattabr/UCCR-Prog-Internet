@@ -181,11 +181,6 @@ nav a {
   transition: background 0.2s;
 }
 
-nav a:hover {
-  background: #f18b32 ;
-  /* opacity: 0.1; */
-}
-
 /*
   fieldset y legend:
   Agrupan y titulan secciones del formulario, con bordes y esquinas redondeadas.
@@ -325,19 +320,6 @@ label {
 .resaltado { /* Clase */
   color: #d32f2f;
   font-weight: bold;
-}
-
-div:hover { /* Pseudoclase */
-  /* background-color: rgba(24, 24, 27, 0.5); */
-  background: linear-gradient(
-    to bottom,
-  rgba(0, 0, 0, 0.5)0%, 
-  rgba(0, 0, 0, 0.5)5%,
-  rgba(73, 72, 72, 0.25) 15%,
-  rgba(0, 0, 0, 0.5)95%, 
-  rgba(0, 0, 0, 0.5)100%
-  );
-
 }
 
 #caja-ejemplo::before { /* Pseudoelemento */
@@ -566,6 +548,423 @@ header img {
   }
 }
 
+/* Header styling */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+header h1 {
+  color: #C0C0C0;
+  margin-bottom: 5px;
+  margin-top: 0;
+}
+
+header h2 {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 1.8em;
+  margin-top: 0;
+  color: #C0C0C0;
+  margin-bottom: 0;
+}
+
+header .header-text {
+  text-align: center;
+}
+
+/* Login message styling */
+#login-msg {
+  display: none;
+  font-weight: bold;
+  color: #22c55e;
+  margin-bottom: 12px;
+}
+
+/* Navigation in login section */
+#login-rapido-wrapper nav {
+  margin-bottom: 20px;
+}
+
+/* Fieldset in login section */
+#login-form fieldset {
+  margin-bottom: 24px;
+}
+
+/* Private navigation items */
+.nav-privado {
+  display: none;
+}
+
+/* Registration button styling */
+.btn-registro {
+  background: #f18b32 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+/* Section modal styling - common for help, courses, students, professors */
+.section-modal {
+  display: none;
+  padding: 40px 20px;
+  margin: 40px auto;
+  background: #23232b;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px #0008;
+  color: #fff;
+}
+
+.section-modal h2 {
+  color: #f18b32;
+  margin-bottom: 18px;
+}
+
+/* Specific section sizes */
+#ayuda {
+  max-width: 600px;
+}
+
+#cursos {
+  max-width: 900px;
+}
+
+#estudiantes, #profesores {
+  max-width: 700px;
+}
+
+#aprende-mas {
+  max-width: 1000px;
+}
+
+#contacto {
+  max-width: 600px;
+}
+
+/* === RECURSOS EDUCATIVOS STYLING === */
+
+/* Container for educational resources */
+.recursos-educativos {
+  margin: 20px 0;
+}
+
+.recursos-educativos h3 {
+  color: #6366f1;
+  margin: 30px 0 15px 0;
+  font-size: 1.3em;
+}
+
+/* Educational links section */
+.enlaces-educativos {
+  margin-top: 30px;
+}
+
+.enlace-item {
+  background: #2d2d35;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #4a4a55;
+  margin-bottom: 15px;
+}
+
+.enlace-item h4 {
+  color: #a5b4fc;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.enlace-item p {
+  color: #c9c9c9;
+  margin-bottom: 15px;
+}
+
+.btn-recurso {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-recurso:hover {
+  background: #1d4ed8;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Guest login box in help section */
+.guest-login-box {
+  margin: 20px 0;
+  text-align: center;
+  padding: 20px;
+  background: #2d2d35;
+  border-radius: 8px;
+  border: 1px solid #4a4a55;
+}
+
+.guest-login-box p {
+  color: #c9c9c9;
+  margin-bottom: 12px;
+}
+
+.guest-login-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Close section buttons */
+.close-section-btn {
+  margin-top: 24px;
+  padding: 10px 30px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Table header styling */
+.table-header {
+  background: #1e293b;
+  color: #f18b32;
+}
+
+/* Courses table center container */
+.courses-table-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Info box at bottom */
+.info-box {
+  margin: 40px auto 20px auto;
+  max-width: 500px;
+  background: #23232b;
+  border-radius: 12px;
+  border: 2px solid #6366f1;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.info-box h2 {
+  color: #a5b4fc;
+  margin-bottom: 12px;
+}
+
+.info-box p {
+  color: #f3f4f6;
+  margin-bottom: 16px;
+}
+
+.info-box a {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+/* SQL Data Tables - Always gray background with white text */
+.sql-table, .sql-table * {
+  background-color: #2a2a2a !important;
+  color: #fff !important;
+}
+
+.sql-table tbody tr {
+  border-bottom: 1px solid #444 !important;
+}
+
+.sql-table th, .sql-table td {
+  background-color: #2a2a2a !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 4px 6px !important;
+}
+
+/* Admin Modal Styling */
+.admin-modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-modal-content {
+  background: #23232b;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 400px;
+  margin: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  border: 2px solid #f18b32;
+  text-align: center;
+}
+
+.admin-modal h3 {
+  color: #f18b32;
+  margin-bottom: 16px;
+  font-size: 1.4em;
+}
+
+.admin-modal p {
+  color: #c9c9c9;
+  margin-bottom: 20px;
+}
+
+.admin-modal .icon {
+  margin-bottom: 20px;
+}
+
+.admin-modal .icon i {
+  font-size: 36px;
+  color: #f18b32;
+}
+
+.admin-modal input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #4a4a55;
+  background: #2d2d35;
+  color: #c9c9c9;
+  font-size: 1em;
+}
+
+.admin-modal .button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.admin-modal button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+.admin-modal .btn-primary {
+  background: #f18b32;
+  color: white;
+}
+
+.admin-modal .btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.admin-error {
+  color: #ff6b6b;
+  margin-top: 8px;
+  display: none;
+}
+
+/* Loading/Error Modal Styling */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #23232b;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.modal-content.success {
+  border: 2px solid #22c55e;
+}
+
+.modal-content.error {
+  border: 2px solid #ef4444;
+}
+
+.modal-content.info {
+  border: 2px solid #f18b32;
+}
+
+.modal-content h3 {
+  margin-bottom: 16px;
+  font-size: 1.4em;
+}
+
+.modal-content.success h3 {
+  color: #22c55e;
+}
+
+.modal-content.error h3 {
+  color: #ef4444;
+}
+
+.modal-content.info h3 {
+  color: #f18b32;
+}
+
+.modal-content p {
+  color: #c9c9c9;
+  margin-bottom: 20px;
+  font-size: 1.0em;
+}
+
+/* Profile Navigation */
+.profile-nav {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.profile-nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.profile-nav a {
+  color: #f18b32;
+  text-decoration: none;
+}
+
+/* Admin Navigation */
+.admin-nav {
+  margin-bottom: 20px;
+}
+
 /* Desactiva el hover solo en la sección de cursos (todas las columnas y listas) */
 #cursos div:hover, #cursos ul:hover, #cursos li:hover {
   background: none !important;
@@ -622,4 +1021,169 @@ header img {
 .tabla-separada tbody tr:last-child,
 .tabla-cursos tbody tr:last-child {
   border-bottom: none;
+}
+
+/* === ESTILOS PARA FORMULARIO DE CONTACTO === */
+
+/* Contenedor principal del formulario de contacto */
+.contacto-formulario {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: rgba(39, 39, 42, 0.9);
+  border-radius: 12px;
+  border: 1px solid #52525b;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Grupos de campos del formulario */
+.contacto-formulario .form-group {
+  margin-bottom: 25px;
+}
+
+/* Etiquetas de los campos */
+.contacto-formulario .form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+/* Campos de entrada de texto y email */
+.contacto-formulario .form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #52525b;
+  border-radius: 8px;
+  background-color: #27272a;
+  color: #ffffff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* Textarea para el mensaje */
+.contacto-formulario textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+  font-family: Arial, sans-serif;
+}
+
+/* Estado de enfoque (focus) de los campos */
+.contacto-formulario .form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+/* Placeholder de los campos */
+.contacto-formulario .form-control::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* Contenedor de acciones del formulario */
+.contacto-formulario .form-actions {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* Botón principal de envío */
+.btn-enviar-contacto {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+  min-width: 160px;
+}
+
+/* Estado deshabilitado del botón */
+.btn-enviar-contacto:disabled {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Spinner de carga */
+.loading-spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mensajes de error en campos */
+.error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+  font-weight: 500;
+  display: none; /* Oculto por defecto */
+}
+
+/* Mensaje de estado general del formulario */
+.status-message {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Estado de éxito */
+.status-message.success {
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid #22c55e;
+  color: #22c55e;
+}
+
+/* Estado de error */
+.status-message.error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 768px) {
+  .contacto-formulario {
+    margin: 10px;
+    padding: 20px;
+  }
+  
+  .contacto-formulario .form-control {
+    font-size: 16px; /* Evita zoom en iOS */
+  }
+  
+  .btn-enviar-contacto {
+    width: 100%;
+    padding: 16px;
+  }
 }

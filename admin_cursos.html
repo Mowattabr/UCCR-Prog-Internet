@@ -12,18 +12,18 @@
 
 <body>
   <!-- Header -->
-  <header style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 20px;">
+  <header>
     <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
-    <div style="text-align: center;">
-      <h1 style="color: #C0C0C0; margin-bottom: 5px; margin-top: 0;">Galaxia Magna Academy</h1>
-      <h2 style="font-style: italic; font-weight: normal; font-size: 1.8em; margin-top: 0; color: #C0C0C0; margin-bottom: 0;">Panel de Administración - Cursos</h2>
+    <div class="header-text">
+      <h1>Galaxia Magna Academy</h1>
+      <h2>Panel de Administración - Cursos</h2>
     </div>
     <img src="images/GAM_transparent.png" alt="GMA Logo" style="width: 80px; height: 80px; object-fit: contain;">
   </header>
 
   <main>
     <!-- Navigation -->
-    <nav style="margin-bottom: 20px;">
+    <nav class="admin-nav">
       <ul>
         <li><a href="profile.html">← Volver al Perfil</a></li>
         <li><a href="admin_lista_usuarios.html">Administrar Usuarios</a></li>
@@ -32,25 +32,24 @@
     </nav>
 
     <!-- Admin Authentication Modal -->
-    <div id="admin-auth-modal" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
-      <div style="background: #23232b; border-radius: 16px; padding: 40px; max-width: 400px; margin: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid #f18b32; text-align: center;">
-        <div style="margin-bottom: 20px;">
-          <i class="fas fa-shield-alt" style="font-size: 36px; color: #f18b32;"></i>
+    <div id="admin-auth-modal" class="admin-modal">
+      <div class="admin-modal-content">
+        <div class="icon">
+          <i class="fas fa-shield-alt"></i>
         </div>
-        <h3 style="color: #f18b32; margin-bottom: 16px; font-size: 1.4em;">Acceso de Administrador</h3>
-        <p style="color: #c9c9c9; margin-bottom: 20px;">Ingrese la contraseña de administrador para continuar:</p>
+        <h3>Acceso de Administrador</h3>
+        <p>Ingrese la contraseña de administrador para continuar:</p>
         
         <div style="margin-bottom: 20px;">
-          <input type="password" id="admin-password" placeholder="Contraseña de administrador" 
-                 style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #4a4a55; background: #2d2d35; color: #c9c9c9; font-size: 1em;">
-          <div id="admin-error" style="color: #ff6b6b; margin-top: 8px; display: none;">Contraseña incorrecta</div>
+          <input type="password" id="admin-password" placeholder="Contraseña de administrador">
+          <div id="admin-error" class="admin-error">Contraseña incorrecta</div>
         </div>
         
-        <div style="display: flex; gap: 12px; justify-content: center;">
-          <button onclick="validateAdminAccess()" style="background: #f18b32; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+        <div class="button-group">
+          <button onclick="validateAdminAccess()" class="btn-primary">
             Acceder
           </button>
-          <button onclick="goBack()" style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+          <button onclick="goBack()" class="btn-secondary">
             Cancelar
           </button>
         </div>
@@ -100,8 +99,14 @@
 
       <!-- Add New Course Button -->
       <div style="margin-bottom: 20px; text-align: center;">
-        <button onclick="showAddCourseModal()" style="background: #22c55e; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+        <button onclick="showAddCourseModal()" style="background: #22c55e; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em; margin-right: 10px;">
           Agregar Nuevo Curso
+        </button>
+        <button onclick="testDatabaseConnection()" style="background: #3b82f6; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em; margin-right: 10px;">
+          Probar Conexión
+        </button>
+        <button onclick="simpleTest()" style="background: #f59e0b; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+          Test Simple
         </button>
       </div>
 
@@ -146,7 +151,7 @@
         </h3>
         
         <div class="table-responsive">
-          <table class="table table-sm" style="color: #fff; font-family: 'Consolas', monospace; font-size: 0.85em; background-color: #2a2a2a;">
+          <table class="table table-sm sql-table" style="font-family: 'Consolas', monospace; font-size: 0.85em;">
             <thead style="background-color: #2a2a2a;">
               <tr style="border-bottom: 1px solid #555; background-color: #2a2a2a;">
                 <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">CUATR</th>
@@ -158,7 +163,7 @@
                 <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">ACCIONES</th>
               </tr>
             </thead>
-            <tbody id="courses-table-body" style="background-color: #2a2a2a;">
+            <tbody id="courses-table-body" class="sql-table">
               <!-- Courses will be loaded here -->
             </tbody>
           </table>
@@ -271,28 +276,73 @@
     async function loadCourses() {
       try {
         showMessage('Cargando cursos...', 'info');
+        console.log('Starting to load courses from Supabase...');
+        
+        // Simple test first - check if fetch is available
+        if (typeof fetch === 'undefined') {
+          throw new Error('Fetch API no está disponible en este navegador');
+        }
         
         // Load only active courses by default
-        const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?activo=eq.true&order=cuatrimestre,codigo', {
+        const url = 'https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?Active=eq.true&order=cuatrimestre,codigo';
+        console.log('Fetching from URL:', url);
+        
+        const response = await fetch(url, {
           method: 'GET',
           headers: {
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
           }
         });
 
+        console.log('Response status:', response.status);
+
         if (response.ok) {
-          courses = await response.json();
+          const data = await response.json();
+          console.log('Received data:', data);
+          courses = data;
           displayCourses(courses);
           updateStatistics(courses);
           showMessage(`${courses.length} cursos cargados exitosamente`, 'success');
         } else {
-          throw new Error(`Error HTTP: ${response.status}`);
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
         }
       } catch (error) {
         console.error('Error loading courses:', error);
-        showMessage('Error al cargar cursos: ' + error.message, 'error');
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+        
+        // Show more detailed error message
+        let errorMessage = 'Error al cargar cursos: ';
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+          errorMessage += 'Problema de conexión. Verifique su conexión a internet.';
+        } else if (error.message.includes('NetworkError')) {
+          errorMessage += 'Error de red. No se puede conectar al servidor.';
+        } else if (error.message.includes('CORS')) {
+          errorMessage += 'Problema de acceso CORS. Contacte al administrador.';
+        } else if (error.message.includes('401')) {
+          errorMessage += 'Error de autenticación. Verifique las credenciales de la API.';
+        } else if (error.message.includes('403')) {
+          errorMessage += 'Acceso denegado. Verifique los permisos de la API.';
+        } else if (error.message.includes('404')) {
+          errorMessage += 'Base de datos no encontrada. Verifique la configuración.';
+        } else {
+          errorMessage += error.message;
+        }
+        
+        showMessage(errorMessage, 'error');
+        
+        // Try to load a fallback empty state
+        courses = [];
+        displayCourses(courses);
+        updateStatistics(courses);
       }
     }
 
@@ -316,13 +366,13 @@
           <td style="border: none; padding: 4px 6px; color: #fff; background-color: #2a2a2a;">${course.curso}</td>
           <td style="border: none; padding: 4px 6px; color: #fff; background-color: #2a2a2a;">${course.requisitos || 'Ninguno'}</td>
           <td style="border: none; padding: 4px 6px; text-align: center; color: #fff; background-color: #2a2a2a;">${course.creditos}</td>
-          <td style="border: none; padding: 4px 6px; color: ${course.activo ? '#4ade80' : '#f87171'}; background-color: #2a2a2a;">${course.activo ? 'Activo' : 'Inactivo'}</td>
+          <td style="border: none; padding: 4px 6px; color: ${course.Active ? '#4ade80' : '#f87171'}; background-color: #2a2a2a;">${course.Active ? 'Activo' : 'Inactivo'}</td>
           <td style="border: none; padding: 4px 6px; background-color: #2a2a2a;">
             <button onclick="editCourse(${course.id})" style="background: #666; color: white; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 0.75em; font-family: 'Consolas', monospace;">
               Editar
             </button>
-            <button onclick="toggleCourseStatus(${course.id}, '${course.codigo}', ${course.activo})" style="background: ${course.activo ? '#dc2626' : '#059669'}; color: white; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.75em; font-family: 'Consolas', monospace;">
-              ${course.activo ? 'Desactivar' : 'Activar'}
+            <button onclick="toggleCourseStatus(${course.id}, '${course.codigo}', ${course.Active})" style="background: ${course.Active ? '#dc2626' : '#059669'}; color: white; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.75em; font-family: 'Consolas', monospace;">
+              ${course.Active ? 'Desactivar' : 'Activar'}
             </button>
           </td>
         </tr>
@@ -412,7 +462,7 @@
             'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ activo: !isActive })
+          body: JSON.stringify({ "Active": !isActive })
         });
         
         if (response.ok) {
@@ -443,7 +493,7 @@
         curso: document.getElementById('course-name').value,
         requisitos: document.getElementById('course-requirements').value || null,
         creditos: parseInt(document.getElementById('course-credits').value),
-        activo: true // New courses are active by default
+        "Active": true // New courses are active by default
       };
       
       try {
@@ -534,6 +584,103 @@
         validateAdminAccess();
       }
     });
+
+    // Test database connection function
+    async function testDatabaseConnection() {
+      try {
+        showMessage('Probando conexión con la base de datos...', 'info');
+        console.log('Testing database connection...');
+        
+        // Test basic connection first
+        const testUrl = 'https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/';
+        console.log('Testing base URL:', testUrl);
+        
+        const response = await fetch(testUrl, {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Accept': 'application/json'
+          }
+        });
+        
+        console.log('Base connection test - Status:', response.status);
+        
+        if (response.ok || response.status === 404) {
+          // Now test the specific table
+          const coursesUrl = 'https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?select=count';
+          console.log('Testing courses table:', coursesUrl);
+          
+          const coursesResponse = await fetch(coursesUrl, {
+            method: 'GET',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Accept': 'application/json'
+            }
+          });
+          
+          console.log('Courses table test - Status:', coursesResponse.status);
+          
+          if (coursesResponse.ok) {
+            const data = await coursesResponse.json();
+            console.log('Table access successful:', data);
+            showMessage('✅ Conexión exitosa. La base de datos está accesible.', 'success');
+          } else {
+            const errorText = await coursesResponse.text();
+            console.error('Table access error:', errorText);
+            showMessage(`❌ Error accediendo a la tabla cursos: ${coursesResponse.status} - ${errorText}`, 'error');
+          }
+        } else {
+          const errorText = await response.text();
+          console.error('Base connection error:', errorText);
+          showMessage(`❌ Error de conexión base: ${response.status} - ${errorText}`, 'error');
+        }
+      } catch (error) {
+        console.error('Connection test failed:', error);
+        showMessage(`❌ Fallo en la prueba de conexión: ${error.message}`, 'error');
+      }
+    }
+
+    // Simple test function with alerts
+    function simpleTest() {
+      alert('Simple test started!');
+      
+      // Test if we can reach the internet at all
+      fetch('https://httpbin.org/get')
+        .then(response => {
+          alert('Internet connection works! Status: ' + response.status);
+          return testSupabaseSimple();
+        })
+        .catch(error => {
+          alert('No internet connection: ' + error.message);
+        });
+    }
+
+    // Very simple Supabase test
+    async function testSupabaseSimple() {
+      try {
+        alert('Testing Supabase...');
+        const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?limit=1', {
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM'
+          }
+        });
+        
+        alert('Supabase response status: ' + response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          alert('Supabase SUCCESS! Data: ' + JSON.stringify(data));
+        } else {
+          const errorText = await response.text();
+          alert('Supabase ERROR: ' + response.status + ' - ' + errorText);
+        }
+      } catch (error) {
+        alert('Supabase FAILED: ' + error.message);
+      }
+    }
 
     // Auto-focus password field
     document.addEventListener('DOMContentLoaded', function() {

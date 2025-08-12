@@ -16,11 +16,11 @@
     Aquí va el título principal de la página. Sirve para que el usuario sepa dónde está y da identidad al sitio.
     Puedes poner el nombre de la plataforma, el logo o ambos.
   -->
-  <header style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 20px;">
+  <header>
     <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
-    <div style="text-align: center;">
-      <h1 style="color: #C0C0C0; margin-bottom: 5px; margin-top: 0;">Galaxia Magna Academy</h1>
-      <h2 style="font-style: italic; font-weight: normal; font-size: 1.8em; margin-top: 0; color: #C0C0C0; margin-bottom: 0;">Sapientia per Stellam</h2>
+    <div class="header-text">
+      <h1>Galaxia Magna Academy</h1>
+      <h2>Sapientia per Stellam</h2>
     </div>
     <img src="images/GAM_transparent.png" alt="GMA Logo" style="width: 80px; height: 80px; object-fit: contain;">
   </header>
@@ -40,18 +40,19 @@
         -->
 
         <div id="login-rapido-wrapper">
-          <div id="login-msg" style="display:none; font-weight:bold; color:#22c55e; margin-bottom:12px;"></div>
+          <div id="login-msg"></div>
           
           <!-- Navigation moved here to align with Login section -->
-          <nav style="margin-bottom: 20px;">
+          <nav>
             <ul>
-              <li><a href="index.html">Inicio</a></li> <!-- Enlace a la página de inicio -->
-              <li class="nav-privado" style="display:none;"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
-              <li class="nav-privado" style="display:none;"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
-              <li class="nav-privado" style="display:none;"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
-              <li class="nav-privado" style="display:none;"><a href="profile.html">Mi Perfil</a></li>      <!-- Enlace al perfil del usuario -->
-              <li><a href="#">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
+              <!-- <li><a href="index.html">Inicio</a></li> Enlace a la página de inicio -->
+              <li class="nav-privado"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
+              <li class="nav-privado"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
+              <li class="nav-privado"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
+              <li class="nav-privado"><a href="profile.html">Mi Perfil</a></li>      <!-- Enlace al perfil del usuario -->
+              <li><a href="#contacto">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
               <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
+              <li><a href="#aprende-mas">Aprende más</a></li>       <!-- Enlace a la sección de recursos educativos -->
             </ul>
           </nav>
           
@@ -59,7 +60,7 @@
             FIELDSET DE LOGIN :
             Permite a los usuarios iniciar sesión rápidamente sin llenar el formulario completo de registro.
           -->
-          <fieldset style="margin-bottom: 24px;">
+          <fieldset>
             <legend>Login</legend>
             <div class="row">
               <div class="col-12">
@@ -78,7 +79,7 @@
               <div class="col-12">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                   <button type="button" class="btn btn-primary me-md-2" onclick="iniciarSesion()">Iniciar sesión</button>
-                  <a href="registro.html" class="btn" style="background:#f18b32; color:#fff; text-decoration: none;">Formulario de registro</a>
+                  <a href="registro.html" class="btn btn-registro">Formulario de registro</a>
                 </div>
               </div>
             </div>
@@ -91,30 +92,30 @@
     </section>
 
     <!-- Página de Ayuda como subpágina -->
-    <section id="ayuda" style="display:none; padding:40px 20px; max-width:600px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-      <h2 style="color:#f18b32; margin-bottom:18px;">Ayuda</h2>
+    <section id="ayuda" class="section-modal">
+      <h2>Ayuda</h2>
       <p>Esta es una <b>página de prueba</b> que emula el registro para la Universidad Central de Costa Rica (UCCR).</p>
       <p>No ingreses datos personales reales, ya que esta página es solo para fines de demostración.</p>
       <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
       
       <!-- Botón para login como invitado -->
-      <div style="margin:20px 0; text-align:center; padding:20px; background:#2d2d35; border-radius:8px; border:1px solid #4a4a55;">
-        <p style="color:#c9c9c9; margin-bottom:12px;">¿Quieres explorar el sistema sin registrarte?</p>
-        <button onclick="loginComoInvitadoDirecto()" style="padding:12px 24px; border-radius:8px; background:#22c55e; color:#fff; border:none; font-weight:bold; cursor:pointer; font-size:14px;">
+      <div class="guest-login-box">
+        <p>¿Quieres explorar el sistema sin registrarte?</p>
+        <button onclick="loginComoInvitadoDirecto()" class="guest-login-button">
           Logeate como invitado
         </button>
       </div>
       
-      <button id="cerrar-ayuda" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+      <button id="cerrar-ayuda" class="close-section-btn">Cerrar</button>
     </section>
 
     <!-- Página de Cursos como subpágina -->
-    <section id="cursos" style="display:none; padding:40px 20px; max-width:900px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-      <h2 style="color:#f18b32; margin-bottom:18px;">Cursos</h2>
-      <div style="display:flex; justify-content:center;">
+    <section id="cursos" class="section-modal">
+      <h2>Cursos</h2>
+      <div class="courses-table-container">
         <table class="tabla-cursos" >
           <thead>
-            <tr style="background:#1e293b; color:#f18b32;">
+            <tr class="table-header">
               <th class="cuatrimestre">Cuatrimestre</th>
               <th class="curso">Curso</th>
             </tr>
@@ -155,15 +156,15 @@
           </tbody>
         </table>
       </div>
-      <button id="cerrar-cursos" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+      <button id="cerrar-cursos" class="close-section-btn">Cerrar</button>
     </section>
 
     <!-- Página de Estudiantes como subpágina -->
-    <section id="estudiantes" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-      <h2 style="color:#f18b32; margin-bottom:18px;">Estudiantes</h2>
+    <section id="estudiantes" class="section-modal">
+      <h2>Estudiantes</h2>
       <table class="tabla-separada" >
         <thead>
-          <tr style="background:#1e293b; color:#f18b32;">
+          <tr class="table-header">
             <th>Nombre</th>
             <th class="descripcion">Descripción</th>
             <th class="materia">Materia</th>
@@ -203,15 +204,15 @@
           </tr>
         </tbody>
       </table>
-      <button id="cerrar-estudiantes" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+      <button id="cerrar-estudiantes" class="close-section-btn">Cerrar</button>
     </section>
 
     <!-- Página de Profesores como subpágina -->
-    <section id="profesores" style="display:none; padding:40px 20px; max-width:700px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-      <h2 style="color:#f18b32; margin-bottom:18px;">Profesores</h2>
+    <section id="profesores" class="section-modal">
+      <h2>Profesores</h2>
       <table class="tabla-separada" >
         <thead>
-          <tr style="background:#1e293b; color:#f18b32;">
+          <tr class="table-header">
             <th>Nombre</th>
             <th class="descripcion">Descripción</th>
             <th class="materia">Materia</th>
@@ -221,50 +222,85 @@
           <!-- Filas de profesores se llenan por JS -->
         </tbody>
       </table>
-      <button id="cerrar-profesores" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+      <button id="cerrar-profesores" class="close-section-btn">Cerrar</button>
     </section>
 
+    <!-- Página de Contacto como subpágina -->
+    <section id="contacto" class="section-modal">
+      <h2>Contacto</h2>
+      <p>¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte!</p>
+      
+      <form id="contacto-form" class="contacto-formulario">
+        <div class="form-group">
+          <label for="contacto-nombre" class="form-label">Nombre completo:</label>
+          <input type="text" id="contacto-nombre" name="nombre" class="form-control" required>
+          <small class="error-message" id="error-nombre"></small>
+        </div>
+        
+        <div class="form-group">
+          <label for="contacto-mensaje" class="form-label">Mensaje:</label>
+          <textarea id="contacto-mensaje" name="mensaje" class="form-control" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
+          <small class="error-message" id="error-mensaje"></small>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-enviar-contacto" id="btn-enviar">
+            <span id="btn-text">Enviar mensaje</span>
+            <span id="btn-loading" class="loading-spinner" style="display: none;">Enviando...</span>
+          </button>
+        </div>
+        
+        <!-- Mensaje de estado -->
+        <div id="contacto-status" class="status-message" style="display: none;"></div>
+      </form>
+      
+      <button id="cerrar-contacto" class="close-section-btn">Cerrar</button>
+    </section>
+
+    <!-- Página de Aprende más como subpágina -->
+    <section id="aprende-mas" class="section-modal">
+      <h2>Aprende más</h2>
+      <p>Explora estos recursos educativos para profundizar tus conocimientos en desarrollo web.</p>
+      
+      <!-- Podcasts educativos -->
+      <div class="recursos-educativos">
+        <h3>Podcasts Recomendados</h3>
+        <p>Aprende HTML y CSS con estos videos explicativos:</p>
+        
+        <div class="podcast-videos">
+          <div class="podcast-item">
+            <iframe width="480" height="270" src="https://www.youtube.com/embed/UVfJnSb844c" title="HTML e CSS para Principiantes – Explicado com Analogias (Portugués)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <p>HTML e CSS para Principiantes – Explicado com Analogias (Portugués)</p>
+          </div>
+          <div class="podcast-item">
+            <iframe width="480" height="270" src="https://www.youtube.com/embed/4kIwc6nm5rg" title="HTML y CSS para Principiantes – Explicado con Analogías (Español)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <p>HTML y CSS para Principiantes – Explicado con Analogías (Español)</p>
+          </div>
+        </div>
+        
+        <!-- Enlaces recomendados -->
+        <h3>Enlaces Recomendados</h3>
+        <div class="enlaces-educativos">
+          <div class="enlace-item">
+            <h4>¿Quieres aprender más de HTML?</h4>
+            <p>Visita el siguiente recurso recomendado para profundizar tus conocimientos:</p>
+            <a href="https://www.w3schools.com/html/default.asp" target="_blank" class="btn-recurso">
+              Aprende más de HTML en W3Schools
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <button id="cerrar-aprende-mas" class="close-section-btn">Cerrar</button>
+    </section>
+
+    <!-- Bootstrap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!--
-    PODCASTS EDUCATIVOS:
-    Sección final con dos podcasts recomendados para aprender más sobre HTML y CSS.
-    Los videos se muestran uno al lado del otro usando flexbox.
-  -->
-  <section class="podcasts-educativos">
-    <h2>Aprende más con nuestros Podcasts</h2>
-    <div class="podcast-videos">
-      <div class="podcast-item">
-        <iframe width="480" height="270" src="https://www.youtube.com/embed/UVfJnSb844c" title="HTML e CSS para Principiantes – Explicado com Analogias (Portugués)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p>HTML e CSS para Principiantes – Explicado com Analogias (Portugués)</p>
-      </div>
-      <div class="podcast-item">
-        <iframe width="480" height="270" src="https://www.youtube.com/embed/4kIwc6nm5rg" title="HTML y CSS para Principiantes – Explicado con Analogías (Español)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p>HTML y CSS para Principiantes – Explicado con Analogías (Español)</p>
-      </div>
-    </div>
-  </section>
   </main>
 
   <footer>
   </footer>
-
-  <!--
-    Caja informativa:
-    Este bloque invita a los usuarios a aprender más de HTML. El enlace lleva a W3Schools, un sitio recomendado para principiantes.
-    TIP: Usa recursos externos para complementar tu aprendizaje.
-  -->
-  <div style="margin: 40px auto 20px auto; max-width: 500px; background: #23232b; border-radius: 12px; border: 2px solid #6366f1; padding: 24px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
-    <h2 style="color: #a5b4fc; margin-bottom: 12px;">¿Quieres aprender más de HTML?</h2>
-    <p style="color: #f3f4f6; margin-bottom: 16px;">
-      Visita el siguiente recurso recomendado para profundizar tus conocimientos:
-    </p>
-    <a href="https://www.w3schools.com/html/default.asp" 
-       target="_blank" 
-       style="display: inline-block; background: #2563eb; color: #fff; padding: 10px 28px; border-radius: 8px; font-weight: bold; text-decoration: none; transition: background 0.2s;">
-      Aprende más de HTML en W3Schools
-    </a>
-  </div>
 
   <script src="script.js"></script>
   
@@ -445,7 +481,257 @@
           document.getElementById('ayuda').style.display = 'none';
         });
       }
+      
+      // === FUNCIONALIDAD DEL FORMULARIO DE CONTACTO ===
+      
+      // EmailJS configuration - DISABLED FOR NOW
+      // emailjs.init("TU_PUBLIC_KEY_AQUI"); // CAMBIAR por tu Public Key de EmailJS
+      
+      // Manejar evento de envío del formulario de contacto
+      const contactoForm = document.getElementById('contacto-form');
+      if (contactoForm) {
+        contactoForm.addEventListener('submit', enviarFormularioContacto);
+      }
+      
+      // Hacer que el botón Cerrar de Contacto funcione
+      const cerrarContactoBtn = document.getElementById('cerrar-contacto');
+      if (cerrarContactoBtn) {
+        cerrarContactoBtn.addEventListener('click', function() {
+          document.getElementById('contacto').style.display = 'none';
+        });
+      }
+      
+      // Interceptar clic en enlace de Contacto para mostrar la página directamente
+      const contactoLink = document.querySelector('a[href="#contacto"]');
+      if (contactoLink) {
+        contactoLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('contacto').style.display = 'block';
+        });
+      }
+      
+      // === FUNCIONALIDAD DE LA SECCIÓN APRENDE MÁS ===
+      
+      // Hacer que el botón Cerrar de Aprende más funcione
+      const cerrarAprendeMasBtn = document.getElementById('cerrar-aprende-mas');
+      if (cerrarAprendeMasBtn) {
+        cerrarAprendeMasBtn.addEventListener('click', function() {
+          document.getElementById('aprende-mas').style.display = 'none';
+        });
+      }
+      
+      // Interceptar clic en enlace de Aprende más para mostrar la página directamente
+      const aprendeMasLink = document.querySelector('a[href="#aprende-mas"]');
+      if (aprendeMasLink) {
+        aprendeMasLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('aprende-mas').style.display = 'block';
+        });
+      }
     });
+    
+    // === FUNCIONES DEL FORMULARIO DE CONTACTO ===
+    
+    /**
+     * Función principal para enviar el formulario de contacto
+     * Valida los campos y usa EmailJS para enviar el correo
+     */
+    async function enviarFormularioContacto(e) {
+      e.preventDefault(); // Prevenir envío normal del formulario
+      
+      // Obtener valores del formulario
+      const nombre = document.getElementById('contacto-nombre').value.trim();
+      const mensaje = document.getElementById('contacto-mensaje').value.trim();
+      
+      // Limpiar mensajes de error previos
+      limpiarErroresContacto();
+      
+      // Validar campos
+      let hayErrores = false;
+      
+      if (!nombre) {
+        mostrarErrorContacto('error-nombre', 'El nombre es obligatorio');
+        hayErrores = true;
+      }
+      
+      if (!mensaje) {
+        mostrarErrorContacto('error-mensaje', 'El mensaje es obligatorio');
+        hayErrores = true;
+      } else if (mensaje.length < 10) {
+        mostrarErrorContacto('error-mensaje', 'El mensaje debe tener al menos 10 caracteres');
+        hayErrores = true;
+      }
+      
+      // Si hay errores, no continuar
+      if (hayErrores) {
+        return;
+      }
+      
+      // Mostrar estado de carga
+      mostrarEstadoEnvio('loading');
+      
+      // Create mailto link with form data
+      try {
+        const subject = encodeURIComponent(`Mensaje de contacto de ${nombre}`);
+        const body = encodeURIComponent(
+          `Hola,\n\n` +
+          `Mi nombre es ${nombre} y me gustaría contactarte.\n\n` +
+          `Mensaje:\n${mensaje}\n\n` +
+          `---\n` +
+          `Este mensaje fue enviado desde el formulario de contacto de Galaxia Magna Academy.`
+        );
+        
+        const mailtoLink = `mailto:allan.villalobos.calderon@gmail.com?subject=${subject}&body=${body}`;
+        
+        // Open email client
+        window.open(mailtoLink, '_blank');
+        
+        // Show success message
+        setTimeout(() => {
+          mostrarEstadoEnvio('mailto-success');
+          
+          // Clear form after 3 seconds
+          setTimeout(() => {
+            limpiarFormularioContacto();
+            document.getElementById('contacto-status').style.display = 'none';
+          }, 4000);
+        }, 1000);
+        
+      } catch (error) {
+        console.error('Error al crear enlace mailto:', error);
+        mostrarEstadoEnvio('error');
+      }
+      
+      /* ORIGINAL EmailJS CODE - UNCOMMENT WHEN EMAILJS IS CONFIGURED
+      try {
+        // Parámetros para el template de EmailJS
+        const templateParams = {
+          from_name: nombre,
+          from_email: email,
+          message: mensaje,
+          to_email: 'allan.villalobos.calderon@gmail.com',
+          reply_to: email
+        };
+        
+        // Enviar correo usando EmailJS
+        // NOTA: Debes cambiar 'TU_SERVICE_ID' y 'TU_TEMPLATE_ID' por los valores reales
+        const response = await emailjs.send(
+          'TU_SERVICE_ID_AQUI',  // Cambiar por tu Service ID
+          'TU_TEMPLATE_ID_AQUI', // Cambiar por tu Template ID
+          templateParams
+        );
+        
+        console.log('Correo enviado exitosamente:', response);
+        
+        // Mostrar mensaje de éxito
+        mostrarEstadoEnvio('success');
+        
+        // Limpiar formulario después de 2 segundos
+        setTimeout(() => {
+          limpiarFormularioContacto();
+          document.getElementById('contacto-status').style.display = 'none';
+        }, 3000);
+        
+      } catch (error) {
+        console.error('Error al enviar correo:', error);
+        mostrarEstadoEnvio('error');
+      }
+      */
+    }
+    
+    /**
+     * Valida formato de email usando expresión regular
+     */
+    function validarEmail(email) {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    }
+    
+    /**
+     * Muestra mensajes de error en campos específicos
+     */
+    function mostrarErrorContacto(elementoId, mensaje) {
+      const elemento = document.getElementById(elementoId);
+      if (elemento) {
+        elemento.textContent = mensaje;
+        elemento.style.display = 'block';
+      }
+    }
+    
+    /**
+     * Limpia todos los mensajes de error
+     */
+    function limpiarErroresContacto() {
+      const errores = document.querySelectorAll('.error-message');
+      errores.forEach(error => {
+        error.textContent = '';
+        error.style.display = 'none';
+      });
+    }
+    
+    /**
+     * Muestra el estado del envío del formulario
+     */
+    function mostrarEstadoEnvio(estado) {
+      const statusElement = document.getElementById('contacto-status');
+      const btnText = document.getElementById('btn-text');
+      const btnLoading = document.getElementById('btn-loading');
+      const btnEnviar = document.getElementById('btn-enviar');
+      
+      switch (estado) {
+        case 'loading':
+          btnText.style.display = 'none';
+          btnLoading.style.display = 'inline';
+          btnEnviar.disabled = true;
+          statusElement.style.display = 'none';
+          break;
+          
+        case 'success':
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+          btnEnviar.disabled = false;
+          statusElement.textContent = '¡Mensaje enviado exitosamente! Te responderemos pronto.';
+          statusElement.className = 'status-message success';
+          statusElement.style.display = 'block';
+          break;
+          
+        case 'demo-success':
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+          btnEnviar.disabled = false;
+          statusElement.textContent = '✅ DEMO: Formulario validado correctamente. (EmailJS no configurado aún)';
+          statusElement.className = 'status-message success';
+          statusElement.style.display = 'block';
+          break;
+          
+        case 'mailto-success':
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+          btnEnviar.disabled = false;
+          statusElement.textContent = '📧 Tu cliente de email se ha abierto con el mensaje preparado. ¡Solo envíalo!';
+          statusElement.className = 'status-message success';
+          statusElement.style.display = 'block';
+          break;
+          
+        case 'error':
+          btnText.style.display = 'inline';
+          btnLoading.style.display = 'none';
+          btnEnviar.disabled = false;
+          statusElement.textContent = 'Error al enviar el mensaje. Por favor, intenta nuevamente.';
+          statusElement.className = 'status-message error';
+          statusElement.style.display = 'block';
+          break;
+      }
+    }
+    
+    /**
+     * Limpia todos los campos del formulario de contacto
+     */
+    function limpiarFormularioContacto() {
+      document.getElementById('contacto-nombre').value = '';
+      document.getElementById('contacto-mensaje').value = '';
+      limpiarErroresContacto();
+    }
   </script>
 </body>
 </html>
