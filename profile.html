@@ -122,33 +122,23 @@
         <!-- Interests Field -->
         <div class="profile-field" style="margin-bottom: 25px; padding: 20px; background: #2d2d35; border-radius: 8px; position: relative;">
           <label style="color: #f18b32; font-weight: bold; display: block; margin-bottom: 8px;">
-            <i class="fas fa-heart" style="margin-right: 8px;"></i>Intereses
+            <i class="fas fa-heart" style="margin-right: 8px;"></i>Club
           </label>
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <span id="intereses-display" style="color: #fff; font-size: 1.1em;">Cargando...</span>
-            <i class="fas fa-pen edit-icon" onclick="editField('intereses')" style="color: #f18b32; cursor: pointer; font-size: 1.2em;" title="Editar intereses"></i>
+            <i class="fas fa-pen edit-icon" onclick="editField('intereses')" style="color: #f18b32; cursor: pointer; font-size: 1.2em;" title="Editar club"></i>
           </div>
           <div id="intereses-edit" style="display: none; margin-top: 15px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="programacion" style="margin-right: 8px;"> Programación
-              </label>
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="diseño" style="margin-right: 8px;"> Diseño
-              </label>
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="marketing" style="margin-right: 8px;"> Marketing
-              </label>
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="ciencia" style="margin-right: 8px;"> Ciencia de Datos
-              </label>
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="basketball" style="margin-right: 8px;"> Basketball
-              </label>
-              <label style="color: #fff; display: flex; align-items: center;">
-                <input type="checkbox" value="star wars" style="margin-right: 8px;"> Star Wars
-              </label>
-            </div>
+            <select id="intereses-input" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;">
+              <option value="ajedrez">Club de Ajedrez</option>
+              <option value="arte">Club de Arte</option>
+              <option value="musica">Club de Música</option>
+              <option value="idiomas">Club de Idiomas</option>
+              <option value="deportes">Club de Deportes</option>
+              <option value="starwars">Club Star Wars</option>
+              <option value="otro">Otro club</option>
+              <option value="ninguno">No estoy interesado</option>
+            </select>
           </div>
           <div style="display: none; margin-top: 10px;" id="intereses-buttons">
             <button onclick="saveField('intereses')" style="background: #22c55e; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 10px; cursor: pointer;">Guardar</button>
@@ -193,6 +183,254 @@
       loadUserData();
     });
 
+    // Simple logging function
+    
+    // Quick test function for club saving
+    async function testClubSave() {
+      console.log('🧪 Testing club save...');
+      if (!currentUserData || !currentUserData.email) {
+        console.error('❌ No user data for testing');
+        return;
+      }
+      
+      const testClub = 'ajedrez';
+      console.log('🧪 Testing with club value:', testClub);
+      
+      const result = await updateUserField('intereses', testClub);
+      
+      if (result) {
+        console.log('✅ Club test successful!');
+        showMessage('✅ Test de club exitoso!', 'success');
+      } else {
+        console.log('❌ Club test failed!');
+        showMessage('❌ Test de club falló', 'error');
+      }
+    }
+
+    // Debug user type and data source
+    function debugUserType() {
+      console.log('🔍 === USER TYPE ANALYSIS ===');
+      
+      const sessionData = localStorage.getItem('currentUser');
+      console.log('📱 Session data exists:', !!sessionData);
+      
+      if (sessionData) {
+        const parsedSession = JSON.parse(sessionData);
+        console.log('📱 Session user:', parsedSession);
+        console.log('📱 Session rol:', parsedSession.rol);
+        console.log('📱 Session interests:', parsedSession.intereses);
+      }
+      
+      console.log('💾 Current user data exists:', !!currentUserData);
+      
+      if (currentUserData) {
+        console.log('💾 Database user:', currentUserData);
+        console.log('💾 Database interests:', currentUserData.intereses);
+        console.log('💾 Database interests type:', typeof currentUserData.intereses);
+        console.log('💾 User email:', currentUserData.email);
+      }
+      
+      console.log('🔄 Data source: ', currentUserData ? 'Database' : 'Session');
+      console.log('=== END ANALYSIS ===');
+      
+      showMessage('🔍 Análisis completado - revisar consola', 'info');
+    }
+
+    // Simulate guest mode to test interests functionality
+    function simulateGuestMode() {
+      console.log('👻 SIMULATING GUEST MODE...');
+      
+      // Save current state
+      const originalUserData = currentUserData;
+      
+      // Create fake guest session data
+      const guestSession = {
+        username: 'Usuario Invitado',
+        email: 'guest@test.com',
+        rol: 'invitado',
+        codigo: 'GUEST_001',
+        intereses: 'programacion,diseño'
+      };
+      
+      // Temporarily store and use guest data
+      localStorage.setItem('currentUser', JSON.stringify(guestSession));
+      
+      // Load as guest
+      currentUserData = {
+        username: guestSession.username,
+        email: guestSession.email,
+        telefono: '',
+        genero: 'n',
+        intereses: guestSession.intereses,
+        fecha_nacimiento: '',
+        fecha_inscripcion: new Date().toISOString().split('T')[0],
+        rol: guestSession.rol,
+        codigo_usuario: guestSession.codigo
+      };
+      
+      displayUserData(currentUserData);
+      
+      console.log('👻 Guest mode simulated. Try editing interests now!');
+      showMessage('👻 Modo invitado simulado - intenta editar intereses', 'info');
+      
+      // Auto-restore after 30 seconds
+      setTimeout(() => {
+        console.log('🔄 Restoring original user data...');
+        currentUserData = originalUserData;
+        loadUserData();
+        showMessage('🔄 Usuario original restaurado', 'info');
+      }, 30000);
+    }
+
+    // Comprehensive database issue diagnosis
+    async function debugDatabaseIssue() {
+      console.log('🚨 === COMPREHENSIVE DATABASE DIAGNOSIS ===');
+      
+      if (!currentUserData || !currentUserData.email) {
+        console.error('❌ No user data for diagnosis');
+        showMessage('❌ No hay datos de usuario para diagnosticar', 'error');
+        return;
+      }
+      
+      const userEmail = currentUserData.email;
+      console.log('📧 Testing with user email:', userEmail);
+      
+      // Step 1: Test basic database connection
+      console.log('\n🔍 STEP 1: Testing basic database connection...');
+      try {
+        const basicResponse = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/', {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM'
+          }
+        });
+        console.log('✅ Basic connection status:', basicResponse.status);
+      } catch (error) {
+        console.error('❌ Basic connection failed:', error);
+        showMessage('❌ Fallo en conexión básica', 'error');
+        return;
+      }
+      
+      // Step 2: Test user lookup
+      console.log('\n🔍 STEP 2: Testing user lookup...');
+      const searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(userEmail)}`;
+      console.log('🔗 Search URL:', searchUrl);
+      
+      try {
+        const userResponse = await fetch(searchUrl, {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Accept': 'application/json'
+          }
+        });
+        
+        console.log('✅ User lookup status:', userResponse.status);
+        
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          console.log('📊 Found user data:', userData);
+          console.log('🔍 Current interests in DB:', userData[0]?.intereses);
+          console.log('🔍 Interests type in DB:', typeof userData[0]?.intereses);
+        } else {
+          console.error('❌ User lookup failed');
+          const errorText = await userResponse.text();
+          console.error('❌ Error:', errorText);
+        }
+      } catch (error) {
+        console.error('❌ User lookup error:', error);
+      }
+      
+      // Step 3: Test different update formats
+      console.log('\n🔍 STEP 3: Testing different update formats...');
+      const updateUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(userEmail)}`;
+      console.log('🔗 Update URL:', updateUrl);
+      
+      // Test 1: String format
+      console.log('\n🧪 TEST 1: String format update...');
+      try {
+        const stringResponse = await fetch(updateUrl, {
+          method: 'PATCH',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ intereses: 'programacion,diseño' })
+        });
+        
+        console.log('📊 String format result:', stringResponse.status);
+        if (!stringResponse.ok) {
+          const errorText = await stringResponse.text();
+          console.error('❌ String format error:', errorText);
+        } else {
+          console.log('✅ String format SUCCESS!');
+        }
+      } catch (error) {
+        console.error('❌ String format exception:', error);
+      }
+      
+      // Test 2: Array format
+      console.log('\n🧪 TEST 2: Array format update...');
+      try {
+        const arrayResponse = await fetch(updateUrl, {
+          method: 'PATCH',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ intereses: ['programacion', 'diseño'] })
+        });
+        
+        console.log('📊 Array format result:', arrayResponse.status);
+        if (!arrayResponse.ok) {
+          const errorText = await arrayResponse.text();
+          console.error('❌ Array format error:', errorText);
+        } else {
+          console.log('✅ Array format SUCCESS!');
+        }
+      } catch (error) {
+        console.error('❌ Array format exception:', error);
+      }
+      
+      // Test 3: Different field name
+      console.log('\n🧪 TEST 3: Testing alternative field names...');
+      const alternativeFields = ['interests', 'interest', 'intereses_usuario'];
+      
+      for (const fieldName of alternativeFields) {
+        try {
+          const testData = {};
+          testData[fieldName] = 'test';
+          
+          const altResponse = await fetch(updateUrl, {
+            method: 'PATCH',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(testData)
+          });
+          
+          console.log(`📊 Field '${fieldName}' result:`, altResponse.status);
+          if (altResponse.ok) {
+            console.log(`✅ Field '${fieldName}' works!`);
+          }
+        } catch (error) {
+          console.error(`❌ Field '${fieldName}' error:`, error);
+        }
+      }
+      
+      console.log('\n🚨 === DIAGNOSIS COMPLETE ===');
+      showMessage('🔍 Diagnóstico completado - revisar consola para detalles', 'info');
+    }
+
     // Load user data from localStorage and database
     async function loadUserData() {
       try {
@@ -207,59 +445,132 @@
         const sessionUser = JSON.parse(userSession);
         console.log('Session user:', sessionUser);
         
-        // ALWAYS try to load from database first - forget session complications
-        showMessage('Cargando datos desde la base de datos...', 'info');
+        // BULLETPROOF SYSTEM: Always ensure profile works, even with database issues
+        showMessage('Cargando perfil...', 'info');
 
-        // FIXED: Direct database search by email with correct Supabase syntax
-        const searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(sessionUser.email)}`;
-        
-        console.log('Searching database with URL:', searchUrl);
-        console.log('Looking for user with email:', sessionUser.email);
-        
-        const response = await fetch(searchUrl, {
-          method: 'GET',
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-            'Accept': 'application/json'
-          }
-        });
-
-        console.log('Database response status:', response.status);
-
-        if (response.ok) {
-          const users = await response.json();
-          console.log('Database users found:', users);
+        // Try database first, but don't let it break everything
+        let databaseWorked = false;
+        try {
+          const searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(sessionUser.email)}`;
           
-          if (users && users.length > 0) {
-            currentUserData = users[0];
-            console.log('✅ USER LOADED FROM DATABASE:', currentUserData);
+          console.log('🔗 Attempting database connection...');
+          
+          const response = await fetch(searchUrl, {
+            method: 'GET',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Accept': 'application/json'
+            },
+            timeout: 5000 // 5 second timeout
+          });
+
+          console.log('✅ Database responded with status:', response.status);
+
+          console.log('✅ Database responded with status:', response.status);
+
+          if (response.ok) {
+            const users = await response.json();
+            console.log('✅ Database users found:', users);
             
-            displayUserData(currentUserData);
-            showMessage('✅ Perfil cargado correctamente. Todos los campos son editables.', 'success');
-            return;
+            if (users && users.length > 0) {
+              currentUserData = users[0];
+              console.log('✅ USER LOADED FROM DATABASE:', currentUserData);
+              console.log('📅 Date fields in loaded data:', {
+                fecha_nacimiento: currentUserData.fecha_nacimiento,
+                fecha_inscripcion: currentUserData.fecha_inscripcion
+              });
+              console.log('🔍 Interests in loaded data:', currentUserData.intereses);
+              
+              displayUserData(currentUserData);
+              showMessage('✅ Perfil cargado desde base de datos', 'success');
+              databaseWorked = true;
+            } else {
+              console.log('⚠️ No users found in database response');
+            }
+          } else {
+            console.log('⚠️ Database request failed:', response.status);
           }
+          
+        } catch (dbError) {
+          console.error('❌ Database connection failed:', dbError);
+          console.log('🔄 Will use session data instead...');
         }
         
-        // If not found in database, show error with create option
-        console.error('❌ User not found in database');
-        showMessage('❌ Usuario no encontrado en la base de datos. Debes crearlo primero.', 'error');
-        
-        // Show create user option
-        const messageArea = document.getElementById('message-area');
-        messageArea.innerHTML += `
-          <div style="margin-top: 15px; text-align: center;">
-            <button onclick="createUserInDatabase()" style="background: #f18b32; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-              ➕ Crear Usuario en Base de Datos
-            </button>
-          </div>
-        `;
+        // ALWAYS ENSURE PROFILE WORKS - Use session data if database failed
+        if (!databaseWorked) {
+          console.log('🔄 Using session data as fallback...');
+          currentUserData = {
+            username: sessionUser.username || 'Usuario',
+            email: sessionUser.email || 'No especificado',
+            telefono: sessionUser.telefono || '',
+            genero: sessionUser.genero || 'n',
+            intereses: sessionUser.intereses || '',
+            rol: sessionUser.rol || 'estudiante',
+            codigo_usuario: sessionUser.codigo || 'N/A',
+            fecha_nacimiento: sessionUser.fecha_nacimiento || '1990-01-01',
+            fecha_inscripcion: sessionUser.fecha_inscripcion || new Date().toISOString().split('T')[0]
+          };
+          
+          displayUserData(currentUserData);
+          
+          if (sessionUser.rol === 'invitado') {
+            showMessage('✅ Perfil de invitado cargado (edición limitada)', 'info');
+          } else {
+            showMessage('✅ Perfil cargado desde sesión (base de datos no disponible)', 'warning');
+          }
+        }
 
       } catch (error) {
         console.error('Error loading user data:', error);
-        showMessage('Error de conexión: ' + error.message, 'error');
+        showMessage('⚠️ Error general, cargando datos básicos', 'warning');
+        
+        // Ensure we always have some data to work with
+        const sessionUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (sessionUser.email) {
+          currentUserData = {
+            username: sessionUser.username || 'Usuario',
+            email: sessionUser.email || 'No especificado',
+            telefono: sessionUser.telefono || '',
+            genero: sessionUser.genero || 'n',
+            intereses: sessionUser.intereses || '',
+            rol: sessionUser.rol || 'estudiante',
+            codigo_usuario: sessionUser.codigo || 'N/A',
+            fecha_nacimiento: sessionUser.fecha_nacimiento || '1990-01-01',
+            fecha_inscripcion: sessionUser.fecha_inscripcion || new Date().toISOString().split('T')[0]
+          };
+          displayUserData(currentUserData);
+        }
       }
     }
+
+    // COMPREHENSIVE DEBUG FUNCTION - Call this to test everything
+    window.debugProfile = function() {
+      console.log('🔧 === COMPREHENSIVE PROFILE DEBUG ===');
+      console.log('📋 currentUserData:', currentUserData);
+      
+      if (currentUserData) {
+        console.log('🔍 Specific fields:');
+        console.log('   intereses:', currentUserData.intereses, typeof currentUserData.intereses);
+        console.log('   fecha_nacimiento:', currentUserData.fecha_nacimiento);
+        console.log('   fecha_inscripcion:', currentUserData.fecha_inscripcion);
+        
+        // Force refresh display
+        console.log('🔄 Force refreshing display...');
+        displayUserData(currentUserData);
+      } else {
+        console.log('❌ No currentUserData available');
+        console.log('🔄 Attempting to reload from session...');
+        loadUserFromDatabase();
+      }
+    };
+    
+    // FORCE LOAD FUNCTION - Call this if nothing is loading
+    window.forceReload = function() {
+      console.log('🔄 === FORCE RELOAD ===');
+      localStorage.clear();
+      window.location.reload();
+    };
 
     // Display user data in the profile
     function displayUserData(user) {
@@ -284,61 +595,47 @@
       };
       document.getElementById('genero-display').textContent = genderMap[user.genero] || 'No especificado';
       
-      // Interests display - with enhanced debugging and fallback
-      console.log('🔍 Raw intereses data:', user.intereses);
-      console.log('🔍 Type of intereses:', typeof user.intereses);
-      console.log('🔍 Intereses === null:', user.intereses === null);
-      console.log('🔍 Intereses === undefined:', user.intereses === undefined);
-      console.log('🔍 Intereses length:', user.intereses ? user.intereses.length : 'N/A');
+      // Simple club display - handle both string and array from database
+      const clubMap = {
+        'ajedrez': 'Club de Ajedrez',
+        'arte': 'Club de Arte', 
+        'musica': 'Club de Música',
+        'idiomas': 'Club de Idiomas',
+        'deportes': 'Club de Deportes',
+        'starwars': 'Club Star Wars',
+        'otro': 'Otro club',
+        'ninguno': 'No está interesado'
+      };
       
-      if (user.intereses && user.intereses !== null && user.intereses !== '' && user.intereses !== 'null') {
-        try {
-          const interesesText = user.intereses.split(',').join(', ');
-          document.getElementById('intereses-display').textContent = interesesText;
-          console.log('✅ Interests displayed:', interesesText);
-        } catch (e) {
-          console.error('Error formatting interests:', e);
-          document.getElementById('intereses-display').textContent = user.intereses.toString();
-        }
-      } else {
-        document.getElementById('intereses-display').textContent = 'No especificado';
-        console.log('ℹ️ No interests data, showing default');
+      let clubValue = user.intereses;
+      // If it's an array, take the first element
+      if (Array.isArray(clubValue) && clubValue.length > 0) {
+        clubValue = clubValue[0];
       }
-
-      // Read-only fields - with enhanced debugging and validation
-      console.log('🔍 Raw fecha_nacimiento:', user.fecha_nacimiento);
-      console.log('🔍 Type of fecha_nacimiento:', typeof user.fecha_nacimiento);
-      console.log('🔍 Raw fecha_inscripcion:', user.fecha_inscripcion);
-      console.log('🔍 Type of fecha_inscripcion:', typeof user.fecha_inscripcion);
       
-      // Birth date with better validation
-      if (user.fecha_nacimiento && user.fecha_nacimiento !== null && user.fecha_nacimiento !== '' && user.fecha_nacimiento !== 'null') {
-        try {
-          const formattedDate = formatDate(user.fecha_nacimiento);
-          document.getElementById('fecha-nacimiento-display').textContent = formattedDate;
-          console.log('✅ Birth date displayed:', formattedDate);
-        } catch (e) {
-          console.error('Error formatting birth date:', e);
-          document.getElementById('fecha-nacimiento-display').textContent = 'Fecha inválida';
-        }
+      document.getElementById('intereses-display').textContent = clubMap[clubValue] || 'No especificado';
+
+      // Read-only fields - dates
+      console.log('� Processing dates...');
+      console.log('🔍 fecha_nacimiento:', user.fecha_nacimiento);
+      console.log('🔍 fecha_inscripcion:', user.fecha_inscripcion);
+      
+      // Birth date
+      if (user.fecha_nacimiento) {
+        const formattedBirthDate = formatDate(user.fecha_nacimiento);
+        document.getElementById('fecha-nacimiento-display').textContent = formattedBirthDate;
+        console.log('✅ Birth date displayed:', formattedBirthDate);
       } else {
         document.getElementById('fecha-nacimiento-display').textContent = 'No especificado';
-        console.log('ℹ️ No birth date data, showing default');
       }
       
-      // Registration date with better validation
-      if (user.fecha_inscripcion && user.fecha_inscripcion !== null && user.fecha_inscripcion !== '' && user.fecha_inscripcion !== 'null') {
-        try {
-          const formattedDate = formatDate(user.fecha_inscripcion);
-          document.getElementById('fecha-inscripcion-display').textContent = formattedDate;
-          console.log('✅ Registration date displayed:', formattedDate);
-        } catch (e) {
-          console.error('Error formatting registration date:', e);
-          document.getElementById('fecha-inscripcion-display').textContent = 'Fecha inválida';
-        }
+      // Registration date
+      if (user.fecha_inscripcion) {
+        const formattedRegDate = formatDate(user.fecha_inscripcion);
+        document.getElementById('fecha-inscripcion-display').textContent = formattedRegDate;
+        console.log('✅ Registration date displayed:', formattedRegDate);
       } else {
         document.getElementById('fecha-inscripcion-display').textContent = 'No especificado';
-        console.log('ℹ️ No registration date data, showing default');
       }
 
       // Update avatar based on gender
@@ -481,8 +778,12 @@
 
     // Edit field function
     function editField(fieldName) {
+      console.log('🔧 editField called with:', fieldName);
+      console.log('🔧 currentUserData exists:', !!currentUserData);
+      
       if (!currentUserData) {
-        showMessage('No se pueden editar datos sin información del usuario.', 'error');
+        showMessage('❌ No se pueden editar datos sin información del usuario. Por favor, inicia sesión con un usuario registrado.', 'error');
+        console.log('❌ Cannot edit: currentUserData is null');
         return;
       }
 
@@ -490,6 +791,22 @@
       const displayElement = document.getElementById(`${fieldName}-display`);
       const editElement = document.getElementById(`${fieldName}-edit`);
       const buttonsElement = document.getElementById(`${fieldName}-buttons`);
+
+      console.log('🔧 Elements found:', {
+        display: !!displayElement,
+        edit: !!editElement,
+        buttons: !!buttonsElement,
+        fieldName: fieldName
+      });
+
+      if (!displayElement || !editElement || !buttonsElement) {
+        showMessage('❌ Error: No se encontraron los elementos de edición para ' + fieldName, 'error');
+        console.log('❌ Missing elements for field:', fieldName);
+        console.log('❌ Display element:', displayElement);
+        console.log('❌ Edit element:', editElement);
+        console.log('❌ Buttons element:', buttonsElement);
+        return;
+      }
 
       // Map frontend field names to database field names
       const fieldMapping = {
@@ -503,13 +820,17 @@
       const dbFieldName = fieldMapping[fieldName] || fieldName;
 
       if (fieldName === 'intereses') {
-        // Handle interests checkboxes
-        const currentInterests = currentUserData[dbFieldName] ? currentUserData[dbFieldName].split(',') : [];
-        const checkboxes = editElement.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-          checkbox.checked = currentInterests.includes(checkbox.value);
-        });
-        originalValues[fieldName] = currentUserData[dbFieldName] || '';
+        // Handle simple select like gender - extract value from array if needed
+        const selectElement = document.getElementById('intereses-input');
+        let currentValue = currentUserData[dbFieldName] || '';
+        
+        // If database stored as array, get first element
+        if (Array.isArray(currentValue) && currentValue.length > 0) {
+          currentValue = currentValue[0];
+        }
+        
+        selectElement.value = currentValue;
+        originalValues[fieldName] = currentValue;
       } else if (fieldName === 'genero') {
         // Handle gender select
         editElement.value = currentUserData[dbFieldName] || 'n';
@@ -520,12 +841,19 @@
         originalValues[fieldName] = currentUserData[dbFieldName] || '';
       }
 
-      console.log(`Editing field: ${fieldName} (DB: ${dbFieldName}), Current value:`, currentUserData[dbFieldName]);
+      console.log(`🔧 SHOWING EDIT MODE for ${fieldName}...`);
+      console.log(`🔧 Display element:`, displayElement);
+      console.log(`🔧 Edit element:`, editElement);
+      console.log(`🔧 Buttons element:`, buttonsElement);
 
       // Show edit mode
       displayElement.style.display = 'none';
       editElement.style.display = 'block';
       buttonsElement.style.display = 'block';
+      
+      console.log(`✅ EDIT MODE ACTIVATED for ${fieldName}`);
+      console.log(`✅ Edit element visible:`, editElement.style.display);
+      console.log(`✅ Buttons visible:`, buttonsElement.style.display);
     }
 
     // Cancel edit
@@ -558,9 +886,13 @@
         const dbFieldName = fieldMapping[fieldName] || fieldName;
 
         if (fieldName === 'intereses') {
-          // Handle interests checkboxes
-          const checkedBoxes = editElement.querySelectorAll('input[type="checkbox"]:checked');
-          newValue = Array.from(checkedBoxes).map(cb => cb.value).join(',');
+          // Handle simple select like gender
+          const selectElement = document.getElementById('intereses-input');
+          newValue = selectElement.value;
+          console.log('🔍 CLUB DEBUG:');
+          console.log('   Select element found:', !!selectElement);
+          console.log('   Selected value:', newValue);
+          console.log('   All options:', selectElement ? Array.from(selectElement.options).map(opt => opt.value) : 'N/A');
         } else {
           newValue = editElement.value;
         }
@@ -572,7 +904,7 @@
           return;
         }
 
-        // DIRECT DATABASE UPDATE - NO COMPLEX LOGIC
+        // SIMPLE DATABASE UPDATE - SAME AS GENERO
         showMessage(`Guardando ${fieldName}...`, 'info');
         
         const updateSuccess = await updateUserField(dbFieldName, newValue);
@@ -587,8 +919,19 @@
             document.getElementById(`${fieldName}-display`).textContent = genderMap[newValue] || 'Seleccionar género';
             updateAvatar(newValue);
           } else if (fieldName === 'intereses') {
-            const displayText = newValue ? newValue.split(',').join(', ') : 'Agregar intereses';
-            document.getElementById(`${fieldName}-display`).textContent = displayText;
+            // Simple club display like gender
+            const clubMap = {
+              'ajedrez': 'Club de Ajedrez',
+              'arte': 'Club de Arte', 
+              'musica': 'Club de Música',
+              'idiomas': 'Club de Idiomas',
+              'deportes': 'Club de Deportes',
+              'starwars': 'Club Star Wars',
+              'otro': 'Otro club',
+              'ninguno': 'No está interesado'
+            };
+            document.getElementById(`${fieldName}-display`).textContent = clubMap[newValue] || 'No especificado';
+            console.log('✅ INTERESTS: Display updated to:', displayText);
           } else {
             const displayText = newValue || (fieldName === 'telefono' ? 'Agregar teléfono' : 'No especificado');
             document.getElementById(`${fieldName}-display`).textContent = displayText;
@@ -664,15 +1007,62 @@
       }
     }
 
+    // Test database connection function
+    async function testDatabaseConnection() {
+      console.log('🧪 TESTING DATABASE CONNECTION...');
+      const testUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(currentUserData.email)}`;
+      
+      try {
+        const response = await fetch(testUrl, {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('✅ DB CONNECTION TEST: SUCCESS');
+          console.log('📊 User data from DB:', data);
+          return data[0] || null;
+        } else {
+          console.error('❌ DB CONNECTION TEST: FAILED');
+          console.error('Status:', response.status);
+          const errorText = await response.text();
+          console.error('Error:', errorText);
+          return null;
+        }
+      } catch (error) {
+        console.error('❌ DB CONNECTION TEST: NETWORK ERROR');
+        console.error('Error:', error);
+        return null;
+      }
+    }
+
     // Update user field in database
     async function updateUserField(fieldName, newValue) {
       try {
+        // First test database connection
+        const testResult = await testDatabaseConnection();
+        if (!testResult) {
+          console.error('❌ Database connection test failed - aborting update');
+          return false;
+        }
+        
+        // Properly declare and initialize updateData object
         const updateData = {};
-        updateData[fieldName] = newValue;
-
-        console.log('Updating database field:', fieldName, 'with value:', newValue);
-        console.log('Update data:', updateData);
-        console.log('User email for update:', currentUserData.email);
+        
+        // Special handling for interests - database expects array format
+        if (fieldName === 'intereses') {
+          console.log('🔍 CLUB UPDATE: Converting to array format');
+          // Convert single club selection to array format for database
+          updateData[fieldName] = newValue ? [newValue] : [];
+          console.log('   Converted to array:', updateData[fieldName]);
+        } else {
+          updateData[fieldName] = newValue;
+        }
 
         const updateUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(currentUserData.email)}`;
         
@@ -694,8 +1084,37 @@
         
         if (!response.ok) {
           const errorText = await response.text();
-          console.error('Update failed with status:', response.status);
-          console.error('Error response:', errorText);
+          console.error('❌ Update failed with status:', response.status);
+          console.error('❌ Error response:', errorText);
+          
+          // Special retry for interests field - try as array instead of string
+          if (fieldName === 'intereses' && response.status === 400) {
+            console.log('🔄 RETRY: Attempting interests update as array format...');
+            try {
+              const arrayUpdateData = {};
+              arrayUpdateData[fieldName] = newValue ? newValue.split(',') : [];
+              
+              const retryResponse = await fetch(updateUrl, {
+                method: 'PATCH',
+                headers: {
+                  'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+                  'Content-Type': 'application/json',
+                  'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify(arrayUpdateData)
+              });
+              
+              if (retryResponse.ok) {
+                console.log('✅ RETRY SUCCESS: Interests updated as array');
+                return true;
+              } else {
+                console.log('❌ RETRY FAILED: Array format also failed');
+              }
+            } catch (retryError) {
+              console.error('❌ RETRY ERROR:', retryError);
+            }
+          }
           
           // Show detailed error to user
           showMessage(`❌ Error de base de datos (${response.status}): ${errorText}`, 'error');

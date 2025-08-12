@@ -26,6 +26,76 @@
   </header>
 
   <main>
+    <!-- Success Popup Modal -->
+    <div id="success-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+      <div style="background: #23232b; border-radius: 16px; padding: 40px; max-width: 500px; margin: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid #f18b32; text-align: center;">
+        <div style="margin-bottom: 20px;">
+          <i style="font-size: 48px; color: #22c55e;">✅</i>
+        </div>
+        <h3 style="color: #f18b32; margin-bottom: 16px; font-size: 1.5em;">¡Usuario Registrado Exitosamente!</h3>
+        <p style="color: #fff; margin-bottom: 8px; font-size: 1.1em;" id="popup-username">Usuario: <span id="popup-username-value"></span></p>
+        <p style="color: #fff; margin-bottom: 8px; font-size: 1.1em;" id="popup-email">Email: <span id="popup-email-value"></span></p>
+        <p style="color: #fff; margin-bottom: 20px; font-size: 1.1em;" id="popup-rol">Rol: <span id="popup-rol-value"></span></p>
+        
+        <div style="background: #2d2d35; border-radius: 8px; padding: 20px; margin: 20px 0; border: 1px solid #4a4a55;">
+          <p style="color: #f18b32; margin-bottom: 8px; font-weight: bold; font-size: 1.1em;">Código de Usuario:</p>
+          <p style="color: #22c55e; font-size: 1.3em; font-weight: bold; font-family: monospace; margin-bottom: 12px;" id="popup-code-value"></p>
+          <p style="color: #c9c9c9; font-size: 0.9em; margin-bottom: 12px;">⚠️ Por favor, guarda este código. Lo necesitarás para iniciar sesión.</p>
+          <button onclick="copiarCodigoAlPortapapeles()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9em; margin-right: 10px;">
+            📋 Copiar Código
+          </button>
+          <button onclick="guardarCodigoArchivo()" style="background: #22c55e; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
+            💾 Guardar como Archivo
+          </button>
+        </div>
+        
+        <div style="margin-top: 24px;">
+          <button onclick="cerrarPopupYVolverInicio()" style="background: #f18b32; color: white; border: none; padding: 12px 32px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+            Entendido, ir al Inicio
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Club Information Popup Modal -->
+    <div id="club-info-popup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+      <div style="background: #23232b; border-radius: 16px; padding: 40px; max-width: 600px; margin: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid #f18b32; text-align: left;">
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+          <i style="font-size: 32px; color: #f18b32; margin-right: 12px;">ℹ️</i>
+          <h3 style="color: #f18b32; margin: 0; font-size: 1.4em;">Información sobre los Clubes</h3>
+        </div>
+        
+        <div style="color: #fff; line-height: 1.6; font-size: 1.1em; margin-bottom: 24px;">
+          <p style="margin-bottom: 16px;">
+            Unirse a un club universitario es una oportunidad
+            para conocer personas con intereses similares,
+            desarrollar nuevas habilidades
+            y enriquecer la experiencia académica
+            con actividades fuera de las clases.
+          </p>
+          
+          <p style="margin-bottom: 16px;">
+            Aunque es totalmente opcional,
+            participar en un club puede abrir puertas
+            a amistades duraderas
+            y a un crecimiento personal que complementa tu formación.
+          </p>
+          
+          <p style="margin-bottom: 0; color: #22c55e; font-weight: bold;">
+            Además, ganarás puntos extra
+            que te ayudarán a cumplir más fácilmente
+            los requisitos para la graduación.
+          </p>
+        </div>
+        
+        <div style="text-align: center;">
+          <button onclick="cerrarPopupClubInfo()" style="background: #f18b32; color: white; border: none; padding: 12px 32px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+            Entendido
+          </button>
+        </div>
+      </div>
+    </div>
+
     <section>
       <!--
         FORMULARIO DE REGISTRO:
@@ -180,95 +250,40 @@
             Si seleccionas Star Wars, aparece un mensaje especial que se desvanece (ver JS y CSS).
           -->
           <fieldset class="mt-4">
-            <legend>Seleccione sus intereses:</legend>
-            <div>
-              <!-- Opciones de intereses -->
-              <div>
-                <div class="form-check">
-                  <!-- Checkbox: Permite seleccionar múltiples opciones -->
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes1" value="programacion">
-                  <label class="form-check-label" for="interes1">Programación</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes2" value="diseño">
-                  <label class="form-check-label" for="interes2">Diseño Gráfico</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes3" value="marketing">
-                  <label class="form-check-label" for="interes3">Marketing Digital</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes4" value="ciencia">
-                  <label class="form-check-label" for="interes4">Ciencia de Datos</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes5" value="basketball">
-                  <label class="form-check-label" for="interes5">Basketball</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes6" value="musica">
-                  <label class="form-check-label" for="interes6">Música</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" name="intereses[]" id="interes7" value="starwars">
-                  <label class="form-check-label" for="interes7">Star Wars</label>
-                </div>
+            <legend>Selecciona un club para unirte:</legend>
+            <div class="mb-3">
+              <label for="intereses" class="form-label">
+                Elige tu club preferido:
+                <i id="info-club" style="margin-left: 8px; color: #f18b32; cursor: pointer; font-size: 1.1em; border: 1px solid #f18b32; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-weight: bold;" title="Información sobre los clubes">i</i>
+              </label>
+              <select class="form-select" id="intereses" name="intereses" required onchange="manejarSeleccionClub()">
+                <option value="ajedrez">Club de Ajedrez</option>
+                <option value="arte">Club de Arte</option>
+                <option value="musica">Club de Música</option>
+                <option value="idiomas">Club de Idiomas</option>
+                <option value="deportes">Club de Deportes</option>
+                <option value="starwars">Club Star Wars</option>
+                <option value="otro">Otro club</option>
+                <option value="ninguno">No estoy interesado</option>
+              </select>
+            </div>
+            <!-- Mensaje especial de la fuerza para Star Wars -->
+            <div id="fuerza-msg" style="display: none; text-align: center; margin-top: 15px; opacity: 0; transition: opacity 2s;">
+              <div style="color: #f18b32; font-weight: bold; margin-bottom: 8px;">
+                ✨ May the Force be with you! ✨
               </div>
-              <!-- Cajas para imágenes de intereses -->
-              <div class="interests-container" style="margin-top: 16px; margin-bottom: 40px;">
-                <div id="imgbox1" class="img_box">
-                  <img id="img-programacion"
-                    src="https://images.icon-icons.com/1859/PNG/512/codinghtml_117947.png"
-                    alt="Programación"
-                    >
-                </div>
-                <div id="imgbox2"
-                  class="img_box">
-                  <img id="img-diseno"
-                    src="https://images.icon-icons.com/537/PNG/512/paint-brush-2_icon-icons.com_52930.png"
-                    alt="Diseño Gráfico"
-                    >
-                </div>
-                <div id="imgbox3"
-                  class="img_box">
-                  <img id="img-marketing"
-                    src="https://images.icon-icons.com/2069/PNG/512/coin_dollar_finance_icon_125510.png"
-                    alt="Marketing Digital"
-                    >
-                </div>
-                <div id="imgbox4"
-                  class="img_box">
-                  <img id="img-ciencia"
-                    src="https://images.icon-icons.com/4277/PNG/512/finance_business_analysis_analytics_science_data_icon_266082.png"
-                    alt="Ciencia de Datos"
-                    >
-                </div>
-                <div id="imgbox5"
-                  class="img_box">
-                  <img id="img-basketball"
-                    src="https://images.icon-icons.com/553/PNG/512/basketball_icon-icons.com_53566.png"
-                    alt="Basketball"
-                    >
-                </div>
-                <div id="imgbox6"
-                  class="img_box">
-                  <img id="img-musica"
-                    src="https://images.icon-icons.com/270/PNG/512/Music_29918.png"
-                    alt="Música"
-                    >
-                </div>
-                <div id="imgbox7"
-                  class="img_box">
-                  <img id="img-starwars"
-                    src="images/banner.png"
-                    alt="Star Wars"
-                    >
-                </div>
+              <div style="color: #ffff00; font-weight: bold; font-style: italic;">
+                The force is strong with this one.
               </div>
-              <!-- Mensaje especial de la fuerza -->
-              <div id="fuerza-msg">May the force be with you!</div>
             </div>
           </fieldset>
+
+          <!-- Mensaje especial de la fuerza prominente -->
+          <div id="fuerza-msg-principal" style="text-align: center; margin: 20px 0; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 2s;">
+            <div style="color: #ffff00; font-weight: bold; font-style: italic; font-size: 1.4em; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-family: Arial, sans-serif;">
+              The force is strong with this one.
+            </div>
+          </div>
 
           <!-- Botones de acción -->
           <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-top: 30px;">
@@ -423,6 +438,39 @@
       }
     }
     
+    // Función para manejar la selección de club
+    function manejarSeleccionClub() {
+      const club = document.getElementById('intereses').value;
+      const fuerzaMsg = document.getElementById('fuerza-msg');
+      const fuerzaMsgPrincipal = document.getElementById('fuerza-msg-principal');
+      
+      if (club === 'starwars') {
+        // Reproducir sonido de lightsaber
+        playLightsaberSound();
+        
+        // Mostrar mensaje de la fuerza en el área de clubs
+        fuerzaMsg.style.display = 'block';
+        fuerzaMsg.style.opacity = '1';
+        
+        // Mostrar mensaje principal amarillo prominente (solo cambiar opacity)
+        fuerzaMsgPrincipal.style.opacity = '1';
+        
+        // Fade out después de 4 segundos
+        setTimeout(function() {
+          fuerzaMsg.style.opacity = '0';
+          fuerzaMsgPrincipal.style.opacity = '0';
+          setTimeout(function() {
+            fuerzaMsg.style.display = 'none';
+          }, 2000);
+        }, 4000);
+      } else {
+        // Ocultar mensajes si no es Star Wars
+        fuerzaMsg.style.display = 'none';
+        fuerzaMsg.style.opacity = '0';
+        fuerzaMsgPrincipal.style.opacity = '0';
+      }
+    }
+
     // Función para reproducir sonido de lightsaber cuando se selecciona Star Wars
     function playLightsaberSound() {
       const audio = new Audio('misc/lightsaber-ignition-6816.mp3');
@@ -468,11 +516,8 @@
     async function enviarDatosRegistro() {
       const form = document.getElementById('registro-form');
       
-      // Recopilar intereses seleccionados
-      const intereses = [];
-      document.querySelectorAll('input[name="intereses[]"]:checked').forEach(checkbox => {
-        intereses.push(checkbox.value);
-      });
+      // Recopilar club seleccionado
+      const clubSeleccionado = document.getElementById('intereses').value;
       
       // Crear objeto JSON con todos los datos requeridos
       const registroData = {
@@ -485,7 +530,8 @@
         fecha_inscripcion: document.getElementById('fecha-inscripcion').value,
         codigo_usuario: document.getElementById('codigo-estudiante').value,
         genero: document.querySelector('input[name="gender"]:checked')?.value || '',
-        intereses: intereses
+        // Convert intereses to array format for database compatibility
+        intereses: clubSeleccionado ? [clubSeleccionado] : []
       };
       
       // Mostrar mensaje de carga
@@ -509,14 +555,22 @@
         
         if (response.ok) {
           const result = await response.json();
+          console.log('Registration successful, server response:', result);
           
           // Ocultar mensaje de carga
           registroMsg.style.display = 'none';
           
           // Verificar si fue exitoso
           if (result && result.length > 0) {
-            // Mostrar alerta de éxito
-            alert('✅ Usuario registrado exitosamente en la base de datos\n\nCódigo: ' + result[0].codigo_usuario);
+            console.log('User created successfully:', result[0]);
+            // Mostrar popup de éxito con información del usuario
+            try {
+              mostrarPopupExito(result[0], registroData);
+            } catch (popupError) {
+              console.error('Error showing popup:', popupError);
+              // Fallback: mostrar alerta básica
+              alert(`✅ Usuario registrado exitosamente!\n\nCódigo: ${result[0].codigo_usuario}\nNombre: ${registroData.username}\nEmail: ${registroData.email}`);
+            }
             
             // Limpiar formulario inmediatamente
             form.reset();
@@ -529,11 +583,14 @@
             const hoy = new Date().toISOString().split('T')[0];
             fechaInscripcion.value = hoy;
           } else {
+            // Ocultar mensaje de carga
+            registroMsg.style.display = 'none';
             alert('⚠️ Respuesta inesperada del servidor');
           }
           
         } else {
           // Error HTTP
+          registroMsg.style.display = 'none'; // Ocultar mensaje de carga
           const errorText = await response.text();
           console.error('HTTP Error:', response.status, errorText);
           alert('❌ Error HTTP ' + response.status + ': ' + errorText);
@@ -568,27 +625,219 @@
       
       // Generar código inicial si hay rol seleccionado
       generarCodigoEstudiante();
+    });
+    
+    // Variables globales para el popup
+    let currentUserCode = '';
+    let currentUserData = {};
+    
+    // Función para mostrar el popup de éxito
+    function mostrarPopupExito(usuarioCreado, datosFormulario) {
+      console.log('mostrarPopupExito called with:', usuarioCreado, datosFormulario);
       
-      // Agregar event listener para Star Wars checkbox
-      const starWarsCheckbox = document.getElementById('interes7');
-      if (starWarsCheckbox) {
-        starWarsCheckbox.addEventListener('change', function() {
-          if (this.checked) {
-            playLightsaberSound();
-            // Mostrar mensaje de la fuerza (si existe en el CSS)
-            const fuerzaMsg = document.getElementById('fuerza-msg');
-            if (fuerzaMsg) {
-              fuerzaMsg.style.display = 'block';
-              fuerzaMsg.style.opacity = '1';
-              // Fade out después de 3 segundos
-              setTimeout(function() {
-                fuerzaMsg.style.transition = 'opacity 2s';
-                fuerzaMsg.style.opacity = '0';
-              }, 3000);
-            }
-          }
-        });
+      try {
+        // Guardar información para las funciones de guardado
+        currentUserCode = usuarioCreado.codigo_usuario;
+        currentUserData = {
+          nombre: datosFormulario.username,
+          email: datosFormulario.email,
+          rol: datosFormulario.rol,
+          codigo: usuarioCreado.codigo_usuario
+        };
+        
+        // Llenar la información en el popup
+        document.getElementById('popup-username-value').textContent = datosFormulario.username;
+        document.getElementById('popup-email-value').textContent = datosFormulario.email;
+        document.getElementById('popup-rol-value').textContent = capitalizeFirstLetter(datosFormulario.rol);
+        document.getElementById('popup-code-value').textContent = usuarioCreado.codigo_usuario;
+        
+        // Mostrar el popup con efecto de fade
+        const popup = document.getElementById('success-popup');
+        if (!popup) {
+          console.error('Popup element not found!');
+          return;
+        }
+        
+        popup.style.display = 'flex';
+        popup.style.opacity = '0';
+        
+        // Animación de entrada
+        setTimeout(() => {
+          popup.style.transition = 'opacity 0.3s ease-in-out';
+          popup.style.opacity = '1';
+        }, 50);
+        
+        // Reproducir sonido de éxito si está disponible
+        try {
+          playLightsaberSound();
+        } catch (e) {
+          console.log('Sonido no disponible');
+        }
+        
+        console.log('Popup shown successfully');
+      } catch (error) {
+        console.error('Error in mostrarPopupExito:', error);
+        throw error; // Re-throw to be caught by the calling function
       }
+    }
+    
+    // Función para copiar código al portapapeles
+    function copiarCodigoAlPortapapeles() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(currentUserCode).then(() => {
+          mostrarMensajeTemporalEnBoton('📋 Copiar Código', '✅ ¡Copiado!');
+        }).catch(err => {
+          console.error('Error al copiar:', err);
+          fallbackCopiarTexto(currentUserCode);
+        });
+      } else {
+        fallbackCopiarTexto(currentUserCode);
+      }
+    }
+    
+    // Función fallback para copiar en navegadores antiguos
+    function fallbackCopiarTexto(texto) {
+      const textArea = document.createElement('textarea');
+      textArea.value = texto;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          mostrarMensajeTemporalEnBoton('📋 Copiar Código', '✅ ¡Copiado!');
+        } else {
+          alert('Código: ' + texto + '\n\nCopia manualmente este código.');
+        }
+      } catch (err) {
+        alert('Código: ' + texto + '\n\nCopia manualmente este código.');
+      } finally {
+        document.body.removeChild(textArea);
+      }
+    }
+    
+    // Función para guardar código como archivo
+    function guardarCodigoArchivo() {
+      const contenido = `GALAXIA MAGNA ACADEMY - INFORMACIÓN DE USUARIO
+========================================
+
+Nombre: ${currentUserData.nombre}
+Email: ${currentUserData.email}
+Rol: ${capitalizeFirstLetter(currentUserData.rol)}
+Código de Usuario: ${currentUserData.codigo}
+Fecha de Registro: ${new Date().toLocaleDateString('es-ES')}
+
+========================================
+IMPORTANTE: Guarda este código para iniciar sesión
+========================================`;
+
+      const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `GMA_Usuario_${currentUserData.codigo}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      mostrarMensajeTemporalEnBoton('💾 Guardar como Archivo', '✅ ¡Guardado!');
+    }
+    
+    // Función para mostrar mensaje temporal en botón
+    function mostrarMensajeTemporalEnBoton(textoOriginal, textoTemporal) {
+      const botones = document.querySelectorAll('#success-popup button');
+      botones.forEach(boton => {
+        if (boton.textContent.includes(textoOriginal.split(' ')[1])) {
+          const textoAnterior = boton.textContent;
+          boton.textContent = textoTemporal;
+          boton.style.background = '#22c55e';
+          setTimeout(() => {
+            boton.textContent = textoAnterior;
+            boton.style.background = '';
+          }, 2000);
+        }
+      });
+    }
+    
+    // Función para cerrar popup y volver al inicio
+    function cerrarPopupYVolverInicio() {
+      const popup = document.getElementById('success-popup');
+      popup.style.transition = 'opacity 0.3s ease-in-out';
+      popup.style.opacity = '0';
+      
+      setTimeout(() => {
+        popup.style.display = 'none';
+        // Redirigir al inicio
+        window.location.href = 'index.html';
+      }, 300);
+    }
+    
+    // Función auxiliar para capitalizar primera letra
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    // Cerrar popup si se hace clic fuera de él
+    document.addEventListener('click', function(e) {
+      const popup = document.getElementById('success-popup');
+      if (e.target === popup) {
+        cerrarPopupYVolverInicio();
+      }
+    });
+    
+    // Cerrar popup con tecla Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const popup = document.getElementById('success-popup');
+        const clubPopup = document.getElementById('club-info-popup');
+        if (popup.style.display === 'flex') {
+          cerrarPopupYVolverInicio();
+        }
+        if (clubPopup && clubPopup.style.display === 'flex') {
+          cerrarPopupClubInfo();
+        }
+      }
+    });
+
+    // Función para mostrar popup de información de clubes
+    function mostrarPopupClubInfo() {
+      const popup = document.getElementById('club-info-popup');
+      popup.style.display = 'flex';
+      popup.style.opacity = '0';
+      setTimeout(() => {
+        popup.style.transition = 'opacity 0.3s ease-in-out';
+        popup.style.opacity = '1';
+      }, 50);
+    }
+
+    // Función para cerrar popup de información de clubes
+    function cerrarPopupClubInfo() {
+      const popup = document.getElementById('club-info-popup');
+      popup.style.transition = 'opacity 0.3s ease-in-out';
+      popup.style.opacity = '0';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 300);
+    }
+
+    // Agregar event listener para el icono de información
+    document.addEventListener('DOMContentLoaded', function() {
+      const infoIcon = document.getElementById('info-club');
+      if (infoIcon) {
+        infoIcon.addEventListener('click', mostrarPopupClubInfo);
+      }
+
+      // Cerrar popup de clubes si se hace clic fuera
+      document.addEventListener('click', function(e) {
+        const clubPopup = document.getElementById('club-info-popup');
+        if (e.target === clubPopup) {
+          cerrarPopupClubInfo();
+        }
+      });
     });
   </script>
 </body>
