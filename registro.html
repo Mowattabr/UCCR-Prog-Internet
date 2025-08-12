@@ -595,7 +595,11 @@
         codigo_usuario: document.getElementById('codigo-estudiante').value,
         genero: document.querySelector('input[name="gender"]:checked')?.value || '',
         // Convert intereses to array format for database compatibility
-        intereses: clubSeleccionado ? [clubSeleccionado] : []
+        intereses: clubSeleccionado ? [clubSeleccionado] : [],
+        // Add default values for new database fields
+        creditos_obtenidos: '',  // Default empty string
+        estado: 'activo',        // Default active status
+        creado_en: new Date().toISOString()  // Current timestamp, cannot be altered by user
       };
       
       // Mostrar mensaje de carga

@@ -166,9 +166,77 @@
             </label>
             <span id="fecha-inscripcion-display" style="color: #c9c9c9;">Cargando...</span>
           </div>
+
+          <!-- Credits Obtained -->
+          <div style="padding: 15px; background: #1a1a1f; border-radius: 8px; border-left: 4px solid #f18b32;">
+            <label style="color: #f18b32; font-weight: bold; display: block; margin-bottom: 5px;">
+              <i class="fas fa-medal" style="margin-right: 8px;"></i>Créditos Obtenidos
+            </label>
+            <span id="creditos-obtenidos-display" style="color: #c9c9c9;">Cargando...</span>
+          </div>
           
         </div>
 
+      </div>
+
+      <!-- Admin Panel (only visible for administrators) -->
+      <div id="admin-panel" style="display: none; margin-top: 30px; padding: 30px; background: #1a1a1f; border-radius: 12px; border: 2px solid #ef4444;">
+        <h3 style="color: #ef4444; margin-bottom: 20px; text-align: center;">
+          <i class="fas fa-shield-alt" style="margin-right: 8px;"></i>Panel de Administrador
+        </h3>
+        <p style="color: #c9c9c9; text-align: center; margin-bottom: 25px;">
+          Acceso completo a la gestión del sistema académico
+        </p>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div style="background: #23232b; border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid #4a4a55; text-align: center;">
+              <i class="fas fa-book" style="color: #22c55e; font-size: 2.5em; margin-bottom: 15px;"></i>
+              <h4 style="color: #22c55e; margin-bottom: 10px;">Gestión de Cursos</h4>
+              <p style="color: #c9c9c9; margin-bottom: 15px; font-size: 0.9em;">
+                Administrar el catálogo completo de cursos académicos
+              </p>
+              <a href="admin_cursos.html" style="background: #22c55e; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; display: inline-block; font-weight: bold;">
+                <i class="fas fa-cogs"></i> Administrar Cursos
+              </a>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div style="background: #23232b; border-radius: 8px; padding: 20px; margin-bottom: 15px; border: 1px solid #4a4a55; text-align: center;">
+              <i class="fas fa-users" style="color: #3b82f6; font-size: 2.5em; margin-bottom: 15px;"></i>
+              <h4 style="color: #3b82f6; margin-bottom: 10px;">Gestión de Usuarios</h4>
+              <p style="color: #c9c9c9; margin-bottom: 15px; font-size: 0.9em;">
+                Administrar estudiantes, profesores y administradores
+              </p>
+              <a href="admin_lista_usuarios.html" style="background: #3b82f6; color: white; text-decoration: none; padding: 10px 20px; border-radius: 6px; display: inline-block; font-weight: bold;">
+                <i class="fas fa-users-cog"></i> Administrar Usuarios
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-12">
+            <div style="background: #23232b; border-radius: 8px; padding: 20px; border: 1px solid #4a4a55; text-align: center;">
+              <i class="fas fa-user-plus" style="color: #f59e0b; font-size: 2em; margin-bottom: 10px;"></i>
+              <h5 style="color: #f59e0b; margin-bottom: 10px;">Registro de Nuevos Usuarios</h5>
+              <p style="color: #c9c9c9; margin-bottom: 15px; font-size: 0.9em;">
+                Crear nuevos usuarios en el sistema (estudiantes, profesores, administradores)
+              </p>
+              <a href="registro.html" style="background: #f59e0b; color: white; text-decoration: none; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: bold;">
+                <i class="fas fa-plus"></i> Registrar Usuario
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #4a4a55;">
+          <p style="color: #6b7280; font-size: 0.9em; margin: 0;">
+            <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
+            Solo los administradores pueden acceder a estas funciones
+          </p>
+        </div>
       </div>
 
     </section>
@@ -344,7 +412,9 @@
         fecha_nacimiento: '2000-01-01',
         fecha_inscripcion: new Date().toISOString().split('T')[0],
         rol: 'invitado',
-        codigo_usuario: 'GUEST_2025'
+        codigo_usuario: 'GUEST_2025',
+        creditos_obtenidos: 'Sin créditos registrados',
+        estado: 'activo'  // Not displayed but included for completeness
       };
       
       // Set as current user
@@ -356,7 +426,8 @@
         email: guestData.email,
         rol: guestData.rol,
         codigo: guestData.codigo_usuario,
-        intereses: guestData.intereses
+        intereses: guestData.intereses,
+        creditos_obtenidos: guestData.creditos_obtenidos
       }));
       
       // Display the data
@@ -747,8 +818,29 @@
         document.getElementById('fecha-inscripcion-display').textContent = 'No especificado';
       }
 
+      // Credits obtained (new field)
+      console.log('🏆 Processing credits:', user.creditos_obtenidos);
+      if (user.creditos_obtenidos && user.creditos_obtenidos.trim() !== '') {
+        document.getElementById('creditos-obtenidos-display').textContent = user.creditos_obtenidos;
+        console.log('✅ Credits displayed:', user.creditos_obtenidos);
+      } else {
+        document.getElementById('creditos-obtenidos-display').textContent = 'No especificado';
+      }
+
+      // Note: 'estado' field is intentionally NOT displayed as per requirements
+
       // Update avatar based on gender
       updateAvatar(user.genero);
+      
+      // Show/hide admin panel based on user role
+      const adminPanel = document.getElementById('admin-panel');
+      if (user.rol === 'administrador') {
+        console.log('👑 Administrator detected - showing admin panel');
+        adminPanel.style.display = 'block';
+      } else {
+        console.log('👤 Non-admin user - hiding admin panel');
+        adminPanel.style.display = 'none';
+      }
       
       console.log('✅ All user data displayed');
     }
@@ -767,7 +859,9 @@
         fecha_nacimiento: '',
         fecha_inscripcion: new Date().toISOString().split('T')[0],
         rol: sessionUser.rol || 'estudiante',
-        codigo_usuario: sessionUser.codigo || `USER_${Date.now()}`
+        codigo_usuario: sessionUser.codigo || `USER_${Date.now()}`,
+        creditos_obtenidos: '',
+        estado: 'activo'  // Not displayed but included for completeness
       };
       
       // Header info
@@ -783,6 +877,7 @@
       document.getElementById('intereses-display').textContent = 'Agregar intereses';
       document.getElementById('fecha-nacimiento-display').textContent = 'Agregar fecha de nacimiento';
       document.getElementById('fecha-inscripcion-display').textContent = new Date().toLocaleDateString('es-ES');
+      document.getElementById('creditos-obtenidos-display').textContent = 'Sin créditos registrados';
 
       // Keep edit icons visible for editing
       const editIcons = document.querySelectorAll('.edit-icon');
@@ -793,6 +888,16 @@
 
       // Update avatar to default
       updateAvatar('n');
+      
+      // Show/hide admin panel based on session user role
+      const adminPanel = document.getElementById('admin-panel');
+      if (sessionUser.rol === 'administrador') {
+        console.log('👑 Session Administrator detected - showing admin panel');
+        adminPanel.style.display = 'block';
+      } else {
+        console.log('👤 Session non-admin user - hiding admin panel');
+        adminPanel.style.display = 'none';
+      }
       
       showMessage('📝 Datos de sesión - Puedes editar y agregar información. Los cambios se guardarán cuando crees tu usuario en la base de datos.', 'info');
     }

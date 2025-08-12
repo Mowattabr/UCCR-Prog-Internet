@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración de Cursos - Galaxia Magna Academy</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header style="display: flex; align-items: center; justify-content: center; gap: 20px; padding: 20px;">
+    <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
+    <div style="text-align: center;">
+      <h1 style="color: #C0C0C0; margin-bottom: 5px; margin-top: 0;">Galaxia Magna Academy</h1>
+      <h2 style="font-style: italic; font-weight: normal; font-size: 1.8em; margin-top: 0; color: #C0C0C0; margin-bottom: 0;">Panel de Administración - Cursos</h2>
+    </div>
+    <img src="images/GAM_transparent.png" alt="GMA Logo" style="width: 80px; height: 80px; object-fit: contain;">
+  </header>
+
+  <main>
+    <!-- Navigation -->
+    <nav style="margin-bottom: 20px;">
+      <ul>
+        <li><a href="profile.html">← Volver al Perfil</a></li>
+        <li><a href="admin_lista_usuarios.html">Administrar Usuarios</a></li>
+        <li><a href="index.html">Inicio</a></li>
+      </ul>
+    </nav>
+
+    <!-- Admin Authentication Modal -->
+    <div id="admin-auth-modal" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+      <div style="background: #23232b; border-radius: 16px; padding: 40px; max-width: 400px; margin: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid #f18b32; text-align: center;">
+        <div style="margin-bottom: 20px;">
+          <i class="fas fa-shield-alt" style="font-size: 36px; color: #f18b32;"></i>
+        </div>
+        <h3 style="color: #f18b32; margin-bottom: 16px; font-size: 1.4em;">Acceso de Administrador</h3>
+        <p style="color: #c9c9c9; margin-bottom: 20px;">Ingrese la contraseña de administrador para continuar:</p>
+        
+        <div style="margin-bottom: 20px;">
+          <input type="password" id="admin-password" placeholder="Contraseña de administrador" 
+                 style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #4a4a55; background: #2d2d35; color: #c9c9c9; font-size: 1em;">
+          <div id="admin-error" style="color: #ff6b6b; margin-top: 8px; display: none;">Contraseña incorrecta</div>
+        </div>
+        
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <button onclick="validateAdminAccess()" style="background: #f18b32; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+            Acceder
+          </button>
+          <button onclick="goBack()" style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content (hidden until admin authenticated) -->
+    <div id="main-content" style="display: none;">
+      <!-- Message Area -->
+      <div id="message-area" style="display: none; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;"></div>
+
+      <!-- Admin Info -->
+      <div style="background: #23232b; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 2px solid #f18b32;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <i class="fas fa-user-shield" style="color: #f18b32; font-size: 1.5em;"></i>
+          <div>
+            <h3 style="color: #f18b32; margin: 0; font-size: 1.2em;">Panel de Administrador</h3>
+            <p style="color: #c9c9c9; margin: 0; font-size: 0.9em;">Gestión completa de cursos académicos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Statistics -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <div style="background: #333; border-radius: 6px; padding: 12px; text-align: center; border: 1px solid #555; font-family: 'Consolas', monospace;">
+            <i class="fas fa-book" style="color: #888; font-size: 1.2em; margin-bottom: 6px;"></i>
+            <h4 style="color: #ccc; margin: 0; font-size: 1.4em;" id="total-courses">0</h4>
+            <p style="color: #888; margin: 0; font-size: 0.85em;">Total Cursos</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div style="background: #333; border-radius: 6px; padding: 12px; text-align: center; border: 1px solid #555; font-family: 'Consolas', monospace;">
+            <i class="fas fa-graduation-cap" style="color: #888; font-size: 1.2em; margin-bottom: 6px;"></i>
+            <h4 style="color: #ccc; margin: 0; font-size: 1.4em;" id="total-credits">0</h4>
+            <p style="color: #888; margin: 0; font-size: 0.85em;">Total Créditos</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div style="background: #333; border-radius: 6px; padding: 12px; text-align: center; border: 1px solid #555; font-family: 'Consolas', monospace;">
+            <i class="fas fa-calendar-alt" style="color: #888; font-size: 1.2em; margin-bottom: 6px;"></i>
+            <h4 style="color: #ccc; margin: 0; font-size: 1.4em;" id="current-quarter">I</h4>
+            <p style="color: #888; margin: 0; font-size: 0.85em;">Cuatrimestre Actual</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Course Button -->
+      <div style="margin-bottom: 20px; text-align: center;">
+        <button onclick="showAddCourseModal()" style="background: #22c55e; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+          Agregar Nuevo Curso
+        </button>
+      </div>
+
+      <!-- Course Filters -->
+      <div class="row mb-4">
+        <div class="col-md-4">
+          <label for="filter-quarter" class="form-label" style="color: #888; font-family: 'Consolas', monospace; font-size: 0.85em;">Filtrar por Cuatrimestre:</label>
+          <select id="filter-quarter" class="form-select form-select-sm" onchange="filterCourses()" style="background: #333; color: #ccc; border: 1px solid #555; font-family: 'Consolas', monospace; font-size: 0.85em;">
+            <option value="">Todos los cuatrimestres</option>
+            <option value="I">Cuatrimestre I</option>
+            <option value="II">Cuatrimestre II</option>
+            <option value="III">Cuatrimestre III</option>
+            <option value="IV">Cuatrimestre IV</option>
+            <option value="V">Cuatrimestre V</option>
+            <option value="VI">Cuatrimestre VI</option>
+            <option value="VII">Cuatrimestre VII</option>
+            <option value="VIII">Cuatrimestre VIII</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="filter-search" class="form-label" style="color: #888; font-family: 'Consolas', monospace; font-size: 0.85em;">Buscar curso:</label>
+          <input type="text" id="filter-search" class="form-control form-control-sm" placeholder="Nombre o código del curso" 
+                 onkeyup="filterCourses()" style="background: #333; color: #ccc; border: 1px solid #555; font-family: 'Consolas', monospace; font-size: 0.85em;">
+        </div>
+        <div class="col-md-4">
+          <label for="filter-credits" class="form-label" style="color: #888; font-family: 'Consolas', monospace; font-size: 0.85em;">Filtrar por Créditos:</label>
+          <select id="filter-credits" class="form-select form-select-sm" onchange="filterCourses()" style="background: #333; color: #ccc; border: 1px solid #555; font-family: 'Consolas', monospace; font-size: 0.85em;">
+            <option value="">Todos los créditos</option>
+            <option value="1">1 crédito</option>
+            <option value="2">2 créditos</option>
+            <option value="3">3 créditos</option>
+            <option value="4">4 créditos</option>
+            <option value="5">5 créditos</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Courses Table -->
+      <div style="background: #2a2a2a; border-radius: 6px; padding: 16px; border: 1px solid #555;">
+        <h3 style="color: #f18b32; margin-bottom: 16px; font-family: 'Consolas', monospace; font-size: 1.1em;">
+          Lista de Cursos
+        </h3>
+        
+        <div class="table-responsive">
+          <table class="table table-sm" style="color: #fff; font-family: 'Consolas', monospace; font-size: 0.85em; background-color: #2a2a2a;">
+            <thead style="background-color: #2a2a2a;">
+              <tr style="border-bottom: 1px solid #555; background-color: #2a2a2a;">
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">CUATR</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">CÓDIGO</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">CURSO</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">REQUISITOS</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">CRÉD</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">ESTADO</th>
+                <th style="color: #fff; border: none; padding: 6px; font-weight: normal; background-color: #2a2a2a;">ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody id="courses-table-body" style="background-color: #2a2a2a;">
+              <!-- Courses will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div id="no-courses-message" style="text-align: center; color: #666; margin: 20px 0; display: none; font-family: 'Consolas', monospace;">
+          <p style="font-size: 0.9em;">No hay cursos disponibles</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Course Modal -->
+    <div id="course-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+      <div style="background: #23232b; border-radius: 16px; padding: 40px; max-width: 600px; margin: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); border: 2px solid #f18b32; width: 90%;">
+        <h3 id="modal-title" style="color: #f18b32; margin-bottom: 20px; text-align: center;">Agregar Nuevo Curso</h3>
+        
+        <form id="course-form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="course-quarter" class="form-label" style="color: #c9c9c9;">Cuatrimestre:</label>
+                <select id="course-quarter" class="form-select" required style="background: #2d2d35; color: #c9c9c9; border: 1px solid #4a4a55;">
+                  <option value="">Seleccionar cuatrimestre</option>
+                  <option value="I">Cuatrimestre I</option>
+                  <option value="II">Cuatrimestre II</option>
+                  <option value="III">Cuatrimestre III</option>
+                  <option value="IV">Cuatrimestre IV</option>
+                  <option value="V">Cuatrimestre V</option>
+                  <option value="VI">Cuatrimestre VI</option>
+                  <option value="VII">Cuatrimestre VII</option>
+                  <option value="VIII">Cuatrimestre VIII</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="course-code" class="form-label" style="color: #c9c9c9;">Código del Curso:</label>
+                <input type="text" id="course-code" class="form-control" required placeholder="Ej: MAT101" 
+                       style="background: #2d2d35; color: #c9c9c9; border: 1px solid #4a4a55;">
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="course-name" class="form-label" style="color: #c9c9c9;">Nombre del Curso:</label>
+            <input type="text" id="course-name" class="form-control" required placeholder="Ej: Matemáticas Básicas" 
+                   style="background: #2d2d35; color: #c9c9c9; border: 1px solid #4a4a55;">
+          </div>
+          
+          <div class="mb-3">
+            <label for="course-requirements" class="form-label" style="color: #c9c9c9;">Requisitos:</label>
+            <input type="text" id="course-requirements" class="form-control" placeholder="Ej: Ninguno o MAT100" 
+                   style="background: #2d2d35; color: #c9c9c9; border: 1px solid #4a4a55;">
+          </div>
+          
+          <div class="mb-3">
+            <label for="course-credits" class="form-label" style="color: #c9c9c9;">Créditos:</label>
+            <select id="course-credits" class="form-select" required style="background: #2d2d35; color: #c9c9c9; border: 1px solid #4a4a55;">
+              <option value="">Seleccionar créditos</option>
+              <option value="1">1 crédito</option>
+              <option value="2">2 créditos</option>
+              <option value="3">3 créditos</option>
+              <option value="4">4 créditos</option>
+              <option value="5">5 créditos</option>
+            </select>
+          </div>
+          
+          <div style="display: flex; gap: 12px; justify-content: center; margin-top: 30px;">
+            <button type="submit" style="background: #22c55e; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+              <span id="save-button-text">Guardar Curso</span>
+            </button>
+            <button type="button" onclick="closeModal()" style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const ADMIN_PASSWORD = 'admin';
+    let courses = [];
+    let editingCourseId = null;
+
+    // Admin authentication
+    function validateAdminAccess() {
+      const password = document.getElementById('admin-password').value;
+      const errorDiv = document.getElementById('admin-error');
+      
+      if (password === ADMIN_PASSWORD) {
+        document.getElementById('admin-auth-modal').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+        loadCourses();
+      } else {
+        errorDiv.style.display = 'block';
+        document.getElementById('admin-password').value = '';
+        document.getElementById('admin-password').focus();
+      }
+    }
+
+    // Go back to profile
+    function goBack() {
+      window.location.href = 'profile.html';
+    }
+
+    // Load courses from database
+    async function loadCourses() {
+      try {
+        showMessage('Cargando cursos...', 'info');
+        
+        // Load only active courses by default
+        const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?activo=eq.true&order=cuatrimestre,codigo', {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          courses = await response.json();
+          displayCourses(courses);
+          updateStatistics(courses);
+          showMessage(`${courses.length} cursos cargados exitosamente`, 'success');
+        } else {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error loading courses:', error);
+        showMessage('Error al cargar cursos: ' + error.message, 'error');
+      }
+    }
+
+    // Display courses in table
+    function displayCourses(coursesToShow) {
+      const tbody = document.getElementById('courses-table-body');
+      const noCoursesMessage = document.getElementById('no-courses-message');
+      
+      if (coursesToShow.length === 0) {
+        tbody.innerHTML = '';
+        noCoursesMessage.style.display = 'block';
+        return;
+      }
+      
+      noCoursesMessage.style.display = 'none';
+      
+      tbody.innerHTML = coursesToShow.map(course => `
+        <tr style="border-bottom: 1px solid #444; background-color: #2a2a2a !important;">
+          <td style="border: none; padding: 4px 6px; color: #fff; background-color: #2a2a2a;">${course.cuatrimestre}</td>
+          <td style="border: none; padding: 4px 6px; color: #fff; font-weight: bold; background-color: #2a2a2a;">${course.codigo}</td>
+          <td style="border: none; padding: 4px 6px; color: #fff; background-color: #2a2a2a;">${course.curso}</td>
+          <td style="border: none; padding: 4px 6px; color: #fff; background-color: #2a2a2a;">${course.requisitos || 'Ninguno'}</td>
+          <td style="border: none; padding: 4px 6px; text-align: center; color: #fff; background-color: #2a2a2a;">${course.creditos}</td>
+          <td style="border: none; padding: 4px 6px; color: ${course.activo ? '#4ade80' : '#f87171'}; background-color: #2a2a2a;">${course.activo ? 'Activo' : 'Inactivo'}</td>
+          <td style="border: none; padding: 4px 6px; background-color: #2a2a2a;">
+            <button onclick="editCourse(${course.id})" style="background: #666; color: white; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 0.75em; font-family: 'Consolas', monospace;">
+              Editar
+            </button>
+            <button onclick="toggleCourseStatus(${course.id}, '${course.codigo}', ${course.activo})" style="background: ${course.activo ? '#dc2626' : '#059669'}; color: white; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 0.75em; font-family: 'Consolas', monospace;">
+              ${course.activo ? 'Desactivar' : 'Activar'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Update statistics
+    function updateStatistics(coursesToShow) {
+      const totalCourses = coursesToShow.length;
+      const totalCredits = coursesToShow.reduce((sum, course) => sum + parseInt(course.creditos), 0);
+      
+      document.getElementById('total-courses').textContent = totalCourses;
+      document.getElementById('total-credits').textContent = totalCredits;
+      
+      // Current quarter logic (you can customize this)
+      const currentDate = new Date();
+      const month = currentDate.getMonth() + 1;
+      let currentQuarter = 'I';
+      if (month >= 1 && month <= 4) currentQuarter = 'I';
+      else if (month >= 5 && month <= 8) currentQuarter = 'II';
+      else currentQuarter = 'III';
+      
+      document.getElementById('current-quarter').textContent = currentQuarter;
+    }
+
+    // Filter courses
+    function filterCourses() {
+      const quarterFilter = document.getElementById('filter-quarter').value;
+      const searchFilter = document.getElementById('filter-search').value.toLowerCase();
+      const creditsFilter = document.getElementById('filter-credits').value;
+      
+      let filteredCourses = courses.filter(course => {
+        const matchesQuarter = !quarterFilter || course.cuatrimestre === quarterFilter;
+        const matchesSearch = !searchFilter || 
+          course.curso.toLowerCase().includes(searchFilter) || 
+          course.codigo.toLowerCase().includes(searchFilter);
+        const matchesCredits = !creditsFilter || course.creditos.toString() === creditsFilter;
+        
+        return matchesQuarter && matchesSearch && matchesCredits;
+      });
+      
+      displayCourses(filteredCourses);
+      updateStatistics(filteredCourses);
+    }
+
+    // Show add course modal
+    function showAddCourseModal() {
+      editingCourseId = null;
+      document.getElementById('modal-title').textContent = 'Agregar Nuevo Curso';
+      document.getElementById('save-button-text').textContent = 'Guardar Curso';
+      document.getElementById('course-form').reset();
+      document.getElementById('course-modal').style.display = 'flex';
+    }
+
+    // Edit course
+    function editCourse(courseId) {
+      const course = courses.find(c => c.id === courseId);
+      if (!course) return;
+      
+      editingCourseId = courseId;
+      document.getElementById('modal-title').textContent = 'Editar Curso';
+      document.getElementById('save-button-text').textContent = 'Actualizar Curso';
+      
+      document.getElementById('course-quarter').value = course.cuatrimestre;
+      document.getElementById('course-code').value = course.codigo;
+      document.getElementById('course-name').value = course.curso;
+      document.getElementById('course-requirements').value = course.requisitos || '';
+      document.getElementById('course-credits').value = course.creditos;
+      
+      document.getElementById('course-modal').style.display = 'flex';
+    }
+
+    // Toggle course status (activate/deactivate instead of delete)
+    async function toggleCourseStatus(courseId, courseCode, isActive) {
+      const action = isActive ? 'desactivar' : 'activar';
+      if (!confirm(`¿Está seguro de que desea ${action} el curso ${courseCode}?`)) {
+        return;
+      }
+      
+      try {
+        showMessage(`${isActive ? 'Desactivando' : 'Activando'} curso...`, 'info');
+        
+        const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?id=eq.${courseId}`, {
+          method: 'PATCH',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ activo: !isActive })
+        });
+        
+        if (response.ok) {
+          showMessage(`Curso ${courseCode} ${isActive ? 'desactivado' : 'activado'} exitosamente`, 'success');
+          loadCourses();
+        } else {
+          throw new Error(`Error HTTP: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error updating course status:', error);
+        showMessage('Error al actualizar estado del curso: ' + error.message, 'error');
+      }
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('course-modal').style.display = 'none';
+      editingCourseId = null;
+    }
+
+    // Handle form submission
+    document.getElementById('course-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const courseData = {
+        cuatrimestre: document.getElementById('course-quarter').value,
+        codigo: document.getElementById('course-code').value,
+        curso: document.getElementById('course-name').value,
+        requisitos: document.getElementById('course-requirements').value || null,
+        creditos: parseInt(document.getElementById('course-credits').value),
+        activo: true // New courses are active by default
+      };
+      
+      try {
+        let response;
+        
+        if (editingCourseId) {
+          // Update existing course
+          showMessage('Actualizando curso...', 'info');
+          response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos?id=eq.${editingCourseId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(courseData)
+          });
+        } else {
+          // Create new course
+          showMessage('Creando curso...', 'info');
+          response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/cursos', {
+            method: 'POST',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(courseData)
+          });
+        }
+        
+        if (response.ok) {
+          const action = editingCourseId ? 'actualizado' : 'creado';
+          showMessage(`Curso ${action} exitosamente`, 'success');
+          closeModal();
+          loadCourses();
+        } else {
+          const errorText = await response.text();
+          throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
+        }
+      } catch (error) {
+        console.error('Error saving course:', error);
+        showMessage('Error al guardar curso: ' + error.message, 'error');
+      }
+    });
+
+    // Show message function
+    function showMessage(message, type) {
+      const messageArea = document.getElementById('message-area');
+      messageArea.textContent = message;
+      messageArea.style.display = 'block';
+      
+      // Set color based on type
+      switch(type) {
+        case 'success':
+          messageArea.style.background = '#065f46';
+          messageArea.style.color = '#10b981';
+          messageArea.style.border = '1px solid #10b981';
+          break;
+        case 'error':
+          messageArea.style.background = '#7f1d1d';
+          messageArea.style.color = '#ef4444';
+          messageArea.style.border = '1px solid #ef4444';
+          break;
+        case 'info':
+          messageArea.style.background = '#1e3a8a';
+          messageArea.style.color = '#3b82f6';
+          messageArea.style.border = '1px solid #3b82f6';
+          break;
+        case 'warning':
+          messageArea.style.background = '#92400e';
+          messageArea.style.color = '#f59e0b';
+          messageArea.style.border = '1px solid #f59e0b';
+          break;
+      }
+
+      // Auto-hide success and info messages
+      if (type === 'success' || type === 'info') {
+        setTimeout(() => {
+          messageArea.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // Handle Enter key for admin password
+    document.getElementById('admin-password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        validateAdminAccess();
+      }
+    });
+
+    // Auto-focus password field
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('admin-password').focus();
+    });
+  </script>
+</body>
+
+</html>
