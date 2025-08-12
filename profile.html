@@ -132,9 +132,11 @@
             <select id="intereses-input" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;">
               <option value="ajedrez">Club de Ajedrez</option>
               <option value="arte">Club de Arte</option>
-              <option value="musica">Club de Música</option>
-              <option value="idiomas">Club de Idiomas</option>
               <option value="deportes">Club de Deportes</option>
+              <option value="idiomas">Club de Idiomas</option>
+              <option value="matematica">Club de Matemática</option>
+              <option value="musica">Club de Música</option>
+              <option value="programacion">Club de Programación</option>
               <option value="starwars">Club Star Wars</option>
               <option value="otro">Otro club</option>
               <option value="ninguno">No estoy interesado</option>
@@ -177,6 +179,99 @@
   <script>
     let currentUserData = null;
     let originalValues = {};
+
+    // Comprehensive debug function for browser console
+    window.debugProfileIssue = async function() {
+      console.log('🔍 === COMPREHENSIVE PROFILE DEBUG ===');
+      
+      // Step 1: Check current user data
+      console.log('\n📊 STEP 1: Current User Data');
+      console.log('User data exists:', !!currentUserData);
+      if (currentUserData) {
+        console.log('Email:', currentUserData.email);
+        console.log('Username:', currentUserData.username);
+        console.log('Interests:', currentUserData.intereses);
+        console.log('Full data:', currentUserData);
+      } else {
+        console.log('❌ No current user data loaded');
+        return;
+      }
+      
+      // Step 2: Test database connection
+      console.log('\n🔗 STEP 2: Database Connection Test');
+      const testResult = await testDatabaseConnection();
+      console.log('Test result:', testResult);
+      
+      // Step 3: Try a test update
+      console.log('\n🧪 STEP 3: Test Update');
+      try {
+        const result = await updateUserField('intereses', 'programacion');
+        console.log('Update result:', result);
+      } catch (error) {
+        console.error('Update error:', error);
+      }
+      
+      console.log('\n✅ Debug complete - check results above');
+    };
+
+    // Load guest user with GUEST_2025 code for console access
+    window.loadGuest2025 = function() {
+      return loadGuestUser2025();
+    };
+
+    // Test club saving for guest user
+    window.testGuestClubSave = async function(clubValue = 'programacion') {
+      console.log('🧪 Testing guest club save with:', clubValue);
+      
+      if (!currentUserData) {
+        console.log('❌ No user data, loading guest first...');
+        loadGuestUser2025();
+      }
+      
+      console.log('👤 Current user:', currentUserData);
+      console.log('🎯 Testing club save...');
+      
+      const result = await updateUserField('intereses', clubValue);
+      console.log('📋 Save result:', result);
+      
+      console.log('📊 Updated user data:', currentUserData);
+      console.log('🖥️ Display element text:', document.getElementById('intereses-display').textContent);
+      
+      return result;
+    };
+
+    // Test database with any email
+    window.testDBWithEmail = async function(email) {
+      console.log('🧪 Testing database with email:', email);
+      const testUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(email)}`;
+      console.log('🔗 URL:', testUrl);
+      
+      try {
+        const response = await fetch(testUrl, {
+          method: 'GET',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        console.log('Response status:', response.status);
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Found users:', data.length);
+          console.log('User data:', data);
+          return data;
+        } else {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          return null;
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        return null;
+      }
+    };
 
     // Load user data on page load
     document.addEventListener('DOMContentLoaded', function() {
@@ -236,6 +331,43 @@
       showMessage('🔍 Análisis completado - revisar consola', 'info');
     }
 
+    // Load guest user with GUEST_2025 code
+    function loadGuestUser2025() {
+      console.log('👻 Loading Guest User GUEST_2025...');
+      
+      const guestData = {
+        username: 'Usuario Invitado',
+        email: 'guest@galaxiamagna.edu',
+        telefono: '',
+        genero: 'n',
+        intereses: 'programacion',
+        fecha_nacimiento: '2000-01-01',
+        fecha_inscripcion: new Date().toISOString().split('T')[0],
+        rol: 'invitado',
+        codigo_usuario: 'GUEST_2025'
+      };
+      
+      // Set as current user
+      currentUserData = guestData;
+      
+      // Update localStorage
+      localStorage.setItem('currentUser', JSON.stringify({
+        username: guestData.username,
+        email: guestData.email,
+        rol: guestData.rol,
+        codigo: guestData.codigo_usuario,
+        intereses: guestData.intereses
+      }));
+      
+      // Display the data
+      displayUserData(currentUserData);
+      
+      console.log('✅ Guest User GUEST_2025 loaded successfully');
+      showMessage('👻 Usuario Invitado GUEST_2025 cargado - cambios solo en memoria', 'info');
+      
+      return guestData;
+    }
+
     // Simulate guest mode to test interests functionality
     function simulateGuestMode() {
       console.log('👻 SIMULATING GUEST MODE...');
@@ -243,35 +375,10 @@
       // Save current state
       const originalUserData = currentUserData;
       
-      // Create fake guest session data
-      const guestSession = {
-        username: 'Usuario Invitado',
-        email: 'guest@test.com',
-        rol: 'invitado',
-        codigo: 'GUEST_001',
-        intereses: 'programacion,diseño'
-      };
-      
-      // Temporarily store and use guest data
-      localStorage.setItem('currentUser', JSON.stringify(guestSession));
-      
-      // Load as guest
-      currentUserData = {
-        username: guestSession.username,
-        email: guestSession.email,
-        telefono: '',
-        genero: 'n',
-        intereses: guestSession.intereses,
-        fecha_nacimiento: '',
-        fecha_inscripcion: new Date().toISOString().split('T')[0],
-        rol: guestSession.rol,
-        codigo_usuario: guestSession.codigo
-      };
-      
-      displayUserData(currentUserData);
+      // Use the new guest loader
+      loadGuestUser2025();
       
       console.log('👻 Guest mode simulated. Try editing interests now!');
-      showMessage('👻 Modo invitado simulado - intenta editar intereses', 'info');
       
       // Auto-restore after 30 seconds
       setTimeout(() => {
@@ -599,9 +706,11 @@
       const clubMap = {
         'ajedrez': 'Club de Ajedrez',
         'arte': 'Club de Arte', 
-        'musica': 'Club de Música',
-        'idiomas': 'Club de Idiomas',
         'deportes': 'Club de Deportes',
+        'idiomas': 'Club de Idiomas',
+        'matematica': 'Club de Matemática',
+        'musica': 'Club de Música',
+        'programacion': 'Club de Programación',
         'starwars': 'Club Star Wars',
         'otro': 'Otro club',
         'ninguno': 'No está interesado'
@@ -923,14 +1032,17 @@
             const clubMap = {
               'ajedrez': 'Club de Ajedrez',
               'arte': 'Club de Arte', 
-              'musica': 'Club de Música',
-              'idiomas': 'Club de Idiomas',
               'deportes': 'Club de Deportes',
+              'idiomas': 'Club de Idiomas',
+              'matematica': 'Club de Matemática',
+              'musica': 'Club de Música',
+              'programacion': 'Club de Programación',
               'starwars': 'Club Star Wars',
               'otro': 'Otro club',
               'ninguno': 'No está interesado'
             };
-            document.getElementById(`${fieldName}-display`).textContent = clubMap[newValue] || 'No especificado';
+            const displayText = clubMap[newValue] || 'No especificado';
+            document.getElementById(`${fieldName}-display`).textContent = displayText;
             console.log('✅ INTERESTS: Display updated to:', displayText);
           } else {
             const displayText = newValue || (fieldName === 'telefono' ? 'Agregar teléfono' : 'No especificado');
@@ -1007,10 +1119,47 @@
       }
     }
 
+    // Enhanced guest detection function
+    function isGuestUser(userData) {
+      if (!userData) return false;
+      
+      // Check for guest indicators
+      const isGuestEmail = userData.email && (
+        userData.email === 'guest@galaxiamagna.edu' ||
+        userData.email === 'guest@test.com' ||
+        userData.email.includes('guest@')
+      );
+      
+      const isGuestRole = userData.rol === 'invitado';
+      
+      const isGuestCode = userData.codigo_usuario && (
+        userData.codigo_usuario.includes('GUEST') ||
+        userData.codigo_usuario === 'GUEST_2025' ||
+        userData.codigo_usuario === 'GUEST_001'
+      );
+      
+      return isGuestEmail || isGuestRole || isGuestCode;
+    }
+
     // Test database connection function
     async function testDatabaseConnection() {
       console.log('🧪 TESTING DATABASE CONNECTION...');
+      console.log('📧 Testing with email:', currentUserData.email);
+      
+      // Enhanced guest mode detection
+      if (isGuestUser(currentUserData)) {
+        console.log('👻 GUEST MODE DETECTED: Allowing operation without database validation');
+        console.log('👤 Guest details:', {
+          username: currentUserData.username,
+          email: currentUserData.email,
+          rol: currentUserData.rol,
+          codigo: currentUserData.codigo_usuario
+        });
+        return { isGuest: true, userData: currentUserData };
+      }
+      
       const testUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(currentUserData.email)}`;
+      console.log('🔗 Test URL:', testUrl);
       
       try {
         const response = await fetch(testUrl, {
@@ -1022,21 +1171,30 @@
           }
         });
         
+        console.log('📡 Response status:', response.status);
+        
         if (response.ok) {
           const data = await response.json();
           console.log('✅ DB CONNECTION TEST: SUCCESS');
-          console.log('📊 User data from DB:', data);
-          return data[0] || null;
+          console.log('📊 Query returned:', data.length, 'users');
+          
+          if (data && data.length > 0) {
+            console.log('👤 User found in database:', data[0]);
+            return data[0];
+          } else {
+            console.log('❓ User not found in database - might be a new user or guest');
+            return null;
+          }
         } else {
-          console.error('❌ DB CONNECTION TEST: FAILED');
+          console.error('❌ DB CONNECTION TEST: HTTP ERROR');
           console.error('Status:', response.status);
           const errorText = await response.text();
-          console.error('Error:', errorText);
+          console.error('Response:', errorText);
           return null;
         }
       } catch (error) {
         console.error('❌ DB CONNECTION TEST: NETWORK ERROR');
-        console.error('Error:', error);
+        console.error('Error details:', error);
         return null;
       }
     }
@@ -1044,11 +1202,56 @@
     // Update user field in database
     async function updateUserField(fieldName, newValue) {
       try {
+        console.log('🔄 UPDATE REQUEST:', fieldName, '=', newValue);
+        console.log('📧 Current user email:', currentUserData.email);
+        
         // First test database connection
         const testResult = await testDatabaseConnection();
+        
+        // Handle guest mode - update in memory only
+        if (testResult && testResult.isGuest) {
+          console.log('👻 GUEST MODE: Updating data in memory only (no database save)');
+          
+          // Update the current user data in memory
+          if (fieldName === 'intereses') {
+            currentUserData[fieldName] = newValue;
+            console.log('🧠 Memory update: interests =', newValue);
+          } else {
+            currentUserData[fieldName] = newValue;
+            console.log('🧠 Memory update:', fieldName, '=', newValue);
+          }
+          
+          // Update the display immediately
+          displayUserData(currentUserData);
+          
+          // Show success message for guest
+          showMessage(`👻 Invitado: ${fieldName} actualizado a "${newValue}" (cambios solo en memoria)`, 'success');
+          
+          // Also update localStorage to persist during session
+          try {
+            const sessionData = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            sessionData[fieldName] = newValue;
+            localStorage.setItem('currentUser', JSON.stringify(sessionData));
+            console.log('💾 Updated localStorage for guest session');
+          } catch (e) {
+            console.log('⚠️ Could not update localStorage:', e);
+          }
+          
+          return true;
+        }
+        
+        // If user not found in database but not in guest mode
         if (!testResult) {
-          console.error('❌ Database connection test failed - aborting update');
-          return false;
+          console.log('❓ User not found in database');
+          console.log('🎯 This might be a new user or the email might not match');
+          console.log('📋 Available options:');
+          console.log('   1. Continue with update attempt (might create new record)');
+          console.log('   2. Show error to user');
+          
+          // For now, let's try to continue but warn the user
+          showMessage('⚠️ Usuario no encontrado en base de datos - intentando actualizar...', 'warning');
+        } else {
+          console.log('✅ User verified in database, proceeding with update');
         }
         
         // Properly declare and initialize updateData object
@@ -1066,7 +1269,8 @@
 
         const updateUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(currentUserData.email)}`;
         
-        console.log('Update URL:', updateUrl);
+        console.log('🔗 Update URL:', updateUrl);
+        console.log('📤 Update data:', JSON.stringify(updateData, null, 2));
         
         const response = await fetch(updateUrl, {
           method: 'PATCH',
@@ -1079,8 +1283,8 @@
           body: JSON.stringify(updateData)
         });
 
-        console.log('Update response status:', response.status);
-        console.log('Update response headers:', response.headers);
+        console.log('📡 Update response status:', response.status);
+        console.log('📡 Update response headers:', Object.fromEntries(response.headers.entries()));
         
         if (!response.ok) {
           const errorText = await response.text();
