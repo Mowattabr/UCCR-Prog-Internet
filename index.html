@@ -325,20 +325,23 @@
         let user = null;
         
         // Try email first (more specific)
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
         if (usernameOrEmail.includes('@')) {
-          searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(usernameOrEmail)}`;
+          searchUrl = `${SUPABASE_URL}/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(usernameOrEmail)}`;
         } else {
           // If no @, assume it's a user code
-          searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?codigo_usuario=eq.${encodeURIComponent(usernameOrEmail)}`;
+          searchUrl = `${SUPABASE_URL}/rest/v1/lista_usuarios?codigo_usuario=eq.${encodeURIComponent(usernameOrEmail)}`;
         }
         
         console.log('Login search URL:', searchUrl);
         
+        const SUPABASE_API_KEY = import.meta.env.VITE_SUPABASE_API_KEY || process.env.SUPABASE_API_KEY;
+        const SUPABASE_AUTH = import.meta.env.VITE_SUPABASE_AUTH || process.env.SUPABASE_AUTH;
         const response = await fetch(searchUrl, {
           method: 'GET',
           headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+            'apikey': SUPABASE_API_KEY,
+            'Authorization': SUPABASE_AUTH,
             'Accept': 'application/json'
           }
         });

@@ -37,9 +37,9 @@
   background-size: cover; hace que la imagen cubra toda la pantalla.
 */
 body {
-  background: linear-gradient(rgb(1, 1, 14), rgb(0, 0, 0));
+  background: linear-gradient(rgb(0, 0, 0), rgb(0, 0, 0));
   background-size: 50%; 
-  background-color: #18181b;
+  background-color: #000000;
   color: #f3f4f6;
   font-family: Arial, sans-serif;
 }
