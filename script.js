@@ -1,3 +1,541 @@
+// --- Registro de Usuario (registro.html) ---
+// Contraseñas para roles especiales
+window.ROL_PASSWORDS = {
+  'profesor': 'profesor',
+  'administrador': 'admin'
+};
+
+window.rolValidado = false;
+
+window.manejarCambioRol = function() {
+  const rol = document.getElementById('rol').value;
+  const passwordContainer = document.getElementById('password-rol-container');
+  const passwordInput = document.getElementById('password-rol');
+  const passwordHint = document.getElementById('password-rol-hint');
+  window.rolValidado = false;
+  if (rol === 'profesor' || rol === 'administrador') {
+    passwordContainer.style.display = 'block';
+    passwordInput.required = true;
+    passwordInput.value = '';
+    if (rol === 'profesor') {
+      passwordHint.textContent = 'Contraseña requerida para rol Profesor';
+    } else if (rol === 'administrador') {
+      passwordHint.textContent = 'Contraseña requerida para rol Administrador';
+    }
+    passwordInput.addEventListener('input', window.validarPasswordRol);
+  } else {
+    passwordContainer.style.display = 'none';
+    passwordInput.required = false;
+    passwordInput.value = '';
+    window.rolValidado = true;
+  }
+  if (window.rolValidado || rol === 'estudiante') {
+    window.generarCodigoEstudiante();
+  } else {
+    document.getElementById('codigo-estudiante').value = '';
+  }
+};
+
+window.validarPasswordRol = function() {
+  const rol = document.getElementById('rol').value;
+  const passwordInput = document.getElementById('password-rol');
+  const password = passwordInput.value;
+  if (window.ROL_PASSWORDS[rol] && password === window.ROL_PASSWORDS[rol]) {
+    passwordInput.style.borderColor = '#28a745';
+    passwordInput.style.backgroundColor = '#d4edda';
+    window.rolValidado = true;
+    window.generarCodigoEstudiante();
+  } else if (password.length > 0) {
+    passwordInput.style.borderColor = '#dc3545';
+    passwordInput.style.backgroundColor = '#f8d7da';
+    window.rolValidado = false;
+    document.getElementById('codigo-estudiante').value = '';
+  } else {
+    passwordInput.style.borderColor = '';
+    passwordInput.style.backgroundColor = '';
+    window.rolValidado = false;
+    document.getElementById('codigo-estudiante').value = '';
+  }
+};
+
+window.generarCodigoEstudiante = function() {
+  const fechaInscripcion = document.getElementById('fecha-inscripcion').value;
+  const rol = document.getElementById('rol').value;
+  const codigoInput = document.getElementById('codigo-estudiante');
+  if ((rol === 'profesor' || rol === 'administrador') && !window.rolValidado) {
+    codigoInput.value = '';
+    return;
+  }
+  if (fechaInscripcion && rol) {
+    const fecha = new Date(fechaInscripcion);
+    const año = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    let prefijo;
+    switch (rol) {
+      case 'estudiante':
+        prefijo = 'A';
+        break;
+      case 'profesor':
+        prefijo = 'P';
+        break;
+      case 'administrador':
+        prefijo = 'ADM';
+        break;
+      default:
+        prefijo = 'A';
+    }
+    const numeroSecuencial = String(Math.floor(Math.random() * 9999) + 1).padStart(4, '0');
+    const codigo = `${año}_${mes}_${prefijo}_${numeroSecuencial}`;
+    codigoInput.value = codigo;
+  } else {
+    codigoInput.value = '';
+  }
+};
+
+window.manejarSeleccionClub = function() {
+  const club = document.getElementById('intereses').value;
+  const fuerzaMsg = document.getElementById('fuerza-msg');
+  const fuerzaMsgPrincipal = document.getElementById('fuerza-msg-principal');
+  if (club === 'starwars') {
+    window.playLightsaberSound();
+    fuerzaMsg.style.display = 'block';
+    fuerzaMsg.style.opacity = '1';
+    fuerzaMsgPrincipal.style.opacity = '1';
+    setTimeout(function() {
+      fuerzaMsg.style.opacity = '0';
+      fuerzaMsgPrincipal.style.opacity = '0';
+      setTimeout(function() {
+        fuerzaMsg.style.display = 'none';
+      }, 2000);
+    }, 4000);
+  } else {
+    fuerzaMsg.style.display = 'none';
+    fuerzaMsg.style.opacity = '0';
+    fuerzaMsgPrincipal.style.opacity = '0';
+  }
+};
+
+window.playLightsaberSound = function() {
+  const audio = new Audio('misc/lightsaber-ignition-6816.mp3');
+  audio.volume = 0.5;
+  audio.play().catch(function(error) {
+    console.log('Error al reproducir el sonido:', error);
+  });
+};
+
+window.validarFormulario = function(event) {
+  event.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const fechaNacimiento = document.getElementById('fecha-nacimiento').value;
+  const rol = document.getElementById('rol').value;
+  const fechaInscripcion = document.getElementById('fecha-inscripcion').value;
+  const genero = document.querySelector('input[name="gender"]:checked');
+  const club = document.getElementById('intereses').value;
+  if (!username) {
+    alert('❌ El nombre de usuario es obligatorio');
+    document.getElementById('username').focus();
+    return false;
+  }
+  if (!email || !email.includes('@')) {
+    alert('❌ Ingrese un email válido');
+    document.getElementById('email').focus();
+    return false;
+  }
+  if (!password) {
+    alert('❌ La contraseña es obligatoria');
+    document.getElementById('password').focus();
+    return false;
+  }
+  if (password.length < 4) {
+    alert('❌ La contraseña debe tener al menos 4 caracteres');
+    document.getElementById('password').focus();
+    return false;
+  }
+  if (password !== confirmPassword) {
+    alert('❌ Las contraseñas no coinciden');
+    document.getElementById('confirm-password').focus();
+    return false;
+  }
+  if (!fechaNacimiento) {
+    alert('❌ La fecha de nacimiento es obligatoria');
+    document.getElementById('fecha-nacimiento').focus();
+    return false;
+  }
+  if (!rol) {
+    alert('❌ Debe seleccionar un rol');
+    document.getElementById('rol').focus();
+    return false;
+  }
+  if (!fechaInscripcion) {
+    alert('❌ La fecha de inscripción es obligatoria');
+    document.getElementById('fecha-inscripcion').focus();
+    return false;
+  }
+  if (!genero) {
+    alert('❌ Debe seleccionar un género');
+    return false;
+  }
+  if (!club) {
+    alert('❌ Debe seleccionar un club');
+    document.getElementById('intereses').focus();
+    return false;
+  }
+  if ((rol === 'profesor' || rol === 'administrador') && !window.rolValidado) {
+    alert('❌ Debe ingresar la contraseña correcta para el rol ' + rol);
+    document.getElementById('password-rol').focus();
+    return false;
+  }
+  const codigo = document.getElementById('codigo-estudiante').value;
+  if (!codigo) {
+    alert('❌ Error: No se ha generado el código. Verifique todos los campos.');
+    return false;
+  }
+  window.enviarDatosRegistro();
+  return true;
+};
+
+window.enviarDatosRegistro = async function() {
+  const form = document.getElementById('registro-form');
+  const clubSeleccionado = document.getElementById('intereses').value;
+  const registroData = {
+    username: document.getElementById('username').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    telefono: document.getElementById('telefono').value,
+    fecha_nacimiento: document.getElementById('fecha-nacimiento').value,
+    rol: document.getElementById('rol').value,
+    fecha_inscripcion: document.getElementById('fecha-inscripcion').value,
+    codigo_usuario: document.getElementById('codigo-estudiante').value,
+    genero: document.querySelector('input[name="gender"]:checked')?.value || '',
+    intereses: clubSeleccionado ? [clubSeleccionado] : [],
+    creditos_obtenidos: '',
+    estado: 'activo',
+    creado_en: new Date().toISOString()
+  };
+  const registroMsg = document.getElementById('registro-msg');
+  registroMsg.style.display = 'block';
+  registroMsg.style.color = '#17a2b8';
+  registroMsg.textContent = 'Registrando usuario...';
+  try {
+    const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_APIKEY,
+        'Authorization': SUPABASE_AUTH,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(registroData)
+    });
+    if (response.ok) {
+      const result = await response.json();
+      registroMsg.style.display = 'none';
+      if (result && result.length > 0) {
+        try {
+          window.mostrarPopupExito(result[0], registroData);
+        } catch (popupError) {
+          alert(`✅ Usuario registrado exitosamente!\n\nCódigo: ${result[0].codigo_usuario}\nNombre: ${registroData.username}\nEmail: ${registroData.email}`);
+        }
+        form.reset();
+        document.getElementById('codigo-estudiante').value = '';
+        window.rolValidado = false;
+        document.getElementById('password-rol-container').style.display = 'none';
+        const fechaInscripcion = document.getElementById('fecha-inscripcion');
+        const hoy = new Date().toISOString().split('T')[0];
+        fechaInscripcion.value = hoy;
+      } else {
+        registroMsg.style.display = 'none';
+        alert('⚠️ Respuesta inesperada del servidor');
+      }
+    } else {
+      registroMsg.style.display = 'none';
+      const errorText = await response.text();
+      if (response.status === 409) {
+        alert('❌ Error: Este email ya está registrado en el sistema. Use un email diferente.');
+      } else if (response.status === 400) {
+        if (errorText.includes('duplicate') || errorText.includes('unique')) {
+          alert('❌ Error: Ya existe un usuario con este email o código. Verifique los datos.');
+        } else {
+          alert('❌ Error de datos: ' + errorText);
+        }
+      } else if (response.status === 422) {
+        alert('❌ Error: Datos inválidos. Verifique que todos los campos estén correctos.');
+      } else {
+        alert('❌ Error del servidor (' + response.status + '): ' + errorText);
+      }
+    }
+  } catch (error) {
+    registroMsg.style.display = 'none';
+    alert('❌ Error al registrar usuario. Intente nuevamente.\n\nError: ' + error.message);
+  }
+};
+
+window.addEventListener('DOMContentLoaded', function() {
+  const fechaInscripcion = document.getElementById('fecha-inscripcion');
+  const hoy = new Date().toISOString().split('T')[0];
+  fechaInscripcion.value = hoy;
+  const form = document.querySelector('form');
+  if (form) {
+    form.addEventListener('submit', window.validarFormulario);
+  }
+  window.manejarCambioRol();
+  window.generarCodigoEstudiante();
+  const infoIcon = document.getElementById('info-club');
+  if (infoIcon) {
+    infoIcon.addEventListener('click', window.mostrarPopupClubInfo);
+  }
+});
+
+window.currentUserCode = '';
+window.currentUserData = {};
+
+window.mostrarPopupExito = function(usuarioCreado, datosFormulario) {
+  window.currentUserCode = usuarioCreado.codigo_usuario;
+  window.currentUserData = {
+    nombre: datosFormulario.username,
+    email: datosFormulario.email,
+    rol: datosFormulario.rol,
+    codigo: usuarioCreado.codigo_usuario
+  };
+  document.getElementById('popup-username-value').textContent = datosFormulario.username;
+  document.getElementById('popup-email-value').textContent = datosFormulario.email;
+  document.getElementById('popup-rol-value').textContent = window.capitalizeFirstLetter(datosFormulario.rol);
+  document.getElementById('popup-code-value').textContent = usuarioCreado.codigo_usuario;
+  const popup = document.getElementById('success-popup');
+  if (!popup) return;
+  popup.style.display = 'flex';
+  popup.style.opacity = '0';
+  setTimeout(() => {
+    popup.style.transition = 'opacity 0.3s ease-in-out';
+    popup.style.opacity = '1';
+  }, 50);
+  try {
+    window.playLightsaberSound();
+  } catch (e) {}
+};
+
+window.copiarCodigoAlPortapapeles = function() {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(window.currentUserCode).then(() => {
+      window.mostrarMensajeTemporalEnBoton('📋 Copiar Código', '✅ ¡Copiado!');
+    }).catch(err => {
+      window.fallbackCopiarTexto(window.currentUserCode);
+    });
+  } else {
+    window.fallbackCopiarTexto(window.currentUserCode);
+  }
+};
+
+window.fallbackCopiarTexto = function(texto) {
+  const textArea = document.createElement('textarea');
+  textArea.value = texto;
+  textArea.style.position = 'fixed';
+  textArea.style.opacity = '0';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    const successful = document.execCommand('copy');
+    if (successful) {
+      window.mostrarMensajeTemporalEnBoton('📋 Copiar Código', '✅ ¡Copiado!');
+    } else {
+      alert('Código: ' + texto + '\n\nCopia manualmente este código.');
+    }
+  } catch (err) {
+    alert('Código: ' + texto + '\n\nCopia manualmente este código.');
+  } finally {
+    document.body.removeChild(textArea);
+  }
+};
+
+window.guardarCodigoArchivo = function() {
+  const contenido = `GALAXIA MAGNA ACADEMY - INFORMACIÓN DE USUARIO\n========================================\n\nNombre: ${window.currentUserData.nombre}\nEmail: ${window.currentUserData.email}\nRol: ${window.capitalizeFirstLetter(window.currentUserData.rol)}\nCódigo de Usuario: ${window.currentUserData.codigo}\nFecha de Registro: ${new Date().toLocaleDateString('es-ES')}\n\n========================================\nIMPORTANTE: Guarda este código para iniciar sesión\n========================================`;
+  const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `GMA_Usuario_${window.currentUserData.codigo}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+  window.mostrarMensajeTemporalEnBoton('💾 Guardar como Archivo', '✅ ¡Guardado!');
+};
+
+window.mostrarMensajeTemporalEnBoton = function(textoOriginal, textoTemporal) {
+  const botones = document.querySelectorAll('#success-popup button');
+  botones.forEach(boton => {
+    if (boton.textContent.includes(textoOriginal.split(' ')[1])) {
+      const textoAnterior = boton.textContent;
+      boton.textContent = textoTemporal;
+      boton.style.background = '#22c55e';
+      setTimeout(() => {
+        boton.textContent = textoAnterior;
+        boton.style.background = '';
+      }, 2000);
+    }
+  });
+};
+
+window.cerrarPopupYVolverInicio = function() {
+  const popup = document.getElementById('success-popup');
+  popup.style.transition = 'opacity 0.3s ease-in-out';
+  popup.style.opacity = '0';
+  setTimeout(() => {
+    popup.style.display = 'none';
+    window.location.href = 'index.html';
+  }, 300);
+};
+
+window.capitalizeFirstLetter = function(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+window.addEventListener('click', function(e) {
+  const popup = document.getElementById('success-popup');
+  if (e.target === popup) {
+    window.cerrarPopupYVolverInicio();
+  }
+});
+
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const popup = document.getElementById('success-popup');
+    const clubPopup = document.getElementById('club-info-popup');
+    if (popup && popup.style.display === 'flex') {
+      window.cerrarPopupYVolverInicio();
+    }
+    if (clubPopup && clubPopup.style.display === 'flex') {
+      window.cerrarPopupClubInfo();
+    }
+  }
+});
+
+window.mostrarPopupClubInfo = function() {
+  const popup = document.getElementById('club-info-popup');
+  popup.style.display = 'flex';
+  popup.style.opacity = '0';
+  setTimeout(() => {
+    popup.style.transition = 'opacity 0.3s ease-in-out';
+    popup.style.opacity = '1';
+  }, 50);
+};
+
+window.cerrarPopupClubInfo = function() {
+  const popup = document.getElementById('club-info-popup');
+  popup.style.transition = 'opacity 0.3s ease-in-out';
+  popup.style.opacity = '0';
+  setTimeout(() => {
+    popup.style.display = 'none';
+  }, 300);
+};
+
+window.addEventListener('click', function(e) {
+  const clubPopup = document.getElementById('club-info-popup');
+  if (e.target === clubPopup) {
+    window.cerrarPopupClubInfo();
+  }
+});
+// --- Login logic for index.html ---
+async function iniciarSesion() {
+  const usernameOrEmail = document.getElementById('login-username').value;
+  const password = document.getElementById('login-password').value;
+  if (!usernameOrEmail || !password) {
+    mostrarMensaje('Por favor, ingresa email/código de usuario y contraseña.', 'error');
+    return;
+  }
+  mostrarMensaje('Verificando credenciales...', 'info');
+  try {
+    let searchUrl;
+    if (usernameOrEmail.includes('@')) {
+      searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(usernameOrEmail)}`;
+    } else {
+      searchUrl = `https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?codigo_usuario=eq.${encodeURIComponent(usernameOrEmail)}`;
+    }
+    const response = await fetch(searchUrl, {
+      method: 'GET',
+      headers: {
+        'apikey': SUPABASE_APIKEY,
+        'Authorization': SUPABASE_AUTH,
+        'Accept': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const users = await response.json();
+      if (users && users.length > 0) {
+        const user = users[0];
+        if (user.password && user.password === password) {
+          localStorage.setItem('currentUser', JSON.stringify({
+            username: user.username,
+            email: user.email,
+            rol: user.rol,
+            codigo: user.codigo_usuario,
+            telefono: user.telefono,
+            genero: user.genero,
+            intereses: user.intereses,
+            fecha_nacimiento: user.fecha_nacimiento,
+            fecha_inscripcion: user.fecha_inscripcion,
+            fromDatabase: true,
+            databaseId: user.id || null
+          }));
+          mostrarMensaje('¡Login exitoso! Datos completos cargados. Redirigiendo...', 'success');
+          setTimeout(() => {
+            window.location.href = 'profile.html';
+          }, 1000);
+        } else {
+          mostrarMensaje('Contraseña incorrecta. Verifica tus credenciales.', 'error');
+        }
+      } else {
+        mostrarMensaje('Usuario no encontrado. Verifica tu email o código de usuario.', 'error');
+      }
+    } else {
+      mostrarMensaje('Error al conectar con la base de datos.', 'error');
+    }
+  } catch (error) {
+    console.error('Error al verificar credenciales:', error);
+    mostrarMensaje('Error de conexión. Verifica tu conexión a internet.', 'error');
+  }
+}
+
+function mostrarMensaje(mensaje, tipo) {
+  const loginMsg = document.getElementById('login-msg');
+  loginMsg.textContent = mensaje;
+  loginMsg.style.display = 'block';
+  switch(tipo) {
+    case 'success':
+      loginMsg.style.color = '#22c55e';
+      break;
+    case 'error':
+      loginMsg.style.color = '#ef4444';
+      break;
+    case 'info':
+      loginMsg.style.color = '#3b82f6';
+      break;
+    default:
+      loginMsg.style.color = '#22c55e';
+  }
+}
+
+function loginComoInvitado() {
+  localStorage.setItem('currentUser', JSON.stringify({
+    username: 'Invitado',
+    email: 'guest@gma.cr',
+    rol: 'invitado',
+    codigo: 'GUEST_2025'
+  }));
+  mostrarMensaje('¡Bienvenido, Invitado! Redirigiendo...', 'success');
+  setTimeout(() => {
+    window.location.href = 'profile.html';
+  }, 1000);
+}
+
+function loginComoInvitadoDirecto() {
+  loginComoInvitado();
+  document.getElementById('ayuda').style.display = 'none';
+}
 // --- Migrated from cursos.html ---
 let allCursos = [];
 let filteredCursos = [];
@@ -369,8 +907,8 @@ async function loadUsers_lista() {
     const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?estado=eq.activo&order=username', {
       method: 'GET',
       headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+      'apikey': SUPABASE_APIKEY,
+      'Authorization': SUPABASE_AUTH,
         'Accept': 'application/json'
       }
     });
@@ -561,8 +1099,8 @@ async function toggleUserStatus_lista(userId, username, currentStatus) {
     const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${userId}`, {
       method: 'PATCH',
       headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+      'apikey': SUPABASE_APIKEY,
+      'Authorization': SUPABASE_AUTH,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ estado: newStatus })
@@ -592,8 +1130,8 @@ async function resetUserPassword_lista() {
     const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${editingUserId_lista}`, {
       method: 'PATCH',
       headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+  'apikey': SUPABASE_APIKEY,
+  'Authorization': SUPABASE_AUTH,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ password: newPassword })
@@ -671,8 +1209,8 @@ document.getElementById('user-form').addEventListener('submit', async function(e
     const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${editingUserId_lista}`, {
       method: 'PATCH',
       headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+  'apikey': SUPABASE_APIKEY,
+  'Authorization': SUPABASE_AUTH,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userData)
