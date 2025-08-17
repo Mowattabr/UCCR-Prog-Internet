@@ -1,3 +1,418 @@
+// --- Migrated from admin_lista_usuarios.html ---
+const ADMIN_PASSWORD_lista = 'admin';
+let users_lista = [];
+let editingUserId_lista = null;
+
+// Admin authentication
+function validateAdminAccess_lista() {
+  const password = document.getElementById('admin-password').value;
+  const errorDiv = document.getElementById('admin-error');
+  
+  if (password === ADMIN_PASSWORD_lista) {
+    document.getElementById('admin-auth-modal').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    loadUsers_lista();
+  } else {
+    errorDiv.style.display = 'block';
+    document.getElementById('admin-password').value = '';
+    document.getElementById('admin-password').focus();
+  }
+}
+
+// Go back to profile
+function goBack_lista() {
+  window.location.href = 'profile.html';
+}
+
+// Load users from database
+async function loadUsers_lista() {
+  try {
+    showMessage_lista('Cargando usuarios...', 'info');
+    // Load only active users by default
+    const response = await fetch('https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?estado=eq.activo&order=username', {
+      method: 'GET',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Accept': 'application/json'
+      }
+    });
+    if (response.ok) {
+      users_lista = await response.json();
+      displayUsers_lista(users_lista);
+      updateStatistics_lista(users_lista);
+      showMessage_lista(`${users_lista.length} usuarios cargados exitosamente`, 'success');
+    } else {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error loading users:', error);
+    showMessage_lista('Error al cargar usuarios: ' + error.message, 'error');
+  }
+}
+
+// Display users in table
+function displayUsers_lista(usersToShow) {
+  const tbody = document.getElementById('users-table-body');
+  const noUsersMessage = document.getElementById('no-users-message');
+  if (usersToShow.length === 0) {
+    tbody.innerHTML = '';
+    noUsersMessage.style.display = 'block';
+    return;
+  }
+  noUsersMessage.style.display = 'none';
+  tbody.innerHTML = usersToShow.map(user => {
+    const avatar = getAvatarForGender_lista(user.genero);
+    const roleColor = getRoleColor_lista(user.rol);
+    const statusColor = getStatusColor_lista(user.estado || 'activo');
+    const club = getClubName_lista(user.intereses);
+    const registerDate = formatDate_lista(user.creado_en || user.fecha_inscripcion);
+    return `
+      <tr style="border-bottom: 1px solid #444; background-color: #2a2a2a !important;">
+        <td style="border: none; padding: 6px 4px; background-color: #2a2a2a;">
+          <img src="${avatar}" alt="" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; opacity: 0.8;">
+        </td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.85em; background-color: #2a2a2a;">${user.username || '---'}</td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.8em; background-color: #2a2a2a;">${user.email || '---'}</td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.8em; background-color: #2a2a2a;">${user.codigo_usuario || '---'}</td>
+        <td style="border: none; padding: 6px 4px; background-color: #2a2a2a;">
+          <span style="background: ${roleColor}; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; opacity: 0.9;">
+            ${(user.rol || 'estudiante').charAt(0).toUpperCase()}
+          </span>
+        </td>
+        <td style="border: none; padding: 6px 4px; background-color: #2a2a2a;">
+          <span style="background: ${statusColor}; color: #fff; padding: 2px 6px; border-radius: 3px; font-size: 0.7em; opacity: 0.9;">
+            ${(user.estado || 'activo').charAt(0).toUpperCase()}
+          </span>
+        </td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.8em; background-color: #2a2a2a;">${user.creditos_obtenidos || '---'}</td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.8em; background-color: #2a2a2a;">${club.length > 12 ? club.substring(0, 12) + '...' : club}</td>
+        <td style="border: none; padding: 6px 4px; color: #fff; font-size: 0.75em; background-color: #2a2a2a;">${registerDate}</td>
+        <td style="border: none; padding: 6px 4px; background-color: #2a2a2a;">
+          <button class="edit-user-btn" data-user-id="${user.id}" style="background: #666; color: #fff; border: none; padding: 3px 6px; border-radius: 3px; cursor: pointer; margin-right: 4px; font-size: 0.7em;" title="Editar">
+            Editar
+          </button>
+          <button class="toggle-user-btn" data-user-id="${user.id}" data-username="${user.username || ''}" data-status="${user.estado || 'activo'}" style="background: ${(user.estado === 'activo') ? '#dc2626' : '#059669'}; color: #fff; border: none; padding: 3px 6px; border-radius: 3px; cursor: pointer; font-size: 0.7em;" title="${(user.estado === 'activo') ? 'Desactivar' : 'Activar'}">
+            ${(user.estado === 'activo') ? 'Desactivar' : 'Activar'}
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// Helper functions
+function getAvatarForGender_lista(gender) {
+  const avatarMap = {
+    'm': 'images/Male.png',
+    'f': 'images/Female.png',
+    'o': 'images/Other.png',
+    'n': 'images/incognito.png'
+  };
+  return avatarMap[gender] || 'images/incognito.png';
+}
+
+function getRoleColor_lista(role) {
+  const colorMap = {
+    'estudiante': '#3b82f6',
+    'profesor': '#f59e0b',
+    'administrador': '#ef4444',
+    'invitado': '#6b7280'
+  };
+  return colorMap[role] || '#6b7280';
+}
+
+function getStatusColor_lista(status) {
+  const colorMap = {
+    'activo': '#22c55e',
+    'inactivo': '#6b7280',
+    'suspendido': '#ef4444'
+  };
+  return colorMap[status] || '#6b7280';
+}
+
+function getClubName_lista(intereses) {
+  const clubMap = {
+    'ajedrez': 'Ajedrez',
+    'arte': 'Arte',
+    'deportes': 'Deportes',
+    'idiomas': 'Idiomas',
+    'matematica': 'Matemática',
+    'musica': 'Música',
+    'programacion': 'Programación',
+    'starwars': 'Star Wars',
+    'otro': 'Otro',
+    'ninguno': 'Ninguno'
+  };
+  if (Array.isArray(intereses) && intereses.length > 0) {
+    return clubMap[intereses[0]] || 'Desconocido';
+  }
+  return clubMap[intereses] || 'Sin club';
+}
+
+function formatDate_lista(dateString) {
+  if (!dateString) return 'Sin fecha';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES');
+  } catch (error) {
+    return 'Fecha inválida';
+  }
+}
+
+// Update statistics
+function updateStatistics_lista(usersToShow) {
+  const totalUsers = usersToShow.length;
+  const students = usersToShow.filter(u => u.rol === 'estudiante').length;
+  const professors = usersToShow.filter(u => u.rol === 'profesor').length;
+  const admins = usersToShow.filter(u => u.rol === 'administrador').length;
+  document.getElementById('total-users').textContent = totalUsers;
+  document.getElementById('total-students').textContent = students;
+  document.getElementById('total-professors').textContent = professors;
+  document.getElementById('total-admins').textContent = admins;
+}
+
+// Filter users
+function filterUsers_lista() {
+  const roleFilter = document.getElementById('filter-role').value;
+  const statusFilter = document.getElementById('filter-status').value;
+  const searchFilter = document.getElementById('filter-search').value.toLowerCase();
+  let filteredUsers = users_lista.filter(user => {
+    const matchesRole = !roleFilter || user.rol === roleFilter;
+    const matchesStatus = !statusFilter || (user.estado || 'activo') === statusFilter;
+    const matchesSearch = !searchFilter || 
+      (user.username && user.username.toLowerCase().includes(searchFilter)) ||
+      (user.email && user.email.toLowerCase().includes(searchFilter)) ||
+      (user.codigo_usuario && user.codigo_usuario.toLowerCase().includes(searchFilter));
+    return matchesRole && matchesStatus && matchesSearch;
+  });
+  displayUsers_lista(filteredUsers);
+  updateStatistics_lista(filteredUsers);
+}
+
+// Edit user
+function editUser_lista(userId) {
+  const user = users_lista.find(u => u.id === userId);
+  if (!user) return;
+  editingUserId_lista = userId;
+  document.getElementById('user-username').value = user.username || '';
+  document.getElementById('user-email').value = user.email || '';
+  document.getElementById('user-role').value = user.rol || 'estudiante';
+  document.getElementById('user-status').value = user.estado || 'activo';
+  document.getElementById('user-gender').value = user.genero || 'n';
+  document.getElementById('user-telefono').value = user.telefono || '';
+  document.getElementById('user-creditos').value = user.creditos_obtenidos || '';
+  document.getElementById('user-birth-date').value = user.fecha_nacimiento || '';
+  // Handle club selection
+  let clubValue = user.intereses;
+  if (Array.isArray(clubValue) && clubValue.length > 0) {
+    clubValue = clubValue[0];
+  }
+  document.getElementById('user-club').value = clubValue || 'ninguno';
+  document.getElementById('user-modal').style.display = 'flex';
+}
+
+// Toggle user status (activate/deactivate instead of delete)
+async function toggleUserStatus_lista(userId, username, currentStatus) {
+  const newStatus = currentStatus === 'activo' ? 'inactivo' : 'activo';
+  const action = newStatus === 'activo' ? 'activar' : 'desactivar';
+  if (!confirm(`¿Está seguro de que desea ${action} el usuario "${username}"?`)) {
+    return;
+  }
+  try {
+    showMessage_lista(`${action.charAt(0).toUpperCase() + action.slice(1)}ando usuario...`, 'info');
+    const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${userId}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ estado: newStatus })
+    });
+    if (response.ok) {
+      showMessage_lista(`Usuario "${username}" ${action}do exitosamente`, 'success');
+      loadUsers_lista();
+    } else {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    showMessage_lista('Error al actualizar estado del usuario: ' + error.message, 'error');
+  }
+}
+
+// Reset user password
+async function resetUserPassword_lista() {
+  if (!editingUserId_lista) return;
+  const newPassword = prompt('Ingrese la nueva contraseña para este usuario:');
+  if (!newPassword || newPassword.length < 4) {
+    alert('La contraseña debe tener al menos 4 caracteres');
+    return;
+  }
+  try {
+    showMessage_lista('Reseteando contraseña...', 'info');
+    const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${editingUserId_lista}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ password: newPassword })
+    });
+    if (response.ok) {
+      showMessage_lista('✅ Contraseña reseteada exitosamente', 'success');
+    } else {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    showMessage_lista('❌ Error al resetear contraseña: ' + error.message, 'error');
+  }
+}
+
+// Close modal
+function closeModal_lista() {
+  document.getElementById('user-modal').style.display = 'none';
+  editingUserId_lista = null;
+}
+
+// Export users to CSV
+function exportUsers_lista() {
+  if (users_lista.length === 0) {
+    showMessage_lista('No hay usuarios para exportar', 'warning');
+    return;
+  }
+  const csvContent = "data:text/csv;charset=utf-8," 
+    + "Nombre,Email,Código,Rol,Estado,Teléfono,Género,Créditos,Club,Fecha Nacimiento,Fecha Registro\n"
+    + users_lista.map(user => {
+      const club = getClubName_lista(user.intereses);
+      const registerDate = formatDate_lista(user.creado_en || user.fecha_inscripcion);
+      const birthDate = formatDate_lista(user.fecha_nacimiento);
+      return [
+        user.username || '',
+        user.email || '',
+        user.codigo_usuario || '',
+        user.rol || '',
+        user.estado || 'activo',
+        user.telefono || '',
+        user.genero || '',
+        user.creditos_obtenidos || '',
+        club,
+        birthDate,
+        registerDate
+      ].map(field => `"${field}"`).join(',');
+    }).join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', `usuarios_gma_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showMessage_lista('✅ Archivo CSV exportado exitosamente', 'success');
+}
+
+// Handle form submission
+document.getElementById('user-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!editingUserId_lista) return;
+  const userData = {
+    username: document.getElementById('user-username').value,
+    email: document.getElementById('user-email').value,
+    rol: document.getElementById('user-role').value,
+    estado: document.getElementById('user-status').value,
+    genero: document.getElementById('user-gender').value,
+    telefono: document.getElementById('user-telefono').value,
+    creditos_obtenidos: document.getElementById('user-creditos').value,
+    fecha_nacimiento: document.getElementById('user-birth-date').value,
+    intereses: [document.getElementById('user-club').value]
+  };
+  try {
+    showMessage_lista('Actualizando usuario...', 'info');
+    const response = await fetch(`https://qjtojggjtouvgljlozwr.supabase.co/rest/v1/lista_usuarios?id=eq.${editingUserId_lista}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqdG9qZ2dqdG91dmdsamxvendyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MzAwMjAsImV4cCI6MjA3MDEwNjAyMH0.z1ggcCP5SbU3jvAOXmo8yD22fRBctQt7LI71LZTR7YM',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+    if (response.ok) {
+      showMessage_lista('✅ Usuario actualizado exitosamente', 'success');
+      closeModal_lista();
+      loadUsers_lista();
+    } else {
+      const errorText = await response.text();
+      throw new Error(`Error HTTP: ${response.status} - ${errorText}`);
+    }
+  } catch (error) {
+    console.error('Error updating user:', error);
+    showMessage_lista('❌ Error al actualizar usuario: ' + error.message, 'error');
+  }
+});
+
+// Show message function
+function showMessage_lista(message, type) {
+  const messageArea = document.getElementById('message-area');
+  messageArea.textContent = message;
+  messageArea.style.display = 'block';
+  // Set color based on type
+  switch(type) {
+    case 'success':
+      messageArea.style.background = '#065f46';
+      messageArea.style.color = '#10b981';
+      messageArea.style.border = '1px solid #10b981';
+      break;
+    case 'error':
+      messageArea.style.background = '#7f1d1d';
+      messageArea.style.color = '#ef4444';
+      messageArea.style.border = '1px solid #ef4444';
+      break;
+    case 'info':
+      messageArea.style.background = '#1e3a8a';
+      messageArea.style.color = '#3b82f6';
+      messageArea.style.border = '1px solid #3b82f6';
+      break;
+    case 'warning':
+      messageArea.style.background = '#92400e';
+      messageArea.style.color = '#f59e0b';
+      messageArea.style.border = '1px solid #f59e0b';
+      break;
+  }
+  // Auto-hide success and info messages
+  if (type === 'success' || type === 'info') {
+    setTimeout(() => {
+      messageArea.style.display = 'none';
+    }, 3000);
+  }
+}
+
+// Handle Enter key for admin password
+document.getElementById('admin-password').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    validateAdminAccess_lista();
+  }
+});
+
+// Auto-focus password field
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('admin-password').focus();
+  // Add event listeners for user action buttons
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('edit-user-btn')) {
+      const userId = parseInt(e.target.getAttribute('data-user-id'));
+      editUser_lista(userId);
+    } else if (e.target.classList.contains('toggle-user-btn')) {
+      const userId = parseInt(e.target.getAttribute('data-user-id'));
+      const username = e.target.getAttribute('data-username');
+      const status = e.target.getAttribute('data-status');
+      toggleUserStatus_lista(userId, username, status);
+    }
+  });
+});
 // --- Login y modo administrador ---
 /*
   Explicación para estudiantes:
