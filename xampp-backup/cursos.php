@@ -1,3 +1,0 @@
-<?php
-// cursos.php
-?>
