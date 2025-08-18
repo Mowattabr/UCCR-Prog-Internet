@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayuda</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #23232b; color: #fff; font-family: Arial, sans-serif; }
+    .section-modal { display: block; max-width: 500px; margin: 40px auto; background: #23232b; border-radius: 12px; box-shadow: 0 4px 24px #0008; padding: 40px 20px; }
+    .close-section-btn { margin-top: 20px; background: #f18b32; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <section id="ayuda" class="section-modal">
+    <h2>Ayuda</h2>
+    <p>Esta es una <b>página de prueba</b> que emula el registro para la Universidad Central de Costa Rica (UCCR).</p>
+    <p>No ingreses datos personales reales, ya que esta página es solo para fines de demostración.</p>
+    <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
+    <div class="guest-login-box">
+      <p>¿Quieres explorar el sistema sin registrarte?</p>
+      <button onclick="window.opener && window.opener.loginComoInvitadoDirecto && window.opener.loginComoInvitadoDirecto(); window.close();" class="guest-login-button">
+        Logeate como invitado
+      </button>
+    </div>
+    <button id="cerrar-ayuda" class="close-section-btn" onclick="window.close()">Cerrar</button>
+  </section>
+</body>
+</html>

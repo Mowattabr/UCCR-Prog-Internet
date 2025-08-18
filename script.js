@@ -534,7 +534,6 @@ function loginComoInvitado() {
 
 function loginComoInvitadoDirecto() {
   loginComoInvitado();
-  document.getElementById('ayuda').style.display = 'none';
 }
 // --- Migrated from cursos.html ---
 let allCursos = [];
@@ -543,6 +542,14 @@ let isAdminLoggedIn = false;
 const ADMIN_PASSWORD = 'admin';
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Open Ayuda popup window
+  var ayudaLinks = document.querySelectorAll('a[href="#ayuda"]');
+  ayudaLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.open('ayuda_popup.html', 'Ayuda', 'width=600,height=700,scrollbars=yes,resizable=yes');
+    });
+  });
   // Open Contacto popup window
   var contactoLinks = document.querySelectorAll('a[href="#contacto"]');
   contactoLinks.forEach(function(link) {
