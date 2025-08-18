@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprende más</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: #23232b; color: #fff; font-family: Arial, sans-serif; }
+    .section-modal { display: block; max-width: 700px; margin: 40px auto; background: #23232b; border-radius: 12px; box-shadow: 0 4px 24px #0008; padding: 40px 20px; }
+    .close-section-btn { margin-top: 20px; background: #f18b32; color: #fff; border: none; border-radius: 6px; padding: 10px 20px; cursor: pointer; }
+    .recursos-educativos { margin-top: 30px; }
+    .podcast-videos { display: flex; gap: 20px; flex-wrap: wrap; }
+    .podcast-item { flex: 1 1 300px; background: #333; border-radius: 8px; padding: 10px; text-align: center; }
+    .enlaces-educativos { margin-top: 20px; }
+    .enlace-item { background: #333; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+    .btn-recurso { background: #f18b32; color: #fff; border: none; border-radius: 6px; padding: 8px 16px; text-decoration: none; display: inline-block; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <section id="aprende-mas" class="section-modal">
+    <h2>Aprende más</h2>
+    <p>Explora estos recursos educativos para profundizar tus conocimientos en desarrollo web.</p>
+    <div class="recursos-educativos">
+      <h3>Podcasts Recomendados</h3>
+      <p>Aprende HTML y CSS con estos videos explicativos:</p>
+      <div class="podcast-videos">
+        <div class="podcast-item">
+          <iframe width="480" height="270" src="https://www.youtube.com/embed/UVfJnSb844c" title="HTML e CSS para Principiantes – Explicado com Analogias (Portugués)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <p>HTML e CSS para Principiantes – Explicado com Analogias (Portugués)</p>
+        </div>
+        <div class="podcast-item">
+          <iframe width="480" height="270" src="https://www.youtube.com/embed/4kIwc6nm5rg" title="HTML y CSS para Principiantes – Explicado con Analogías (Español)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <p>HTML y CSS para Principiantes – Explicado con Analogías (Español)</p>
+        </div>
+      </div>
+      <h3>Enlaces Recomendados</h3>
+      <div class="enlaces-educativos">
+        <div class="enlace-item">
+          <h4>¿Quieres aprender más de HTML?</h4>
+          <p>Visita el siguiente recurso recomendado para profundizar tus conocimientos:</p>
+          <a href="https://www.w3schools.com/html/default.asp" target="_blank" class="btn-recurso">
+            Aprende más de HTML en W3Schools
+          </a>
+        </div>
+      </div>
+    </div>
+    <button id="cerrar-aprende-mas" class="close-section-btn" onclick="window.close()">Cerrar</button>
+  </section>
+</body>
+</html>

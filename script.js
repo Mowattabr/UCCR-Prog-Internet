@@ -542,6 +542,14 @@ let isAdminLoggedIn = false;
 const ADMIN_PASSWORD = 'admin';
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Open Aprende más popup window
+  var aprendeMasLinks = document.querySelectorAll('a[href="#aprende-mas"]');
+  aprendeMasLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.open('aprende_mas_popup.html', 'AprendeMas', 'width=800,height=800,scrollbars=yes,resizable=yes');
+    });
+  });
   // Open Ayuda popup window
   var ayudaLinks = document.querySelectorAll('a[href="#ayuda"]');
   ayudaLinks.forEach(function(link) {
