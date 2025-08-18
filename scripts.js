@@ -1,6 +1,13 @@
 // scripts.js
 // Add all custom JavaScript for the site here.
 
+// Ensure config.js is loaded before this script
+// If using HTML, add this before scripts.js:
+// <script src="config.js"></script>
+// <script src="scripts.js"></script>
+// If using modules, you can import:
+// import './config.js';
+
 
 
 // Redirect to registro.html when the Formulario de registro button is clicked
@@ -34,8 +41,144 @@ document.addEventListener('DOMContentLoaded', function() {
 					default:
 						avatarImg.src = 'images/GMA.png';
 				}
+				// Remove grayscale and opacity for feedback
+				avatarImg.style.filter = 'none';
+				avatarImg.style.opacity = '1';
 			});
 		});
 	}
 });
+
+function padNumber(num, size) {
+    let s = num + "";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+async function generarCodigoUsuario(username) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const firstLetter = username ? username[0].toUpperCase() : 'X';
+    // Get count of users with same prefix for consecutive number
+    // Use SUPABASE_URL from config.js
+    const prefix = `${year}${month}${firstLetter}`;
+    const urlCheck = `${SUPABASE_URL}/rest/v1/lista_usuarios?codigo_usuario=like.${prefix}%25`;
+    const headersCheck = {
+        'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+        'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+    };
+    const responseCheck = await fetch(urlCheck, { headers: headersCheck });
+    let count = 0;
+    if (responseCheck.ok) {
+        const data = await responseCheck.json();
+        count = data.length + 1;
+    } else {
+        count = 1;
+    }
+    return `${year}-${month}-${firstLetter}${padNumber(count, 4)}`;
+}
+
+// Registration form validation and safe submission
+
+document.addEventListener('DOMContentLoaded', function() {
+	var usernameInput = document.getElementById('username');
+	var codigoUsuarioInput = document.getElementById('codigo-estudiante');
+	if (usernameInput && codigoUsuarioInput) {
+		usernameInput.addEventListener('input', async function() {
+			const username = usernameInput.value.trim();
+			if (username) {
+				const codigo = await generarCodigoUsuario(username);
+				codigoUsuarioInput.value = codigo;
+			} else {
+				codigoUsuarioInput.value = '';
+			}
+		});
+	}
+
+	var registroForm = document.getElementById('registro-form');
+	if (registroForm) {
+		registroForm.addEventListener('submit', async function(e) {
+			e.preventDefault();
+
+			// Collect form data
+			const username = document.getElementById('username').value.trim();
+			const email = document.getElementById('email').value.trim();
+			const password = document.getElementById('password').value;
+			const confirmPassword = document.getElementById('confirm-password').value;
+			const telefono = document.getElementById('telefono').value.trim();
+			const fecha_nacimiento = document.getElementById('fecha-nacimiento').value;
+			const rol = document.getElementById('rol').value;
+			const fecha_inscripcion = document.getElementById('fecha-inscripcion').value;
+			const genero = document.querySelector('input[name="gender"]:checked')?.value || '';
+			const intereses = document.getElementById('intereses').value;
+
+			// Basic validation
+			let errorMsg = '';
+			if (!username) errorMsg += 'Nombre de usuario requerido.\n';
+			if (!email || !email.includes('@')) errorMsg += 'Correo electrónico inválido.\n';
+			if (!password || password.length < 6) errorMsg += 'Contraseña debe tener al menos 6 caracteres.\n';
+			if (password !== confirmPassword) errorMsg += 'Las contraseñas no coinciden.\n';
+			if (!fecha_nacimiento) errorMsg += 'Fecha de nacimiento requerida.\n';
+			if (!rol) errorMsg += 'Rol requerido.\n';
+			if (!fecha_inscripcion) errorMsg += 'Fecha de inscripción requerida.\n';
+			if (!genero) errorMsg += 'Género requerido.\n';
+			if (!intereses) errorMsg += 'Debes seleccionar un club.\n';
+
+			if (errorMsg) {
+				alert('Corrige los siguientes errores antes de registrar:\n' + errorMsg);
+				return; // Do not save to SQL
+			}
+
+            // Check if username exists in Supabase
+            // Use global SUPABASE_URL from config.js
+            const urlCheck = `${SUPABASE_URL}/rest/v1/lista_usuarios?username=eq.${encodeURIComponent(username)}`;
+            const headersCheck = {
+                'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+                'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+            };
+            const responseCheck = await fetch(urlCheck, { headers: headersCheck });
+            if (responseCheck.ok) {
+                const data = await responseCheck.json();
+                if (data.length > 0) {
+                    alert('El nombre de usuario ya existe. Por favor elige otro.');
+                    return; // Prevent registration
+                }
+            } else {
+                alert('No se pudo verificar el nombre de usuario. Intenta de nuevo.');
+                return;
+            }
+
+			// Before preparing payload, auto-generate code again to ensure uniqueness
+			const codigo_usuario = await generarCodigoUsuario(username);
+
+			// Prepare payload for Supabase
+			const payload = {
+				username,
+				email,
+				password,
+				telefono,
+				fecha_nacimiento,
+				rol,
+				fecha_inscripcion,
+				codigo_usuario,
+				genero,
+				intereses,
+				creditos_obtenidos: '',
+				estado: 'activo'
+			};
+
+			try {
+				const result = await window.registrarUsuario(payload);
+				alert('Usuario registrado exitosamente.');
+				window.location.href = 'index.html';
+			} catch (err) {
+				alert('Error al registrar usuario: ' + err.message);
+			}
+		});
+	}
+});
+
+function manejarCambioRol() {}
+function manejarSeleccionClub() {}
 
