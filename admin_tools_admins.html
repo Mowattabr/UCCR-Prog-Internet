@@ -131,7 +131,7 @@
       });
     }
     async function cargarAdmins() {
-      const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?rol=eq.admin`;
+      const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?rol=eq.administrador`;
       const headers = {
         'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
         'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
