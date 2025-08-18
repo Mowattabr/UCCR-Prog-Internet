@@ -41,20 +41,19 @@
 
         <div id="login-rapido-wrapper">
           <div id="login-msg"></div>
-          
-          <!-- Navigation moved here to align with Login section -->
-          <nav>
-            <ul>
-              <!-- <li><a href="index.html">Inicio</a></li> Enlace a la página de inicio -->
-              <li class="nav-privado"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
-              <li class="nav-privado"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
-              <li class="nav-privado"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
-              <li class="nav-privado"><a href="profile.html">Mi Perfil</a></li>      <!-- Enlace al perfil del usuario -->
-              <li><a href="#contacto">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
-              <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
-              <li><a href="#aprende-mas">Aprende más</a></li>       <!-- Enlace a la sección de recursos educativos -->
-            </ul>
-          </nav>
+    <!-- Navigation moved outside login form for modal accessibility -->
+    <nav>
+      <ul>
+        <!-- <li><a href="index.html">Inicio</a></li> Enlace a la página de inicio -->
+        <li class="nav-privado"><a href="#cursos">Cursos</a></li>      <!-- Enlace a la sección de cursos -->
+        <li class="nav-privado"><a href="#estudiantes">Estudiantes</a></li>      <!-- Enlace a la sección de estudiantes -->
+        <li class="nav-privado"><a href="#profesores">Profesores</a></li>      <!-- Enlace a la sección de profesores -->
+        <li class="nav-privado"><a href="profile.html">Mi Perfil</a></li>      <!-- Enlace al perfil del usuario -->
+        <li><a href="#contacto">Contacto</a></li>    <!-- Enlace a la sección de contacto -->
+        <li><a href="#ayuda">Ayuda</a></li>       <!-- Enlace a la sección de ayuda -->
+        <li><a href="#aprende-mas">Aprende más</a></li>       <!-- Enlace a la sección de recursos educativos -->
+      </ul>
+    </nav>
           
           <!--
             FIELDSET DE LOGIN :
@@ -109,154 +108,6 @@
       <button id="cerrar-ayuda" class="close-section-btn">Cerrar</button>
     </section>
 
-    <!-- Página de Cursos como subpágina -->
-    <section id="cursos" class="section-modal">
-      <h2>Cursos</h2>
-      <div class="courses-table-container">
-        <table class="tabla-cursos" >
-          <thead>
-            <tr class="table-header">
-              <th class="cuatrimestre">Cuatrimestre</th>
-              <th class="curso">Curso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="cuatrimestre">I</td><td class="curso">Inglés I</td></tr>
-            <tr><td class="cuatrimestre">I</td><td class="curso">Matemática I</td></tr>
-            <tr><td class="cuatrimestre">I</td><td class="curso">Introducción a la Informática</td></tr>
-            <tr><td class="cuatrimestre">I</td><td class="curso">Comunicación</td></tr>
-            <tr><td class="cuatrimestre">II</td><td class="curso">Administración I</td></tr>
-            <tr><td class="cuatrimestre">II</td><td class="curso">Contabilidad para Ingeniería</td></tr>
-            <tr><td class="cuatrimestre">II</td><td class="curso">Inglés II</td></tr>
-            <tr><td class="cuatrimestre">II</td><td class="curso">Programación de Cómputo I</td></tr>
-            <tr><td class="cuatrimestre">III</td><td class="curso">Arquitectura de Computadoras</td></tr>
-            <tr><td class="cuatrimestre">III</td><td class="curso">Programación Internet</td></tr>
-            <tr><td class="cuatrimestre">III</td><td class="curso">Sistemas Computacionales (C)</td></tr>
-            <tr><td class="cuatrimestre">III</td><td class="curso">Cálculo I</td></tr>
-            <tr><td class="cuatrimestre">IV</td><td class="curso">Métodos Estadísticos I</td></tr>
-            <tr><td class="cuatrimestre">IV</td><td class="curso">Finanzas para Ingeniería</td></tr>
-            <tr><td class="cuatrimestre">IV</td><td class="curso">Estructura de Datos y Algoritmos</td></tr>
-            <tr><td class="cuatrimestre">IV</td><td class="curso">Programación Computadoras II (Visual Basic)</td></tr>
-            <tr><td class="cuatrimestre">V</td><td class="curso">Economía para Ingeniería</td></tr>
-            <tr><td class="cuatrimestre">V</td><td class="curso">Organización de Archivos</td></tr>
-            <tr><td class="cuatrimestre">V</td><td class="curso">Programación de Computadoras III (Visual Basic Avanzado)</td></tr>
-            <tr><td class="cuatrimestre">V</td><td class="curso">Sistemas Operativos I</td></tr>
-            <tr><td class="cuatrimestre">VI</td><td class="curso">Diseño y Optimización de Base de Datos</td></tr>
-            <tr><td class="cuatrimestre">VI</td><td class="curso">Análisis y Diseño de Sistemas I</td></tr>
-            <tr><td class="cuatrimestre">VI</td><td class="curso">Telemática</td></tr>
-            <tr><td class="cuatrimestre">VI</td><td class="curso">Administración de Proyectos</td></tr>
-            <tr><td class="cuatrimestre">VII</td><td class="curso">Análisis y Diseño de Sistemas II</td></tr>
-            <tr><td class="cuatrimestre">VII</td><td class="curso">Investigación de Operaciones I</td></tr>
-            <tr><td class="cuatrimestre">VII</td><td class="curso">Administración de Centros de Cómputo</td></tr>
-            <tr><td class="cuatrimestre">VII</td><td class="curso">Telemática II</td></tr>
-            <tr><td class="cuatrimestre">VIII</td><td class="curso">Investigación de Operaciones II</td></tr>
-            <tr><td class="cuatrimestre">VIII</td><td class="curso">Auditoría de Sistemas Computacionales</td></tr>
-            <tr><td class="cuatrimestre">VIII</td><td class="curso">Programación de Lenguaje de 4ta Generación</td></tr>
-            <tr><td class="cuatrimestre">VIII</td><td class="curso">Seminario de Graduación</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <button id="cerrar-cursos" class="close-section-btn">Cerrar</button>
-    </section>
-
-    <!-- Página de Estudiantes como subpágina -->
-    <section id="estudiantes" class="section-modal">
-      <h2>Estudiantes</h2>
-      <table class="tabla-separada" >
-        <thead>
-          <tr class="table-header">
-            <th>Nombre</th>
-            <th class="descripcion">Descripción</th>
-            <th class="materia">Materia</th>
-            <th>Profesor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>R2-D2</b></td><td class="descripcion">Especialista en interfaces y circuitos desde hace galaxias</td><td class="materia">Arquitectura de Computadoras</td><td>Dr. Gordon Moore</td>
-          </tr>
-          <tr>
-            <td><b>Neo (Matrix)</b></td><td class="descripcion">Puede manipular la realidad, pero todavía batalla con los for loops</td><td class="materia">Programación de Cómputo I/II/III</td><td>Dra. Ada Lovelace</td>
-          </tr>
-          <tr>
-            <td><b>Data (Star Trek)</b></td><td class="descripcion">Busca comprender la eficiencia de estructuras recursivas</td><td class="materia">Estructura de Datos y Algoritmos</td><td>MSc. Donald Knuth</td>
-          </tr>
-          <tr>
-            <td><b>Tron</b></td><td class="descripcion">Salido de la red, desea entender cómo se ejecutan procesos en SO reales</td><td class="materia">Sistemas Operativos</td><td>MSc. Grace Hopper</td>
-          </tr>
-          <tr>
-            <td><b>Miles Morales (Spider-Man)</b></td><td class="descripcion">Estudiante de STEM que crea su propia página en HTML para su traje</td><td class="materia">Programación Internet / Telemática</td><td>Dr. Tim Berners-Lee</td>
-          </tr>
-          <tr>
-            <td><b>Megamind</b></td><td class="descripcion">Le encantan las matemáticas... si son para conquistar el mundo</td><td class="materia">Matemática / Cálculo / Estadística</td><td>MSc. Katherine Johnson</td>
-          </tr>
-          <tr>
-            <td><b>Bruce Banner (Hulk)</b></td><td class="descripcion">Calcula riesgos financieros... antes de enojarse</td><td class="materia">Marketing Digital / Finanzas</td><td>Lic. Philip Kotler</td>
-          </tr>
-          <tr>
-            <td><b>T-800 (Terminator)</b></td><td class="descripcion">Necesita aprender organización de datos humanos para su próxima misión</td><td class="materia">Organización de Archivos / Administración TI</td><td>Dr. Alan Turing</td>
-          </tr>
-          <tr>
-            <td><b>Gwen Stacy (Spider-Gwen)</b></td><td class="descripcion">Diseñadora web y activista, domina GitHub como su telaraña</td><td class="materia">Programación Internet</td><td>Fabián Chinchilla Mayorga</td>
-          </tr>
-          <tr>
-            <td><b>Cortana (Halo)</b></td><td class="descripcion">Quiere mejorar su capacidad de planificación de misiones complejas</td><td class="materia">Análisis y Diseño de Sistemas</td><td>Dra. Margaret Hamilton</td>
-          </tr>
-        </tbody>
-      </table>
-      <button id="cerrar-estudiantes" class="close-section-btn">Cerrar</button>
-    </section>
-
-    <!-- Página de Profesores como subpágina -->
-    <section id="profesores" class="section-modal">
-      <h2>Profesores</h2>
-      <table class="tabla-separada" >
-        <thead>
-          <tr class="table-header">
-            <th>Nombre</th>
-            <th class="descripcion">Descripción</th>
-            <th class="materia">Materia</th>
-          </tr>
-        </thead>
-        <tbody id="profesores-tbody">
-          <!-- Filas de profesores se llenan por JS -->
-        </tbody>
-      </table>
-      <button id="cerrar-profesores" class="close-section-btn">Cerrar</button>
-    </section>
-
-    <!-- Página de Contacto como subpágina -->
-    <section id="contacto" class="section-modal">
-      <h2>Contacto</h2>
-      <p>¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte!</p>
-      
-      <form id="contacto-form" class="contacto-formulario">
-        <div class="form-group">
-          <label for="contacto-nombre" class="form-label">Nombre completo:</label>
-          <input type="text" id="contacto-nombre" name="nombre" class="form-control" required>
-          <small class="error-message" id="error-nombre"></small>
-        </div>
-        
-        <div class="form-group">
-          <label for="contacto-mensaje" class="form-label">Mensaje:</label>
-          <textarea id="contacto-mensaje" name="mensaje" class="form-control" rows="5" required placeholder="Escribe tu mensaje aquí..."></textarea>
-          <small class="error-message" id="error-mensaje"></small>
-        </div>
-        
-        <div class="form-actions">
-          <button type="submit" class="btn-enviar-contacto" id="btn-enviar">
-            <span id="btn-text">Enviar mensaje</span>
-            <span id="btn-loading" class="loading-spinner" style="display: none;">Enviando...</span>
-          </button>
-        </div>
-        
-        <!-- Mensaje de estado -->
-        <div id="contacto-status" class="status-message" style="display: none;"></div>
-      </form>
-      
-      <button id="cerrar-contacto" class="close-section-btn">Cerrar</button>
-    </section>
-
     <!-- Página de Aprende más como subpágina -->
     <section id="aprende-mas" class="section-modal">
       <h2>Aprende más</h2>
@@ -296,15 +147,13 @@
 
     <!-- Bootstrap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="config.js"></script>
-    <script src="script.js"></script>
 
   </main>
 
   <footer>
   </footer>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
-  <!-- JavaScript moved to script.js -->
 </body>
 </html>

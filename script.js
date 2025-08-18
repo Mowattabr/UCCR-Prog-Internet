@@ -543,6 +543,23 @@ let isAdminLoggedIn = false;
 const ADMIN_PASSWORD = 'admin';
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Open Contacto popup window
+  var contactoLinks = document.querySelectorAll('a[href="#contacto"]');
+  contactoLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.open('contacto_popup.html', 'Contacto', 'width=600,height=700,scrollbars=yes,resizable=yes');
+    });
+  });
+  // TEST BUTTON for Contacto modal
+  var testBtn = document.getElementById('test-contacto-btn');
+  var contactoSection = document.getElementById('contacto');
+  if (testBtn && contactoSection) {
+    testBtn.addEventListener('click', function() {
+      contactoSection.style.display = 'block';
+      console.log('Test button: Contacto modal opened');
+    });
+  }
   loadCursos();
   setupAddCursoForm();
 });
@@ -1593,27 +1610,42 @@ document.addEventListener('DOMContentLoaded', function() {
   // (Eliminado bloque duplicado de avatar por género)
 
   function setupSectionToggle(linkSelector, sectionId, closeBtnId) {
-    var link = document.querySelector(linkSelector);
+    var links = document.querySelectorAll(linkSelector);
     var section = document.getElementById(sectionId);
     var closeBtn = document.getElementById(closeBtnId);
-    if (link && section && closeBtn) {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        section.style.display = 'block';
-        window.scrollTo({top: section.offsetTop, behavior: 'smooth'});
+    console.log(`setupSectionToggle: Found ${links.length} links for selector '${linkSelector}'`);
+    if (links.length && section && closeBtn) {
+      links.forEach(function(link, idx) {
+        console.log(`Attaching click event to link #${idx} for section #${sectionId}`);
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          console.log(`Clicked link for #${sectionId}`);
+          section.style.display = 'block';
+          console.log(`Section #${sectionId} display set to block.`);
+          window.scrollTo({top: section.offsetTop, behavior: 'smooth'});
+        });
       });
       closeBtn.addEventListener('click', function() {
         section.style.display = 'none';
+        console.log(`Section #${sectionId} closed.`);
       });
+    } else {
+      if (!links.length) console.warn(`No links found for selector: ${linkSelector}`);
+      if (!section) console.warn(`Section not found: ${sectionId}`);
+      if (!closeBtn) console.warn(`Close button not found: ${closeBtnId}`);
     }
   }
 
   // Uso para cada sección:
+document.addEventListener('DOMContentLoaded', function() {
   setupSectionToggle('a[href="#ayuda"]', 'ayuda', 'cerrar-ayuda');
   setupSectionToggle('a[href="#cursos"]', 'cursos', 'cerrar-cursos');
   setupSectionToggle('a[href="#estudiantes"]', 'estudiantes', 'cerrar-estudiantes');
   setupSectionToggle('a[href="#profesores"]', 'profesores', 'cerrar-profesores');
   setupSectionToggle('a[href="#laboratorios"]', 'laboratorios', 'cerrar-laboratorios');
+  setupSectionToggle('a[href="#contacto"]', 'contacto', 'cerrar-contacto');
+  setupSectionToggle('a[href="#aprende-mas"]', 'aprende-mas', 'cerrar-aprende-mas');
+});
 
   // --- Profesores dinámico con materias únicas ---
   // Lista de cursos desde la tabla de cursos
