@@ -212,9 +212,30 @@ async function iniciarSesion() {
 			return;
 		}
 		// Usuario existe, puedes continuar con el login
-	// Save user data to localStorage for profile page
-	localStorage.setItem('uccr_user', JSON.stringify(data[0]));
-	window.location.href = 'profile.html';
+		// Fetch full user object by email or codigo_usuario to ensure id is present
+		let userQuery = `${SUPABASE_URL}/rest/v1/lista_usuarios?select=*&limit=1`;
+		if (data[0].email) {
+			userQuery += `&email=eq.${encodeURIComponent(data[0].email)}`;
+		} else if (data[0].codigo_usuario) {
+			userQuery += `&codigo_usuario=eq.${encodeURIComponent(data[0].codigo_usuario)}`;
+		}
+		const userResponse = await fetch(userQuery, {
+			headers: {
+				'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+				'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+			}
+		});
+		if (userResponse.ok) {
+			const userData = await userResponse.json();
+			if (userData.length > 0) {
+				localStorage.setItem('uccr_user', JSON.stringify(userData[0]));
+			} else {
+				localStorage.setItem('uccr_user', JSON.stringify(data[0]));
+			}
+		} else {
+			localStorage.setItem('uccr_user', JSON.stringify(data[0]));
+		}
+		window.location.href = 'profile.html';
 	} catch (err) {
 		alert('Error de conexión: ' + err.message);
 	}

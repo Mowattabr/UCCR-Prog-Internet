@@ -35,14 +35,19 @@ async function loadUserProfile() {
 
 // Render profile fields
 function renderProfile(user) {
-    document.getElementById('user-display-name').textContent = user.username || '';
+    document.getElementById('user-display-name').textContent = user.username || user.nombre_completo || '';
     document.getElementById('user-role').textContent = 'Rol: ' + (user.rol || '');
     document.getElementById('user-code').textContent = 'Código: ' + (user.codigo_usuario || '');
-    document.getElementById('name-display').textContent = user.username || '';
+    document.getElementById('name-display').textContent = user.username || user.nombre_completo || '';
     document.getElementById('email-display').textContent = user.email || '';
     document.getElementById('telefono-display').textContent = user.telefono || '';
     document.getElementById('genero-display').textContent = user.genero || '';
-    document.getElementById('intereses-display').textContent = (user.intereses && user.intereses.length) ? user.intereses.join(', ') : '';
+    // Intereses: handle array or string
+    if (Array.isArray(user.intereses)) {
+        document.getElementById('intereses-display').textContent = user.intereses.join(', ');
+    } else {
+        document.getElementById('intereses-display').textContent = user.intereses || '';
+    }
     document.getElementById('fecha-nacimiento-display').textContent = user.fecha_nacimiento || '';
     document.getElementById('fecha-inscripcion-display').textContent = user.fecha_inscripcion || '';
     document.getElementById('creditos-obtenidos-display').textContent = user.creditos_obtenidos || '';
@@ -86,17 +91,22 @@ async function saveField(field) {
     } else {
         newValue = document.getElementById(field + '-edit').value;
     }
-    // Update in Supabase
+    // Map field names for DB
+    let dbField = field;
+    if (field === 'name') dbField = 'username';
+    // PATCH request to Supabase
     let query = `${SUPABASE_URL}/rest/v1/lista_usuarios`;
     let body = {};
-    body[field] = (field === 'intereses') ? [newValue] : newValue;
+    body[dbField] = (field === 'intereses') ? [newValue] : newValue;
     const headers = {
         'Content-Type': 'application/json',
         'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
-        'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+        'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
+        'Prefer': 'return=representation'
     };
     let filter = '';
-    if (user.email) filter = `?email=eq.${encodeURIComponent(user.email)}`;
+    if (user.id) filter = `?id=eq.${user.id}`;
+    else if (user.email) filter = `?email=eq.${encodeURIComponent(user.email)}`;
     else if (user.codigo_usuario) filter = `?codigo_usuario=eq.${encodeURIComponent(user.codigo_usuario)}`;
     const response = await fetch(query + filter, {
         method: 'PATCH',
@@ -105,12 +115,18 @@ async function saveField(field) {
     });
     if (response.ok) {
         // Update local user and UI
-        user[field] = body[field];
+        user[dbField] = body[dbField];
         setLoggedInUser(user);
         loadUserProfile();
         cancelEdit(field);
     } else {
-        alert('No se pudo guardar el cambio.');
+        let errorMsg = 'No se pudo guardar el cambio.';
+        try {
+            const errorText = await response.text();
+            errorMsg += '\n' + errorText;
+        } catch (e) {}
+        document.getElementById('message-area').textContent = errorMsg;
+        document.getElementById('message-area').style.display = 'block';
     }
 }
 
