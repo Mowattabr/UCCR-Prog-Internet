@@ -181,4 +181,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function manejarCambioRol() {}
 function manejarSeleccionClub() {}
+// Login function for index.html
+async function iniciarSesion() {
+	const usernameOrEmail = document.getElementById('login-username').value.trim();
+	const password = document.getElementById('login-password').value;
+	if (!usernameOrEmail || !password) {
+		alert('Por favor ingresa tu usuario/email y contraseña.');
+		return;
+	}
+	// Build query for Supabase REST API
+	let query = `${SUPABASE_URL}/rest/v1/lista_usuarios?select=*&password=eq.${encodeURIComponent(password)}`;
+	if (usernameOrEmail.includes('@')) {
+		query += `&email=eq.${encodeURIComponent(usernameOrEmail)}`;
+	} else {
+		query += `&codigo_usuario=eq.${encodeURIComponent(usernameOrEmail)}`;
+	}
+	const headers = {
+		'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+		'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+	};
+	try {
+		const response = await fetch(query, { headers });
+		if (!response.ok) {
+			alert('Error al verificar usuario.');
+			return;
+		}
+		const data = await response.json();
+		if (data.length === 0) {
+			alert('Usuario o contraseña incorrectos, o el usuario no existe.');
+			return;
+		}
+		// Usuario existe, puedes continuar con el login
+	// Save user data to localStorage for profile page
+	localStorage.setItem('uccr_user', JSON.stringify(data[0]));
+	window.location.href = 'profile.html';
+	} catch (err) {
+		alert('Error de conexión: ' + err.message);
+	}
+}
 

@@ -3,8 +3,6 @@
 // Requires config.js to be loaded first
 
 // Use SUPABASE_URL from config.js
-const SUPABASE_APIKEY = typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '';
-const SUPABASE_AUTH = typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '';
 
 // Helper: Make a POST request to Supabase REST API to insert a user
 async function registrarUsuario(payload) {
