@@ -56,11 +56,12 @@ main::before {
   content: "";
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: url('images/banner.png') no-repeat center center fixed;
-  background-size: 80%;
-  filter: blur(2px);
-  opacity: 0.3;
+  background: url('images/banner.png') no-repeat center center;
+  background-size: 110%;
+  opacity: 1;
   z-index: 0;
+  filter: blur(2px);
+  
 }
 
 main > * {
