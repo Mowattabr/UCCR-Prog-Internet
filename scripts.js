@@ -1,3 +1,24 @@
+// Register user in Supabase
+async function registrarUsuario(payload) {
+	const url = `${SUPABASE_URL}/rest/v1/lista_usuarios`;
+	const headers = {
+		'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+		'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
+		'Content-Type': 'application/json',
+		'Prefer': 'return=representation'
+	};
+	const response = await fetch(url, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify(payload)
+	});
+	if (!response.ok) {
+		const error = await response.json();
+		throw new Error(error.message || 'No se pudo registrar el usuario');
+	}
+	return await response.json();
+}
+window.registrarUsuario = registrarUsuario;
 // scripts.js
 // Add all custom JavaScript for the site here.
 
@@ -163,11 +184,23 @@ document.addEventListener('DOMContentLoaded', function() {
 				fecha_inscripcion,
 				codigo_usuario,
 				genero,
-				intereses,
+				intereses: Array.isArray(intereses) ? intereses : [intereses],
 				creditos_obtenidos: '',
 				estado: 'activo'
 			};
 
+			// Password validation for special roles
+			if (rol === 'profesor' || rol === 'administrador') {
+				const rolPassword = document.getElementById('password-rol').value;
+				if (rol === 'profesor' && rolPassword !== 'profesor') {
+					alert('La contraseña para el rol Profesor es incorrecta.');
+					return;
+				}
+				if (rol === 'administrador' && rolPassword !== 'admin') {
+					alert('La contraseña para el rol Administrador es incorrecta.');
+					return;
+				}
+			}
 			try {
 				const result = await window.registrarUsuario(payload);
 				alert('Usuario registrado exitosamente.');
@@ -179,7 +212,22 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 });
 
-function manejarCambioRol() {}
+function manejarCambioRol() {
+    const rol = document.getElementById('rol').value;
+    const passwordContainer = document.getElementById('password-rol-container');
+    const passwordHint = document.getElementById('password-rol-hint');
+    if (rol === 'profesor') {
+        passwordContainer.style.display = 'block';
+        passwordHint.textContent = 'Contraseña para profesor: profesor';
+    } else if (rol === 'administrador') {
+        passwordContainer.style.display = 'block';
+        passwordHint.textContent = 'Contraseña para administrador: admin';
+    } else {
+        passwordContainer.style.display = 'none';
+        passwordHint.textContent = '';
+    }
+}
+
 function manejarSeleccionClub() {}
 // Login function for index.html
 async function iniciarSesion() {

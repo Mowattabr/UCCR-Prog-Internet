@@ -107,7 +107,7 @@
       <nav style="margin-bottom: 20px;">
         <ul>
           <li><a href="index.html">← Volver al Inicio</a></li>
-          <li><a href="#ayuda">Ayuda</a></li>
+          <li><a href="#" id="ayuda-nav-link" onclick="document.getElementById('ayuda-popup-msg').style.display='flex';return false;">¿Cómo llenar el formulario?</a></li>
         </ul>
       </nav>
 
@@ -115,7 +115,6 @@
       <div id="registro-msg" style="display:none; font-weight:bold; margin-bottom:16px;"></div>
       
       <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Registro de Nuevo Usuario</h2>
-      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para registro de usuarios</p>
 
       <form id="registro-form" method="post">
 
@@ -170,7 +169,7 @@
                 <label for="rol" class="form-label">Rol:</label>
                 <select class="form-select" id="rol" name="rol" required onchange="manejarCambioRol()">
                   <option value="">Seleccione un rol</option>
-                  <option value="estudiante">Estudiante</option>
+                  <option value="estudiante" selected>Estudiante</option>
                   <option value="profesor">Profesor</option>
                   <option value="administrador">Administrador</option>
                 </select>
@@ -254,7 +253,7 @@
             <div class="mb-3">
               <label for="intereses" class="form-label">
                 Elige tu club preferido:
-                <i id="info-club" style="margin-left: 8px; color: #f18b32; cursor: pointer; font-size: 1.1em; border: 1px solid #f18b32; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-weight: bold;" title="Información sobre los clubes">i</i>
+                <i id="info-club" style="margin-left: 8px; color: #f18b32; cursor: pointer; font-size: 1.1em; border: 1px solid #f18b32; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-weight: bold;" title="Información sobre los clubes" onclick="document.getElementById('club-info-popup').style.display='flex'">i</i>
               </label>
               <select class="form-select" id="intereses" name="intereses" required onchange="manejarSeleccionClub()">
                 <option value="" disabled selected style="color:gray;">Selecciona un Club</option>
@@ -299,14 +298,30 @@
 
     <!-- Página de Ayuda como subpágina -->
     <section id="ayuda" style="display:none; padding:40px 20px; max-width:600px; margin:40px auto; background:#23232b; border-radius:12px; box-shadow:0 4px 24px #0008; color:#fff;">
-      <h2 style="color:#f18b32; margin-bottom:18px;">Ayuda</h2>
-      <p>Esta es la <b>página de registro de usuarios</b> para administradores de la Galaxia Magna Academy.</p>
-      <p>Aquí puedes registrar nuevos usuarios en el sistema proporcionando sus datos básicos.</p>
-      <p>Si tienes dudas o necesitas ayuda, puedes contactar a <b>Allan VillaLobos</b>.</p>
-      <button id="cerrar-ayuda" style="margin-top:24px; padding:10px 30px; border-radius:8px; background:#2563eb; color:#fff; border:none; font-weight:bold; cursor:pointer;">Cerrar</button>
+  <!-- Removed extra button, popup will open from nav link -->
+<!-- Ayuda popup moved outside main for guaranteed visibility -->
+</section>
+<div id="ayuda-popup-msg" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:99999; justify-content:center; align-items:center;">
+  <div style="background:#23232b; border-radius:16px; padding:40px; max-width:500px; margin:20px; box-shadow:0 8px 32px rgba(0,0,0,0.3); border:2px solid #f18b32; text-align:left; color:#fff;">
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+      <i style="font-size: 24px; color: #f18b32; margin-right: 12px;">ℹ️</i>
+      <h3 style="color:#f18b32; margin: 0; font-size:1.3em;">Guía para llenar el formulario</h3>
+    </div>
+    <ul style="margin-bottom:24px;">
+      <li>Completa todos los campos obligatorios marcados con <b>*</b>.</li>
+      <li>Elige el <b>rol</b> adecuado para el usuario (estudiante, profesor, administrador).</li>
+      <li>Selecciona el <b>club</b> que más te interese para obtener beneficios adicionales.</li>
+      <li>Verifica que el <b>correo electrónico</b> sea válido y que la <b>contraseña</b> cumpla los requisitos.</li>
+      <li>Guarda el <b>código de usuario</b> generado, lo necesitarás para iniciar sesión.</li>
+    </ul>
+    <div style="text-align: center;">
+      <button id="cerrar-ayuda-popup" style="background:#f18b32; color:white; border:none; padding:10px 30px; border-radius:8px; font-weight:bold; cursor:pointer;">Entendido</button>
+    </div>
+  </div>
+</div>
     </section>
   </main>
-
+<!-- Ayuda section remains, but will be shown/hidden as a popup -->
   <footer>
   </footer>
 
@@ -316,6 +331,47 @@
     TIP: Usa recursos externos para complementar tu aprendizaje.
   -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="config.js"></script>
   <script src="scripts.js"></script>
+<script>
+// Only close logic for Ayuda popup
+document.addEventListener('DOMContentLoaded', function() {
+  var cerrarPopup = document.getElementById('cerrar-ayuda-popup');
+  var ayudaMsg = document.getElementById('ayuda-popup-msg');
+  if (cerrarPopup && ayudaMsg) {
+    cerrarPopup.onclick = function() {
+      ayudaMsg.style.display = 'none';
+    };
+  }
+});
+// Only close logic for Ayuda popup
+document.addEventListener('DOMContentLoaded', function() {
+  var cerrarPopup = document.getElementById('cerrar-ayuda-popup');
+  var ayudaMsg = document.getElementById('ayuda-popup-msg');
+  if (cerrarPopup && ayudaMsg) {
+    cerrarPopup.onclick = function() {
+      ayudaMsg.style.display = 'none';
+    };
+  }
+});
+</script>
+</main>
+<script>
+// Show club info popup when info icon is clicked
+document.addEventListener('DOMContentLoaded', function() {
+  var infoClub = document.getElementById('info-club');
+  if (infoClub) {
+    infoClub.onclick = function() {
+      document.getElementById('club-info-popup').style.display = 'flex';
+    };
+  }
+  var closeBtn = document.querySelector('#club-info-popup button');
+  if (closeBtn) {
+    closeBtn.onclick = function() {
+      document.getElementById('club-info-popup').style.display = 'none';
+    };
+  }
+});
+</script>
 </body>
 </html>
