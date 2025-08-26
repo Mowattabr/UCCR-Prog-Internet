@@ -283,7 +283,7 @@ async function iniciarSesion() {
 		} else {
 			localStorage.setItem('uccr_user', JSON.stringify(data[0]));
 		}
-		window.location.href = 'profile.html';
+		window.location.href = 'dashboard.html';
 	} catch (err) {
 		alert('Error de conexión: ' + err.message);
 	}
