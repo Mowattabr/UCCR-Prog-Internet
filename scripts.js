@@ -170,6 +170,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+			// Check if email exists in Supabase
+            const urlCheckEmail = `${SUPABASE_URL}/rest/v1/lista_usuarios?email=eq.${encodeURIComponent(email)}`;
+            const responseCheckEmail = await fetch(urlCheckEmail, { headers: headersCheck });
+            if (responseCheckEmail.ok) {
+                const dataEmail = await responseCheckEmail.json();
+                if (dataEmail.length > 0) {
+                    alert('El correo electrónico ya está registrado. Por favor usa otro.');
+                    return; // Prevent registration
+                }
+            } else {
+                alert('No se pudo verificar el correo electrónico. Intenta de nuevo.');
+                return;
+            }
+
 			// Before preparing payload, auto-generate code again to ensure uniqueness
 			const codigo_usuario = await generarCodigoUsuario(username);
 
