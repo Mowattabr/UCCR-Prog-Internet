@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Crear Horario de Curso</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
+    <div class="header-text">
+      <h1>Galaxia Magna Academy</h1>
+      <h2>Sapientia per Stellam</h2>
+    </div>
+    <img src="images/GAM_transparent.png" alt="GMA Logo" style="width: 80px; height: 80px; object-fit: contain;">
+  </header>
+  <div style="width:100%;text-align:center;margin-top:12px;margin-bottom:12px;">
+    <a href="dashboard.html" style="font-size:1.1em;color:#2563eb;text-decoration:none;font-weight:bold;">
+      Volver al Dashboard
+    </a>
+  </div>
+  <main>
+    <section style="max-width: 600px; margin: 40px auto; background: #23232b; border-radius: 10px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); border: 1px solid #f18b32;">
+      <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Crear Horario de Curso</h2>
+      <form id="form-schedule">
+        <div class="mb-3">
+          <label for="curso-select" class="form-label" style="color:#f18b32;">Curso</label>
+          <select id="curso-select" class="form-control" required></select>
+        </div>
+        <div class="mb-3">
+          <label for="usuario-select" class="form-label" style="color:#f18b32;">Usuario</label>
+          <select id="usuario-select" class="form-control" required></select>
+        </div>
+        <div class="mb-3">
+          <label for="rol-en-curso" class="form-label" style="color:#f18b32;">Rol en Curso</label>
+          <select id="rol-en-curso" class="form-control" required>
+            <option value="profesor">Profesor</option>
+            <option value="estudiante">Estudiante</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="estado" class="form-label" style="color:#f18b32;">Estado</label>
+          <select id="estado" class="form-control" required>
+            <option value="inscrito">Inscrito</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="reprobado">Reprobado</option>
+            <option value="retirado">Retirado</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="trimestre" class="form-label" style="color:#f18b32;">Trimestre</label>
+          <select id="trimestre" class="form-control" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="anio" class="form-label" style="color:#f18b32;">Año</label>
+          <select id="anio" class="form-control" required>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="nota" class="form-label" style="color:#f18b32;">Nota (opcional)</label>
+          <input type="number" step="0.01" min="0" max="100" id="nota" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary" style="background:#2563eb; border:none;">Crear Horario</button>
+      </form>
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Fetch cursos
+      const cursosRes = await fetch(`${SUPABASE_URL}/rest/v1/cursos`, {
+        headers: { 'apikey': SUPABASE_APIKEY, 'Authorization': SUPABASE_AUTH }
+      });
+      const cursos = cursosRes.ok ? await cursosRes.json() : [];
+      const cursoSelect = document.getElementById('curso-select');
+      cursos.forEach(curso => {
+        const opt = document.createElement('option');
+        opt.value = curso.id;
+        opt.textContent = curso.nombre || `Curso ${curso.id}`;
+        cursoSelect.appendChild(opt);
+      });
+      // Fetch usuarios
+      const usuariosRes = await fetch(`${SUPABASE_URL}/rest/v1/lista_usuarios`, {
+        headers: { 'apikey': SUPABASE_APIKEY, 'Authorization': SUPABASE_AUTH }
+      });
+      const usuarios = usuariosRes.ok ? await usuariosRes.json() : [];
+      const usuarioSelect = document.getElementById('usuario-select');
+      usuarios.forEach(usuario => {
+        const opt = document.createElement('option');
+        opt.value = usuario.id;
+        opt.textContent = `${usuario.username} (${usuario.rol})`;
+        usuarioSelect.appendChild(opt);
+      });
+      // Handle form submit
+      document.getElementById('form-schedule').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const payload = {
+          curso_id: parseInt(cursoSelect.value),
+          usuario_id: usuarioSelect.value,
+          rol_en_curso: document.getElementById('rol-en-curso').value,
+          estado: document.getElementById('estado').value,
+          nota: document.getElementById('nota').value ? parseFloat(document.getElementById('nota').value) : null,
+          trimestre: parseInt(document.getElementById('trimestre').value),
+          anio: parseInt(document.getElementById('anio').value)
+        };
+        // Insert into trimestres
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/trimestres`, {
+          method: 'POST',
+          headers: { 'apikey': SUPABASE_APIKEY, 'Authorization': SUPABASE_AUTH, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          alert('Horario creado exitosamente.');
+          document.getElementById('form-schedule').reset();
+        } else {
+          alert('Error al crear el horario.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

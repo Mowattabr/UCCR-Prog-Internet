@@ -11,6 +11,9 @@
 <body>
   <div style="position: absolute; top: 20px; right: 30px; z-index: 1000;">
     <a href="profile.html" style="color:#f18b32; text-decoration:underline; background:none; padding:0;" id="btnProfileTop">Perfil</a>
+    <br>
+    <a href="#" id="logout-link" style="color:#f18b32; text-decoration:underline; background:none; padding:0;">Cerrar sesión</a>
+
   </div>
   <header>
     <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
@@ -24,6 +27,12 @@
             <li id="admin-link-professors"><a href="admin_tools_professors.html" style="color:#2563eb; text-decoration:underline; background:none; padding:0;"><i class="fas fa-chalkboard-teacher" style="margin-right:6px;color:#f18b32;"></i>Profesores</a></li>
             <li id="admin-link-admins"><a href="admin_tools_admins.html" style="color:#2563eb; text-decoration:underline; background:none; padding:0;"><i class="fas fa-user-shield" style="margin-right:6px;color:#f18b32;"></i>Administradores</a></li>
             <li id="admin-link-inactivos"><a href="admin_tools_inactive_users.html" style="color:#f18b32; text-decoration:underline; background:none; padding:0;"><i class="fas fa-user-slash" style="margin-right:6px;color:#2563eb;"></i>Inactivos</a></li>
+          </ul>
+        </nav>
+        <nav id="admin-nav-courses" style="display:none; margin-top:10px;">
+          <ul style="display:inline-flex; gap:18px; list-style:none; margin:0; padding:0;">
+            <li id="admin-link-courses"><a href="admin_tool_courses.html" style="color:#2563eb; text-decoration:underline; background:none; padding:0;"><i class="fas fa-book" style="margin-right:6px;color:#2563eb;"></i>Cursos</a></li>
+            <li id="admin-link-schedule"><a href="admin_tools_schedule.html" style="color:#2563eb; text-decoration:underline; background:none; padding:0;"><i class="fas fa-calendar-alt" style="margin-right:6px;color:#2563eb;"></i>Horarios</a></li>
           </ul>
         </nav>
       </div>
@@ -56,7 +65,7 @@
         </div>
       </div>
     </section>
-    <a href="#" id="logout-link" style="color:#ef4444; text-decoration:underline; background:none; padding:0; margin-left:18px; font-weight:bold;">Cerrar sesión</a>
+    <div id="videos-message" style="margin-top:20px; font-size:1.1em; color:#fff; font-weight:bold;"></div>
   </main>
   <footer></footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -70,6 +79,15 @@
       document.getElementById('dashboard-codigo').textContent = user.codigo_usuario || '(código)';
       if (user.rol === 'administrador') {
         document.getElementById('admin-nav').style.display = '';
+        document.getElementById('admin-nav-courses').style.display = '';
+      }
+      // Mensaje de videos según club
+      var club = user.intereses;
+      var msgDiv = document.getElementById('videos-message');
+      if (!club || club === 'ninguno' || club === 'null') {
+        msgDiv.textContent = 'Videos de interés.';
+      } else {
+        msgDiv.innerHTML = 'Videos basados en tu club de interés (<span style="color:#FFFF00;">' + club + '</span>) y otros videos. <br> Los cursos pueden ser en Español, Inglés o Portugués.';
       }
     });
     document.getElementById('logout-link').onclick = function() {
