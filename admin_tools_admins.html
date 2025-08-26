@@ -100,7 +100,12 @@
             <div class="mb-2"><label>Intereses</label><input type="text" id="edit-intereses" class="form-control"></div>
             <div class="mb-2"><label>Creado en</label><input type="text" id="edit-creado_en" class="form-control"></div>
             <div class="mb-2"><label>Créditos Obtenidos</label><input type="text" id="edit-creditos_obtenidos" class="form-control"></div>
-            <div class="mb-2"><label>Estado</label><input type="text" id="edit-estado" class="form-control"></div>
+            <div class="mb-2"><label>Estado</label>
+              <select id="edit-estado" class="form-control">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -111,6 +116,7 @@
     </div>
   </div>
   <script src="config.js"></script>
+  <script src="admin_tools_common.js"></script>
   <script>
     let adminsGlobal = [];
     function filtrarAdmins(admins) {

@@ -11,6 +11,8 @@ function setupAdminTools({rol, pageTitle, tableId, modalId, filterLabel, fetchLa
   function filtrar(data) {
     const filtro = filterInput.value.toLowerCase();
     return data.filter(est => {
+      // Only show active users
+      if (est.estado !== 'activo') return false;
       return (
         (!filtro ||
           (est.username && est.username.toLowerCase().includes(filtro)) ||

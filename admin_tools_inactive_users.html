@@ -3,18 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Herramientas de Administración - Profesores</title>
+  <title>Herramientas de Administración - Usuarios Inactivos</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .truncate-intereses {
-      max-width: 300px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      cursor: pointer;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -27,54 +18,53 @@
   </header>
   <div style="width:100%;text-align:center;margin-top:12px;margin-bottom:12px;">
     <a href="dashboard.html" style="font-size:1.1em;color:#2563eb;text-decoration:none;font-weight:bold;">
-      <i class="fas fa-arrow-left" style="margin-right:6px;"></i><i class="fas fa-th-large" style="margin-right:6px;"></i>Volver al Dashboard
+      Volver al Dashboard
     </a>
   </div>
   <main>
-    <section>
-      <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Lista de Profesores</h2>
-      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver todos los profesores registrados</p>
-      <div class="table-responsive" style="overflow-x:auto;">
-        <div id="table-filter-single" style="margin-bottom: 16px;">
-          <input type="text" id="filter-global" placeholder="Filtrar por cualquier valor..." class="form-control" style="width: 300px;">
-        </div>
-        <table class="table table-striped table-dark" id="tabla-profesores" style="min-width:1800px; width:auto;">
-          <thead>
-            <tr>
-              <th>Modificar</th>
-              <th>Nombre de Usuario</th>
-              <th>Email</th>
-              <th>Contraseña</th>
-              <th>Teléfono</th>
-              <th>Fecha de Nacimiento</th>
-              <th>Rol</th>
-              <th>Fecha de Inscripción</th>
-              <th>Código de Usuario</th>
-              <th>Género</th>
-              <th>Intereses</th>
-              <th>Creado en</th>
-              <th>Créditos Obtenidos</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Los profesores se cargarán aquí dinámicamente -->
-          </tbody>
-        </table>
+    <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Lista de Usuarios Inactivos</h2>
+    <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver todos los usuarios inactivos</p>
+    <div class="table-responsive" style="overflow-x:auto;">
+      <div id="table-filter-single" style="margin-bottom: 16px;">
+        <input type="text" id="filter-global" placeholder="Filtrar por cualquier valor..." class="form-control" style="width: 300px;">
       </div>
-    </section>
+      <table class="table table-striped table-dark" id="tabla-inactivos" style="min-width:1800px; width:auto;">
+        <thead>
+          <tr>
+            <th>Modificar</th>
+            <th>Nombre de Usuario</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Teléfono</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Rol</th>
+            <th>Fecha de Inscripción</th>
+            <th>Código de Usuario</th>
+            <th>Género</th>
+            <th>Intereses</th>
+            <th>Creado en</th>
+            <th>Créditos Obtenidos</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Los usuarios inactivos se cargarán aquí dinámicamente -->
+        </tbody>
+      </table>
+    </div>
   </main>
   <footer></footer>
-  <!-- Modal for editing professor -->
-  <div class="modal fade" id="modalEditarProfesor" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+
+  <!-- Modal for editing inactive user -->
+  <div class="modal fade" id="modalEditarInactivo" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarLabel">Modificar Profesor</h5>
+          <h5 class="modal-title" id="modalEditarLabel">Modificar Usuario Inactivo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <form id="formEditarProfesor">
+          <form id="formEditarInactivo">
             <input type="hidden" id="edit-id">
             <div class="mb-2"><label>Nombre de Usuario</label><input type="text" id="edit-username" class="form-control"></div>
             <div class="mb-2"><label>Email</label><input type="text" id="edit-email" class="form-control"></div>
@@ -85,6 +75,7 @@
               <select id="edit-rol" class="form-control">
                 <option value="estudiante">Estudiante</option>
                 <option value="profesor">Profesor</option>
+                <option value="administrador">Administrador</option>
               </select>
             </div>
             <div class="mb-2"><label>Fecha de Inscripción</label><input type="date" id="edit-fecha_inscripcion" class="form-control"></div>
@@ -110,54 +101,32 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary" id="guardarCambiosProfesor">Guardar Cambios</button>
+          <button type="button" class="btn btn-primary" id="guardarCambiosInactivo">Guardar Cambios</button>
         </div>
       </div>
     </div>
   </div>
+
   <script src="config.js"></script>
   <script src="admin_tools_common.js"></script>
   <script>
-    let profesoresGlobal = [];
-    function filtrarProfesores(profesores) {
-      const filtro = document.getElementById('filter-global').value.toLowerCase();
-      return profesores.filter(est => {
-        return (
-          (!filtro ||
-            (est.username && est.username.toLowerCase().includes(filtro)) ||
-            (est.email && est.email.toLowerCase().includes(filtro)) ||
-            (est.password && est.password.toLowerCase().includes(filtro)) ||
-            (est.telefono && est.telefono.toLowerCase().includes(filtro)) ||
-            (est.fecha_nacimiento && est.fecha_nacimiento.toLowerCase().includes(filtro)) ||
-            (est.rol && est.rol.toLowerCase().includes(filtro)) ||
-            (est.fecha_inscripcion && est.fecha_inscripcion.toLowerCase().includes(filtro)) ||
-            (est.codigo_usuario && est.codigo_usuario.toLowerCase().includes(filtro)) ||
-            (est.genero && est.genero.toLowerCase().includes(filtro)) ||
-            (est.intereses && est.intereses.join(', ').toLowerCase().includes(filtro)) ||
-            (est.creado_en && est.creado_en.toLowerCase().includes(filtro)) ||
-            (est.creditos_obtenidos && est.creditos_obtenidos.toLowerCase().includes(filtro)) ||
-            (est.estado && est.estado.toLowerCase().includes(filtro))
-          )
-        );
-      });
-    }
-    async function cargarProfesores() {
-      const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?rol=eq.profesor`;
+    let inactivosGlobal = [];
+    async function cargarInactivos() {
+      const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?estado=eq.inactivo`;
       const headers = {
         'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
         'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
       };
       const response = await fetch(url, { headers });
-      const tabla = document.getElementById('tabla-profesores').getElementsByTagName('tbody')[0];
+      const tabla = document.getElementById('tabla-inactivos').getElementsByTagName('tbody')[0];
       tabla.innerHTML = '';
       if (response.ok) {
-        const profesores = await response.json();
-        profesoresGlobal = profesores;
-        const profesoresFiltrados = filtrarProfesores(profesores);
-        profesoresFiltrados.forEach(est => {
+        const inactivos = await response.json();
+        inactivosGlobal = inactivos;
+        inactivos.forEach(est => {
           const fila = document.createElement('tr');
           fila.innerHTML = `
-            <td><button class='btn btn-warning btn-sm' onclick='modificarProfesor("${est.id}")'>Mod</button></td>
+            <td><button class='btn btn-warning btn-sm' onclick='modificarInactivo("${est.id}")'>Mod</button></td>
             <td title="${est.username}">${est.username}</td>
             <td title="${est.email}">${est.email}</td>
             <td title="${est.password}">${est.password}</td>
@@ -175,30 +144,30 @@
           tabla.appendChild(fila);
         });
       } else {
-        tabla.innerHTML = '<tr><td colspan="14" style="color:#ff6b6b; text-align:center;">No se pudo cargar la lista de profesores.</td></tr>';
+        tabla.innerHTML = '<tr><td colspan="14" style="color:#ff6b6b; text-align:center;">No se pudo cargar la lista de usuarios inactivos.</td></tr>';
       }
     }
-    function modificarProfesor(id) {
-      const profesor = profesoresGlobal.find(e => e.id === id);
-      if (!profesor) return;
-      document.getElementById('edit-id').value = profesor.id;
-      document.getElementById('edit-username').value = profesor.username || '';
-      document.getElementById('edit-email').value = profesor.email || '';
-      document.getElementById('edit-password').value = profesor.password || '';
-      document.getElementById('edit-telefono').value = profesor.telefono || '';
-      document.getElementById('edit-fecha_nacimiento').value = profesor.fecha_nacimiento || '';
-      document.getElementById('edit-rol').value = profesor.rol || '';
-      document.getElementById('edit-fecha_inscripcion').value = profesor.fecha_inscripcion || '';
-      document.getElementById('edit-codigo_usuario').value = profesor.codigo_usuario || '';
-      document.getElementById('edit-genero').value = profesor.genero || '';
-      document.getElementById('edit-intereses').value = (profesor.intereses && profesor.intereses.length) ? profesor.intereses.join(', ') : '';
-      document.getElementById('edit-creado_en').value = profesor.creado_en || '';
-      document.getElementById('edit-creditos_obtenidos').value = profesor.creditos_obtenidos || '';
-      document.getElementById('edit-estado').value = profesor.estado || '';
-      const modal = new bootstrap.Modal(document.getElementById('modalEditarProfesor'));
+    function modificarInactivo(id) {
+      const est = inactivosGlobal.find(e => e.id === id);
+      if (!est) return;
+      document.getElementById('edit-id').value = est.id;
+      document.getElementById('edit-username').value = est.username || '';
+      document.getElementById('edit-email').value = est.email || '';
+      document.getElementById('edit-password').value = est.password || '';
+      document.getElementById('edit-telefono').value = est.telefono || '';
+      document.getElementById('edit-fecha_nacimiento').value = est.fecha_nacimiento || '';
+      document.getElementById('edit-rol').value = est.rol || '';
+      document.getElementById('edit-fecha_inscripcion').value = est.fecha_inscripcion || '';
+      document.getElementById('edit-codigo_usuario').value = est.codigo_usuario || '';
+      document.getElementById('edit-genero').value = est.genero || '';
+      document.getElementById('edit-intereses').value = (est.intereses && est.intereses.length) ? est.intereses.join(', ') : '';
+      document.getElementById('edit-creado_en').value = est.creado_en || '';
+      document.getElementById('edit-creditos_obtenidos').value = est.creditos_obtenidos || '';
+      document.getElementById('edit-estado').value = est.estado || '';
+      const modal = new bootstrap.Modal(document.getElementById('modalEditarInactivo'));
       modal.show();
     }
-    document.getElementById('guardarCambiosProfesor').addEventListener('click', async function() {
+    document.getElementById('guardarCambiosInactivo').addEventListener('click', async function() {
       const id = document.getElementById('edit-id').value;
       const datos = {
         username: document.getElementById('edit-username').value,
@@ -215,6 +184,7 @@
         creditos_obtenidos: document.getElementById('edit-creditos_obtenidos').value,
         estado: document.getElementById('edit-estado').value
       };
+      // Actualizar en Supabase
       try {
         const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?id=eq.${id}`;
         const headers = {
@@ -229,8 +199,8 @@
           body: JSON.stringify(datos)
         });
         if (response.ok) {
-          bootstrap.Modal.getInstance(document.getElementById('modalEditarProfesor')).hide();
-          cargarProfesores();
+          bootstrap.Modal.getInstance(document.getElementById('modalEditarInactivo')).hide();
+          cargarInactivos();
         } else {
           alert('Error al guardar los cambios.');
         }
@@ -239,8 +209,8 @@
       }
     });
     document.addEventListener('DOMContentLoaded', () => {
-      cargarProfesores();
-      document.getElementById('filter-global').addEventListener('input', cargarProfesores);
+      cargarInactivos();
+      document.getElementById('filter-global').addEventListener('input', cargarInactivos);
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
