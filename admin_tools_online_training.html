@@ -40,8 +40,9 @@
               <th>Modificar</th>
               <th>ID</th>
               <th>Categoría</th>
-              <th>Enlace</th>
+              <th>Título</th>
               <th>Idioma</th>
+              <th>Enlace</th>
             </tr>
           </thead>
           <tbody>
@@ -65,8 +66,9 @@
           <form id="formEditarTraining">
             <input type="hidden" id="edit-id">
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label><input type="text" id="edit-category" class="form-control"></div>
-            <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="edit-link" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="edit-title" class="form-control"></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="edit-language" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="edit-link" class="form-control"></div>
           </form>
         </div>
         <div class="modal-footer">
@@ -88,14 +90,15 @@
           (!filtro ||
             (tr.id && tr.id.toString().toLowerCase().includes(filtro)) ||
             (tr.category && tr.category.toLowerCase().includes(filtro)) ||
-            (tr.link && tr.link.toLowerCase().includes(filtro)) ||
-            (tr.language && tr.language.toLowerCase().includes(filtro))
+            (tr.title && tr.title.toLowerCase().includes(filtro)) ||
+            (tr.language && tr.language.toLowerCase().includes(filtro)) ||
+            (tr.link && tr.link.toLowerCase().includes(filtro))
           )
         );
       });
     }
     async function cargarTrainings() {
-      const url = `${SUPABASE_URL}/rest/v1/trainings`;
+  const url = `${SUPABASE_URL}/rest/v1/online_trainings`;
       const headers = {
         'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
         'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
@@ -113,8 +116,9 @@
             <td><button class='btn btn-warning btn-sm' onclick='modificarTraining("${tr.id}")'>Mod</button></td>
             <td>${tr.id}</td>
             <td title="${tr.category}">${tr.category}</td>
+            <td title="${tr.title}">${tr.title}</td>
+            <td>${tr.language}</td>
             <td title="${tr.link}"><a href="${tr.link}" target="_blank">${tr.link}</a></td>
-            <td>${tr.language || ''}</td>
           `;
           tabla.appendChild(fila);
         });
@@ -125,10 +129,11 @@
     function modificarTraining(id) {
       const training = trainingsGlobal.find(t => t.id == id);
       if (!training) return;
-      document.getElementById('edit-id').value = training.id;
-      document.getElementById('edit-category').value = training.category || '';
-      document.getElementById('edit-link').value = training.link || '';
-      document.getElementById('edit-language').value = training.language || '';
+  document.getElementById('edit-id').value = training.id;
+  document.getElementById('edit-category').value = training.category || '';
+  document.getElementById('edit-title').value = training.title || '';
+  document.getElementById('edit-language').value = training.language || '';
+  document.getElementById('edit-link').value = training.link || '';
       const modal = new bootstrap.Modal(document.getElementById('modalEditarTraining'));
       modal.show();
     }
@@ -136,12 +141,13 @@
       const id = document.getElementById('edit-id').value;
       const datos = {
         category: document.getElementById('edit-category').value,
-        link: document.getElementById('edit-link').value,
-        language: document.getElementById('edit-language').value
+        title: document.getElementById('edit-title').value,
+        language: document.getElementById('edit-language').value,
+        link: document.getElementById('edit-link').value
       };
       // Actualizar en Supabase
       try {
-        const url = `${SUPABASE_URL}/rest/v1/trainings?id=eq.${id}`;
+        const url = `${SUPABASE_URL}/rest/v1/online_trainings?id=eq.${id}`;
         const headers = {
           'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
           'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
