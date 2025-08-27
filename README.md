@@ -40,32 +40,36 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 ## 📁 Estructura del Proyecto
 
 ```
-├── index.html              # Página principal con login dual
-├── profile.html            # Sistema de gestión de perfiles
-├── registro.html           # Formulario de registro de usuarios
-├── style.css               # Estilos principales y animaciones
-├── script.js               # Lógica frontend y comunicación API
-├── backend/                # Backend desplegado en Vercel
-│   ├── api/
-│   │   └── index.php       # API endpoint principal
-│   ├── Lab08/
-│   │   ├── app.js          # Aplicación Node.js
-│   │   └── usuarios.php    # Gestión de usuarios
-│   └── vercel.json         # Configuración de deployment
-├── images/                 # Recursos gráficos
-│   ├── GAM_transparent.png # Logo principal
-│   ├── banner.png          # Banner Star Wars
-│   ├── Male.png            # Avatar masculino
-│   ├── Female.png          # Avatar femenino
-│   ├── Other.png           # Avatar otro género
-│   ├── incognito.png       # Avatar por defecto
-│   └── Magna.png           # Logo alternativo
-├── misc/                   # Archivos multimedia
-│   └── lightsaber-ignition-6816.mp3
-└── Lab07/                  # Laboratorio actual
-```
-│   └── lightsaber-ignition-6816.mp3
-└── Lab07/                  # Laboratorio actual
+├── admin_tools_admins.html          ## Panel de administración de usuarios administradores
+├── admin_tools_common.js            ## Funciones JS compartidas entre paneles admin
+├── admin_tools_inactive_users.html  ## Panel para gestionar usuarios inactivos
+├── admin_tools_online_training.html ## Panel de administración de capacitaciones online
+├── admin_tools_professors.html      ## Panel de administración de profesores
+├── admin_tools_students.html        ## Panel de administración de estudiantes
+├── admin_tool_courses.html          ## Panel de administración de cursos
+├── aprende_mas_popup.html           ## Popup informativo "Aprende más"
+├── ayuda_popup.html                 ## Popup de ayuda
+├── config.js                        ## Configuración global del proyecto
+├── contacto_popup.html              ## Popup de contacto
+├── cursos.html                      ## Página de listado de cursos
+├── dashboard.html                   ## Panel principal de administración y navegación
+├── images/                          ## Carpeta de imágenes y avatares
+│   ├── banner.png                   ## Banner principal Star Wars
+│   ├── Female.png                   ## Avatar femenino
+│   ├── GAM_transparent.png          ## Logo principal transparente
+│   ├── GMA.png                      ## Logo alternativo
+│   ├── incognito.png                ## Avatar por defecto/incógnito
+│   ├── Magna.png                    ## Logo alternativo Magna
+│   ├── Male.png                     ## Avatar masculino
+│   └── Other.png                    ## Avatar otro género
+├── index.html                       ## Página principal/login
+├── profile.html                     ## Perfil de usuario editable
+├── profile.js                       ## Lógica JS para perfil de usuario
+├── README.md                        ## Documentación del proyecto
+├── registro.html                    ## Formulario de registro de usuarios
+├── scripts.js                       ## Lógica JS principal y comunicación API
+├── style.css                        ## Estilos y animaciones principales
+├── supabase.js                      ## Conexión y funciones para Supabase
 ```
 
 ## 🎮 Funcionalidades
@@ -128,15 +132,9 @@ Plataforma web interactiva desarrollada para la materia **PROGRAMACION INTERNET*
 4. **Base de datos Supabase**: Conectada automáticamente
 
 ### Para Production
-- **Frontend**: Servir archivos estáticos (Vercel, Netlify, etc.)
-- **Backend**: Desplegado en Vercel
-- **Database**: Supabase PostgreSQL
 
 ### URLs del Proyecto
-- **Backend API**: https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
-- **Supabase**: Configurado con credenciales incluidas
-- **GitHub Repo**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
-
+**Repositorio en GitHub**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
 ### Credenciales de Prueba
 
 **Usuario de Prueba Principal:**
@@ -233,5 +231,3 @@ El código incluye extensos comentarios explicativos que amplían las explicacio
 
 - **Backend API**: https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
 - **GitHub Repo**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
-- **Supabase Dashboard**: Configurado para el proyecto
-- **Documentación**: Incluida en comentarios del código
