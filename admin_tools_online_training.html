@@ -69,18 +69,7 @@
         <div class="modal-body">
           <form id="formAgregarTraining">
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label>
-              <select id="add-category" class="form-control" required>
-                <option value="ajedrez">Club de Ajedrez</option>
-                <option value="arte">Club de Arte</option>
-                <option value="deportes">Club de Deportes</option>
-                <option value="idiomas">Club de Idiomas</option>
-                <option value="matematica">Club de Matemática</option>
-                <option value="musica">Club de Música</option>
-                <option value="programación">Club de Programación</option>
-                <option value="Star Wars">Club Star Wars</option>
-                <option value="otro">Otro club</option>
-                <option value="ninguno">No estoy interesado</option>
-              </select>
+              <select id="add-category" class="form-control" required></select>
             </div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="add-title" class="form-control" required></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="add-language" class="form-control" required></div>
@@ -105,18 +94,7 @@
           <form id="formEditarTraining">
             <input type="hidden" id="edit-id">
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label>
-              <select id="edit-category" class="form-control">
-                <option value="ajedrez">Club de Ajedrez</option>
-                <option value="arte">Club de Arte</option>
-                <option value="deportes">Club de Deportes</option>
-                <option value="idiomas">Club de Idiomas</option>
-                <option value="matematica">Club de Matemática</option>
-                <option value="musica">Club de Música</option>
-                <option value="programación">Club de Programación</option>
-                <option value="Star Wars">Club Star Wars</option>
-                <option value="otro">Otro club</option>
-                <option value="ninguno">No estoy interesado</option>
-              </select>
+              <select id="edit-category" class="form-control"></select>
             </div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="edit-title" class="form-control"></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="edit-language" class="form-control"></div>
@@ -134,6 +112,31 @@
   <script src="config.js"></script>
   <script src="admin_tools_common.js"></script>
   <script>
+    // Club options for category dropdowns
+    const clubOptions = [
+      { value: "ajedrez", label: "Club de Ajedrez" },
+      { value: "arte", label: "Club de Arte" },
+      { value: "deportes", label: "Club de Deportes" },
+      { value: "idiomas", label: "Club de Idiomas" },
+      { value: "matematica", label: "Club de Matemática" },
+      { value: "música", label: "Club de Música" },
+      { value: "programación", label: "Club de Programación" },
+      { value: "Star Wars", label: "Club Star Wars" },
+      { value: "otro", label: "Otro club" },
+      { value: "ninguno", label: "No estoy interesado" }
+    ];
+
+    function renderClubOptions(selectId, selectedValue) {
+      const select = document.getElementById(selectId);
+      select.innerHTML = clubOptions.map(opt => `<option value="${opt.value}"${selectedValue === opt.value ? ' selected' : ''}>${opt.label}</option>`).join('');
+    }
+
+    // Render options on modal open
+    document.getElementById('btnAgregarTraining').addEventListener('click', function() {
+      renderClubOptions('add-category');
+      const modal = new bootstrap.Modal(document.getElementById('modalAgregarTraining'));
+      modal.show();
+    });
     document.getElementById('btnAgregarTraining').addEventListener('click', function() {
       const modal = new bootstrap.Modal(document.getElementById('modalAgregarTraining'));
       modal.show();
@@ -223,7 +226,7 @@
       const training = trainingsGlobal.find(t => t.id == id);
       if (!training) return;
   document.getElementById('edit-id').value = training.id;
-  document.getElementById('edit-category').value = training.category || '';
+  renderClubOptions('edit-category', training.category || '');
   document.getElementById('edit-title').value = training.title || '';
   document.getElementById('edit-language').value = training.language || '';
   document.getElementById('edit-link').value = training.link || '';
