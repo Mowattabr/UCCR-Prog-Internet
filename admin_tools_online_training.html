@@ -68,7 +68,20 @@
         </div>
         <div class="modal-body">
           <form id="formAgregarTraining">
-            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label><input type="text" id="add-category" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label>
+              <select id="add-category" class="form-control" required>
+                <option value="ajedrez">Club de Ajedrez</option>
+                <option value="arte">Club de Arte</option>
+                <option value="deportes">Club de Deportes</option>
+                <option value="idiomas">Club de Idiomas</option>
+                <option value="matematica">Club de Matemática</option>
+                <option value="musica">Club de Música</option>
+                <option value="programación">Club de Programación</option>
+                <option value="Star Wars">Club Star Wars</option>
+                <option value="otro">Otro club</option>
+                <option value="ninguno">No estoy interesado</option>
+              </select>
+            </div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="add-title" class="form-control" required></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="add-language" class="form-control" required></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="add-link" class="form-control" required></div>
@@ -91,7 +104,20 @@
         <div class="modal-body">
           <form id="formEditarTraining">
             <input type="hidden" id="edit-id">
-            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label><input type="text" id="edit-category" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label>
+              <select id="edit-category" class="form-control">
+                <option value="ajedrez">Club de Ajedrez</option>
+                <option value="arte">Club de Arte</option>
+                <option value="deportes">Club de Deportes</option>
+                <option value="idiomas">Club de Idiomas</option>
+                <option value="matematica">Club de Matemática</option>
+                <option value="musica">Club de Música</option>
+                <option value="programación">Club de Programación</option>
+                <option value="Star Wars">Club Star Wars</option>
+                <option value="otro">Otro club</option>
+                <option value="ninguno">No estoy interesado</option>
+              </select>
+            </div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="edit-title" class="form-control"></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="edit-language" class="form-control"></div>
             <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="edit-link" class="form-control"></div>
