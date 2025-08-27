@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herramientas de Administración - Capacitaciones Online</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .table-scroll-container { width: 100vw; margin: 0; overflow-x: auto; padding-bottom: 1rem; }
+    .table-fixed { table-layout: auto; }
+    body, html { width: 100vw; overflow-x: auto; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/GAM_transparent.png" alt="Galaxia Magna Academy Logo" style="width: 80px; height: 80px; object-fit: contain;">
+    <div class="header-text">
+      <h1>Galaxia Magna Academy</h1>
+      <h2>Sapientia per Stellam</h2>
+    </div>
+    <img src="images/GAM_transparent.png" alt="GMA Logo" style="width: 80px; height: 80px; object-fit: contain;">
+  </header>
+  <div style="width:100%;text-align:center;margin-top:12px;margin-bottom:12px;">
+    <a href="dashboard.html" style="font-size:1.1em;color:#2563eb;text-decoration:none;font-weight:bold;">
+      Volver al Dashboard
+    </a>
+  </div>
+  <main>
+    <section>
+      <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Lista de Capacitaciones Online</h2>
+      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver y modificar capacitaciones online</p>
+      <div class="table-responsive" style="overflow-x:auto;">
+        <div id="table-filter-single" style="margin-bottom: 16px;">
+          <input type="text" id="filter-global" placeholder="Filtrar por cualquier valor..." class="form-control" style="width: 300px;">
+        </div>
+        <table class="table table-striped table-dark" id="tabla-trainings" style="min-width:900px; width:auto;">
+          <thead>
+            <tr>
+              <th>Modificar</th>
+              <th>ID</th>
+              <th>Categoría</th>
+              <th>Enlace</th>
+              <th>Idioma</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Las capacitaciones se cargarán aquí dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer></footer>
+
+  <!-- Modal for editing training -->
+  <div class="modal fade" id="modalEditarTraining" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarLabel">Modificar Capacitación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditarTraining">
+            <input type="hidden" id="edit-id">
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label><input type="text" id="edit-category" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="edit-link" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="edit-language" class="form-control"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="guardarCambiosTraining">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="admin_tools_common.js"></script>
+  <script>
+    let trainingsGlobal = [];
+    function filtrarTrainings(trainings) {
+      const filtro = document.getElementById('filter-global').value.toLowerCase();
+      return trainings.filter(tr => {
+        return (
+          (!filtro ||
+            (tr.id && tr.id.toString().toLowerCase().includes(filtro)) ||
+            (tr.category && tr.category.toLowerCase().includes(filtro)) ||
+            (tr.link && tr.link.toLowerCase().includes(filtro)) ||
+            (tr.language && tr.language.toLowerCase().includes(filtro))
+          )
+        );
+      });
+    }
+    async function cargarTrainings() {
+      const url = `${SUPABASE_URL}/rest/v1/trainings`;
+      const headers = {
+        'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+        'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : ''
+      };
+      const response = await fetch(url, { headers });
+      const tabla = document.getElementById('tabla-trainings').getElementsByTagName('tbody')[0];
+      tabla.innerHTML = '';
+      if (response.ok) {
+        const trainings = await response.json();
+        trainingsGlobal = trainings;
+        const trainingsFiltrados = filtrarTrainings(trainings);
+        trainingsFiltrados.forEach(tr => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td><button class='btn btn-warning btn-sm' onclick='modificarTraining("${tr.id}")'>Mod</button></td>
+            <td>${tr.id}</td>
+            <td title="${tr.category}">${tr.category}</td>
+            <td title="${tr.link}"><a href="${tr.link}" target="_blank">${tr.link}</a></td>
+            <td>${tr.language || ''}</td>
+          `;
+          tabla.appendChild(fila);
+        });
+      } else {
+        tabla.innerHTML = '<tr><td colspan="5" style="color:#ff6b6b; text-align:center;">No se pudo cargar la lista de capacitaciones.</td></tr>';
+      }
+    }
+    function modificarTraining(id) {
+      const training = trainingsGlobal.find(t => t.id == id);
+      if (!training) return;
+      document.getElementById('edit-id').value = training.id;
+      document.getElementById('edit-category').value = training.category || '';
+      document.getElementById('edit-link').value = training.link || '';
+      document.getElementById('edit-language').value = training.language || '';
+      const modal = new bootstrap.Modal(document.getElementById('modalEditarTraining'));
+      modal.show();
+    }
+    document.getElementById('guardarCambiosTraining').addEventListener('click', async function() {
+      const id = document.getElementById('edit-id').value;
+      const datos = {
+        category: document.getElementById('edit-category').value,
+        link: document.getElementById('edit-link').value,
+        language: document.getElementById('edit-language').value
+      };
+      // Actualizar en Supabase
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/trainings?id=eq.${id}`;
+        const headers = {
+          'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+          'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        };
+        const response = await fetch(url, {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify(datos)
+        });
+        if (response.ok) {
+          bootstrap.Modal.getInstance(document.getElementById('modalEditarTraining')).hide();
+          cargarTrainings();
+        } else {
+          alert('Error al guardar los cambios.');
+        }
+      } catch (e) {
+        alert('Error de red al guardar los cambios.');
+      }
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarTrainings();
+      document.getElementById('filter-global').addEventListener('input', cargarTrainings);
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
