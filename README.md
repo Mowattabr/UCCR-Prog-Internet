@@ -231,3 +231,63 @@ El código incluye extensos comentarios explicativos que amplían las explicacio
 
 - **Backend API**: https://backend-kt0bm09wc-mowattabrs-projects.vercel.app
 - **GitHub Repo**: https://github.com/arg3ni5/II-51-Laboratorios/tree/main/backend
+- **UML Maker**: https://www.plantuml.com/plantuml
+
+
+
+
+Native UML code:
+
+@startuml
+package "Frontend" {
+  class index.html {
+    +Login
+    +Navegación
+  }
+  class profile.html {
+    +Perfil de usuario
+    +Edición de datos
+  }
+  class registro.html {
+    +Registro de usuario
+  }
+  class dashboard.html {
+    +Panel principal
+    +Acceso a herramientas admin
+  }
+  class admin_tools_admins.html
+  class admin_tools_professors.html
+  class admin_tools_students.html
+  class admin_tools_inactive_users.html
+  class admin_tools_online_training.html
+  class admin_tool_courses.html
+  class aprende_mas_popup.html
+  class ayuda_popup.html
+  class contacto_popup.html
+  class cursos.html
+  class images
+  class style.css
+  class scripts.js
+  class profile.js
+  class admin_tools_common.js
+  class supabase.js
+  class config.js
+}
+
+index.html --> dashboard.html : Navegación
+dashboard.html --> admin_tools_admins.html : Acceso
+dashboard.html --> admin_tools_professors.html : Acceso
+dashboard.html --> admin_tools_students.html : Acceso
+dashboard.html --> admin_tools_inactive_users.html : Acceso
+dashboard.html --> admin_tools_online_training.html : Acceso
+dashboard.html --> admin_tool_courses.html : Acceso
+
+profile.html --> supabase.js : CRUD usuario
+registro.html --> supabase.js : Registro usuario
+admin_tools_common.js --> supabase.js : CRUD admin
+
+scripts.js --> supabase.js : API calls
+admin_tools_common.js --> supabase.js : API calls
+
+backend ..> supabase.js : API REST
+@enduml
