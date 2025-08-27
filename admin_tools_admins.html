@@ -33,7 +33,10 @@
   <main>
     <section>
       <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Lista de Administradores</h2>
-      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver todos los administradores registrados</p>
+      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver, modificar y agregar administradores</p>
+      <div style="text-align:center; margin-bottom:18px;">
+        <button class="btn btn-success" id="btnAgregarAdmin">Agregar Nuevo Administrador</button>
+      </div>
       <div class="table-responsive" style="overflow-x:auto;">
         <div id="table-filter-single" style="margin-bottom: 16px;">
           <input type="text" id="filter-global" placeholder="Filtrar por cualquier valor..." class="form-control" style="width: 300px;">
@@ -66,6 +69,56 @@
   </main>
   <footer></footer>
   <!-- Modal for editing admin -->
+  <!-- Modal for adding admin -->
+  <div class="modal fade" id="modalAgregarAdmin" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarLabel">Agregar Nuevo Administrador</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAgregarAdmin">
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Nombre de Usuario</label><input type="text" id="add-username" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Email</label><input type="text" id="add-email" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Contraseña</label><input type="text" id="add-password" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Teléfono</label><input type="text" id="add-telefono" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Fecha de Nacimiento</label><input type="date" id="add-fecha_nacimiento" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Rol</label>
+              <select id="add-rol" class="form-control">
+                <option value="administrador">Administrador</option>
+                <option value="profesor">Profesor</option>
+                <option value="estudiante">Estudiante</option>
+              </select>
+            </div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Fecha de Inscripción</label><input type="date" id="add-fecha_inscripcion" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Código de Usuario</label><input type="text" id="add-codigo_usuario" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Género</label>
+              <select id="add-genero" class="form-control">
+                <option value="m">Masculino</option>
+                <option value="f">Femenino</option>
+                <option value="o">Otro</option>
+                <option value="n">No especificado</option>
+              </select>
+            </div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Intereses</label><input type="text" id="add-intereses" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Creado en</label><input type="text" id="add-creado_en" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Créditos Obtenidos</label><input type="text" id="add-creditos_obtenidos" class="form-control"></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Estado</label>
+              <select id="add-estado" class="form-control">
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="guardarNuevoAdmin">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="modalEditarAdmin" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -118,6 +171,56 @@
   <script src="config.js"></script>
   <script src="admin_tools_common.js"></script>
   <script>
+    document.getElementById('btnAgregarAdmin').addEventListener('click', function() {
+      const modal = new bootstrap.Modal(document.getElementById('modalAgregarAdmin'));
+      modal.show();
+    });
+
+    document.getElementById('guardarNuevoAdmin').addEventListener('click', async function() {
+      const datos = {
+        username: document.getElementById('add-username').value,
+        email: document.getElementById('add-email').value,
+        password: document.getElementById('add-password').value,
+        telefono: document.getElementById('add-telefono').value,
+        fecha_nacimiento: document.getElementById('add-fecha_nacimiento').value,
+        rol: document.getElementById('add-rol').value,
+        fecha_inscripcion: document.getElementById('add-fecha_inscripcion').value,
+        codigo_usuario: document.getElementById('add-codigo_usuario').value,
+        genero: document.getElementById('add-genero').value,
+        intereses: document.getElementById('add-intereses').value.split(',').map(s => s.trim()),
+        creado_en: document.getElementById('add-creado_en').value,
+        creditos_obtenidos: document.getElementById('add-creditos_obtenidos').value,
+        estado: document.getElementById('add-estado').value
+      };
+      // Validación simple
+      if (!datos.username || !datos.email || !datos.password || !datos.fecha_nacimiento) {
+        alert('Nombre, email, contraseña y fecha de nacimiento son obligatorios.');
+        return;
+      }
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/lista_usuarios`;
+        const headers = {
+          'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+          'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        };
+        const response = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(datos)
+        });
+        if (response.ok) {
+          bootstrap.Modal.getInstance(document.getElementById('modalAgregarAdmin')).hide();
+          document.getElementById('formAgregarAdmin').reset();
+          cargarAdmins();
+        } else {
+          alert('Error al guardar el administrador.');
+        }
+      } catch (e) {
+        alert('Error de red al guardar el administrador.');
+      }
+    });
     let adminsGlobal = [];
     function filtrarAdmins(admins) {
       const filtro = document.getElementById('filter-global').value.toLowerCase();

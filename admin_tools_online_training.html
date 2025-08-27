@@ -29,7 +29,10 @@
   <main>
     <section>
       <h2 style="color: #f18b32; text-align: center; margin-bottom: 30px;">Lista de Capacitaciones Online</h2>
-      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver y modificar capacitaciones online</p>
+      <p style="text-align: center; color: #C0C0C0; margin-bottom: 30px;">Panel de administración para ver, modificar y agregar capacitaciones online</p>
+      <div style="text-align:center; margin-bottom:18px;">
+        <button class="btn btn-success" id="btnAgregarTraining">Agregar Nueva Capacitación</button>
+      </div>
       <div class="table-responsive" style="overflow-x:auto;">
         <div id="table-filter-single" style="margin-bottom: 16px;">
           <input type="text" id="filter-global" placeholder="Filtrar por cualquier valor..." class="form-control" style="width: 300px;">
@@ -55,6 +58,29 @@
   <footer></footer>
 
   <!-- Modal for editing training -->
+  <!-- Modal for adding training -->
+  <div class="modal fade" id="modalAgregarTraining" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAgregarLabel">Agregar Nueva Capacitación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAgregarTraining">
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Categoría</label><input type="text" id="add-category" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Título</label><input type="text" id="add-title" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Idioma</label><input type="text" id="add-language" class="form-control" required></div>
+            <div class="mb-2"><label style="color:#111; font-weight:bold;">Enlace</label><input type="text" id="add-link" class="form-control" required></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="guardarNuevoTraining">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="modalEditarTraining" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -82,6 +108,47 @@
   <script src="config.js"></script>
   <script src="admin_tools_common.js"></script>
   <script>
+    document.getElementById('btnAgregarTraining').addEventListener('click', function() {
+      const modal = new bootstrap.Modal(document.getElementById('modalAgregarTraining'));
+      modal.show();
+    });
+
+    document.getElementById('guardarNuevoTraining').addEventListener('click', async function() {
+      const datos = {
+        category: document.getElementById('add-category').value,
+        title: document.getElementById('add-title').value,
+        language: document.getElementById('add-language').value,
+        link: document.getElementById('add-link').value
+      };
+      // Validación simple
+      if (!datos.category || !datos.title || !datos.language || !datos.link) {
+        alert('Todos los campos son obligatorios.');
+        return;
+      }
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/online_trainings`;
+        const headers = {
+          'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
+          'Authorization': typeof SUPABASE_AUTH !== 'undefined' ? SUPABASE_AUTH : '',
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        };
+        const response = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(datos)
+        });
+        if (response.ok) {
+          bootstrap.Modal.getInstance(document.getElementById('modalAgregarTraining')).hide();
+          document.getElementById('formAgregarTraining').reset();
+          cargarTrainings();
+        } else {
+          alert('Error al guardar la capacitación.');
+        }
+      } catch (e) {
+        alert('Error de red al guardar la capacitación.');
+      }
+    });
     let trainingsGlobal = [];
     function filtrarTrainings(trainings) {
       const filtro = document.getElementById('filter-global').value.toLowerCase();
