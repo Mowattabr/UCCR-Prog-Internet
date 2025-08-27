@@ -122,6 +122,12 @@
     function filtrarProfesores(profesores) {
       const filtro = document.getElementById('filter-global').value.toLowerCase();
       return profesores.filter(est => {
+        let interesesStr = '';
+        if (Array.isArray(est.intereses)) {
+          interesesStr = est.intereses.join(', ').toLowerCase();
+        } else if (typeof est.intereses === 'string') {
+          interesesStr = est.intereses.toLowerCase();
+        }
         return (
           (!filtro ||
             (est.username && est.username.toLowerCase().includes(filtro)) ||
@@ -133,7 +139,7 @@
             (est.fecha_inscripcion && est.fecha_inscripcion.toLowerCase().includes(filtro)) ||
             (est.codigo_usuario && est.codigo_usuario.toLowerCase().includes(filtro)) ||
             (est.genero && est.genero.toLowerCase().includes(filtro)) ||
-            (est.intereses && est.intereses.join(', ').toLowerCase().includes(filtro)) ||
+            (interesesStr && interesesStr.includes(filtro)) ||
             (est.creado_en && est.creado_en.toLowerCase().includes(filtro)) ||
             (est.creditos_obtenidos && est.creditos_obtenidos.toLowerCase().includes(filtro)) ||
             (est.estado && est.estado.toLowerCase().includes(filtro))

@@ -111,7 +111,7 @@
   <script src="admin_tools_common.js"></script>
   <script>
     let inactivosGlobal = [];
-    async function cargarInactivos() {
+  async function cargarInactivos() {
       const url = `${SUPABASE_URL}/rest/v1/lista_usuarios?estado=eq.inactivo`;
       const headers = {
         'apikey': typeof SUPABASE_APIKEY !== 'undefined' ? SUPABASE_APIKEY : '',
@@ -147,7 +147,7 @@
         tabla.innerHTML = '<tr><td colspan="14" style="color:#ff6b6b; text-align:center;">No se pudo cargar la lista de usuarios inactivos.</td></tr>';
       }
     }
-    function modificarInactivo(id) {
+  function modificarInactivo(id) {
       const est = inactivosGlobal.find(e => e.id === id);
       if (!est) return;
       document.getElementById('edit-id').value = est.id;
@@ -167,7 +167,7 @@
       const modal = new bootstrap.Modal(document.getElementById('modalEditarInactivo'));
       modal.show();
     }
-    document.getElementById('guardarCambiosInactivo').addEventListener('click', async function() {
+  document.getElementById('guardarCambiosInactivo').addEventListener('click', async function() {
       const id = document.getElementById('edit-id').value;
       const datos = {
         username: document.getElementById('edit-username').value,
@@ -208,9 +208,64 @@
         alert('Error de red al guardar los cambios.');
       }
     });
+    function filtrarInactivos(inactivos) {
+      const filtro = document.getElementById('filter-global').value.toLowerCase();
+      return inactivos.filter(est => {
+        let interesesStr = '';
+        if (Array.isArray(est.intereses)) {
+          interesesStr = est.intereses.join(', ').toLowerCase();
+        } else if (typeof est.intereses === 'string') {
+          interesesStr = est.intereses.toLowerCase();
+        }
+        return (
+          (!filtro ||
+            (est.username && est.username.toLowerCase().includes(filtro)) ||
+            (est.email && est.email.toLowerCase().includes(filtro)) ||
+            (est.password && est.password.toLowerCase().includes(filtro)) ||
+            (est.telefono && est.telefono.toLowerCase().includes(filtro)) ||
+            (est.fecha_nacimiento && est.fecha_nacimiento.toLowerCase().includes(filtro)) ||
+            (est.rol && est.rol.toLowerCase().includes(filtro)) ||
+            (est.fecha_inscripcion && est.fecha_inscripcion.toLowerCase().includes(filtro)) ||
+            (est.codigo_usuario && est.codigo_usuario.toLowerCase().includes(filtro)) ||
+            (est.genero && est.genero.toLowerCase().includes(filtro)) ||
+            (interesesStr && interesesStr.includes(filtro)) ||
+            (est.creado_en && est.creado_en.toLowerCase().includes(filtro)) ||
+            (est.creditos_obtenidos && est.creditos_obtenidos.toLowerCase().includes(filtro)) ||
+            (est.estado && est.estado.toLowerCase().includes(filtro))
+          )
+        );
+      });
+    }
     document.addEventListener('DOMContentLoaded', () => {
       cargarInactivos();
-      document.getElementById('filter-global').addEventListener('input', cargarInactivos);
+      document.getElementById('filter-global').addEventListener('input', function() {
+        const filtro = document.getElementById('filter-global').value.toLowerCase();
+        const tabla = document.getElementById('tabla-inactivos').getElementsByTagName('tbody')[0];
+        tabla.innerHTML = '';
+        filtrarInactivos(inactivosGlobal).forEach(est => {
+          // Only show users with estado === 'inactivo'
+          if (est.estado && est.estado.toLowerCase() === 'inactivo') {
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+              <td><button class='btn btn-warning btn-sm' onclick='modificarInactivo("${est.id}")'>Mod</button></td>
+              <td title="${est.username}">${est.username}</td>
+              <td title="${est.email}">${est.email}</td>
+              <td title="${est.password}">${est.password}</td>
+              <td title="${est.telefono || ''}">${est.telefono || ''}</td>
+              <td>${est.fecha_nacimiento}</td>
+              <td>${est.rol}</td>
+              <td>${est.fecha_inscripcion}</td>
+              <td title="${est.codigo_usuario}">${est.codigo_usuario}</td>
+              <td>${est.genero}</td>
+              <td class="truncate-intereses" title="${(est.intereses && est.intereses.length) ? est.intereses.join(', ') : ''}">${(est.intereses && est.intereses.length) ? est.intereses.join(', ') : ''}</td>
+              <td>${est.creado_en || ''}</td>
+              <td title="${est.creditos_obtenidos}">${est.creditos_obtenidos}</td>
+              <td>${est.estado}</td>
+            `;
+            tabla.appendChild(fila);
+          }
+        });
+      });
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

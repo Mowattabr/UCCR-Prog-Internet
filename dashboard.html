@@ -84,8 +84,9 @@
       // Mensaje de videos según club
       var club = user.intereses;
       var msgDiv = document.getElementById('videos-message');
-      if (!club || club === 'ninguno' || club === 'null') {
-        msgDiv.textContent = 'Videos de interés.';
+      var clubNormalized = (club || '').toString().trim().toLowerCase();
+      if (!clubNormalized || clubNormalized === 'ninguno' || clubNormalized === 'null') {
+        msgDiv.innerHTML = 'Videos que te pueden interesar.<br>Los cursos pueden ser en Español, Inglés o Portugués.';
       } else {
         msgDiv.innerHTML = 'Videos basados en tu club de interés (<span style="color:#FFFF00;">' + club + '</span>) y otros videos. <br> Los cursos pueden ser en Español, Inglés o Portugués.';
       }

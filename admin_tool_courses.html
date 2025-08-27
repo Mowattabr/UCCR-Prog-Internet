@@ -108,12 +108,13 @@
         const filtro = document.getElementById('filter-global').value.toLowerCase();
         const cursosFiltrados = cursos.filter(curso => {
           return (!filtro ||
-            (curso.cuatrimestre && curso.cuatrimestre.toLowerCase().includes(filtro)) ||
+            (curso.cuatrimestre && curso.cuatrimestre.toString().toLowerCase().includes(filtro)) ||
             (curso.codigo && curso.codigo.toLowerCase().includes(filtro)) ||
             (curso.curso && curso.curso.toLowerCase().includes(filtro)) ||
             (curso.requisitos && curso.requisitos.toLowerCase().includes(filtro)) ||
-            (curso.creditos && curso.creditos.toString().includes(filtro)) ||
-            (typeof curso.Active === 'boolean' && (curso.Active ? 'sí' : 'no').includes(filtro))
+            (typeof curso.creditos !== 'undefined' && curso.creditos.toString().toLowerCase().includes(filtro)) ||
+            (typeof curso.Active !== 'undefined' && ((curso.Active ? 'sí' : 'no').toLowerCase().includes(filtro) || curso.Active.toString().toLowerCase().includes(filtro))) ||
+            (curso.id && curso.id.toString().toLowerCase().includes(filtro))
           );
         });
         cursosFiltrados.forEach(curso => {
