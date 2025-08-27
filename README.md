@@ -291,3 +291,6 @@ admin_tools_common.js --> supabase.js : API calls
 
 backend ..> supabase.js : API REST
 @enduml
+
+
+Public page: https://mowattabr.github.io/UCCR-Prog-Internet/index.html
