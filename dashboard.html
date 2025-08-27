@@ -66,6 +66,9 @@
       </div>
     </section>
     <div id="videos-message" style="margin-top:20px; font-size:1.1em; color:#fff; font-weight:bold;"></div>
+  <div style="text-align:center; margin:24px 0 12px 0;">
+    <input type="text" id="trainings-search" class="form-control" style="max-width:400px;display:inline-block;" placeholder="Buscar en capacitaciones...">
+  </div>
   <div id="trainings-tables"></div>
   </main>
   <footer></footer>
@@ -103,46 +106,62 @@
       .then(trainings => {
         var clubNorm = clubNormalized;
         var trainingsTablesDiv = document.getElementById('trainings-tables');
-        trainingsTablesDiv.innerHTML = '';
-        // Agrupar por categoría
-        let trainingsByCategory = {};
-        trainings.forEach(tr => {
-          let cat = (tr.category || '').toLowerCase();
-          if (!trainingsByCategory[cat]) trainingsByCategory[cat] = [];
-          trainingsByCategory[cat].push(tr);
+        var trainingsSearch = document.getElementById('trainings-search');
+        function renderTables(filteredTrainings) {
+          trainingsTablesDiv.innerHTML = '';
+          // Agrupar por categoría
+          let trainingsByCategory = {};
+          filteredTrainings.forEach(tr => {
+            let cat = (tr.category || '').toLowerCase();
+            if (!trainingsByCategory[cat]) trainingsByCategory[cat] = [];
+            trainingsByCategory[cat].push(tr);
+          });
+          let categories = Object.keys(trainingsByCategory);
+          let clubCat = clubNorm;
+          let hasInterestTable = clubCat && categories.includes(clubCat);
+          function makeTable(cat, expanded, bolded) {
+            let hStyle = bolded ? "font-weight:bold; color:#f18b32;" : "color:#f18b32;";
+            let tableId = `table-${cat}`;
+            let isInterest = (clubCat && cat === clubCat);
+            let collapseBtn = (!isInterest) ? `<button id='${tableId}-collapse' class='btn btn-sm btn-outline-secondary' style='margin-left:12px;' onclick=\"document.getElementById('${tableId}-wrap').style.display='none'; document.getElementById('${tableId}-expand').style.display='inline-block';\">Ocultar</button>` : '';
+            let expandBtn = (!isInterest) ? `<button id='${tableId}-expand' class='btn btn-sm btn-outline-primary' style='display:${expanded ? 'none':'inline-block'};margin-bottom:8px;' onclick=\"document.getElementById('${tableId}-wrap').style.display='block'; this.style.display='none';\">Expandir ${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>` : '';
+            let wrapStyle = (expanded || isInterest) ? '' : 'display:none;';
+            let html = `<div style='margin-top:32px;'>${expandBtn}<div id='${tableId}-wrap' style='${wrapStyle}'>`;
+            html += `<h3 style='${hStyle}'>Videos de ${cat.charAt(0).toUpperCase() + cat.slice(1)} ${collapseBtn}</h3>`;
+            html += `<table class='table table-striped table-dark' style='min-width:700px; width:auto;'><thead><tr><th>ID</th><th>Categoría</th><th>Título</th><th>Idioma</th><th>Enlace</th></tr></thead><tbody>`;
+            trainingsByCategory[cat].forEach(tr => {
+              html += `<tr><td>${tr.id}</td><td>${tr.category}</td><td>${tr.title}</td><td>${tr.language}</td><td><a href='${tr.link}' target='_blank'>${tr.link}</a></td></tr>`;
+            });
+            html += '</tbody></table></div></div>';
+            return html;
+          }
+          if (hasInterestTable) {
+            trainingsTablesDiv.innerHTML += makeTable(clubCat, true, true);
+            categories.filter(c => c !== clubCat).forEach(cat => {
+              trainingsTablesDiv.innerHTML += makeTable(cat, false, false);
+            });
+          } else {
+            categories.forEach(cat => {
+              trainingsTablesDiv.innerHTML += makeTable(cat, false, false);
+            });
+          }
+        }
+        // Initial render
+        renderTables(trainings);
+        // Add search event
+        trainingsSearch.addEventListener('input', function() {
+          const filtro = trainingsSearch.value.toLowerCase();
+          const filtered = trainings.filter(tr =>
+            (!filtro ||
+              (tr.id && tr.id.toString().toLowerCase().includes(filtro)) ||
+              (tr.category && tr.category.toLowerCase().includes(filtro)) ||
+              (tr.title && tr.title.toLowerCase().includes(filtro)) ||
+              (tr.language && tr.language.toLowerCase().includes(filtro)) ||
+              (tr.link && tr.link.toLowerCase().includes(filtro))
+            )
+          );
+          renderTables(filtered);
         });
-        let categories = Object.keys(trainingsByCategory);
-        let clubCat = clubNorm;
-        let hasInterestTable = clubCat && categories.includes(clubCat);
-        // Helper for table HTML
-        function makeTable(cat, expanded, bolded) {
-          let hStyle = bolded ? "font-weight:bold; color:#f18b32;" : "color:#f18b32;";
-          let tableId = `table-${cat}`;
-          let isInterest = (clubCat && cat === clubCat);
-          let collapseBtn = (!isInterest) ? `<button id='${tableId}-collapse' class='btn btn-sm btn-outline-secondary' style='margin-left:12px;' onclick=\"document.getElementById('${tableId}-wrap').style.display='none'; document.getElementById('${tableId}-expand').style.display='inline-block';\">Ocultar</button>` : '';
-          let expandBtn = (!isInterest) ? `<button id='${tableId}-expand' class='btn btn-sm btn-outline-primary' style='display:${expanded ? 'none':'inline-block'};margin-bottom:8px;' onclick=\"document.getElementById('${tableId}-wrap').style.display='block'; this.style.display='none';\">Expandir ${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>` : '';
-          let wrapStyle = (expanded || isInterest) ? '' : 'display:none;';
-          let html = `<div style='margin-top:32px;'>${expandBtn}<div id='${tableId}-wrap' style='${wrapStyle}'>`;
-          html += `<h3 style='${hStyle}'>Videos de ${cat.charAt(0).toUpperCase() + cat.slice(1)} ${collapseBtn}</h3>`;
-          html += `<table class='table table-striped table-dark' style='min-width:700px; width:auto;'><thead><tr><th>ID</th><th>Categoría</th><th>Título</th><th>Idioma</th><th>Enlace</th></tr></thead><tbody>`;
-          trainingsByCategory[cat].forEach(tr => {
-            html += `<tr><td>${tr.id}</td><td>${tr.category}</td><td>${tr.title}</td><td>${tr.language}</td><td><a href='${tr.link}' target='_blank'>${tr.link}</a></td></tr>`;
-          });
-          html += '</tbody></table></div></div>';
-          return html;
-        }
-        if (hasInterestTable) {
-          // Show interest table expanded and bold, others collapsed
-          trainingsTablesDiv.innerHTML += makeTable(clubCat, true, true);
-          categories.filter(c => c !== clubCat).forEach(cat => {
-            trainingsTablesDiv.innerHTML += makeTable(cat, false, false);
-          });
-        } else {
-          // Collapse all tables, show expand button for each
-          categories.forEach(cat => {
-            trainingsTablesDiv.innerHTML += makeTable(cat, false, false);
-          });
-        }
       });
     });
     document.getElementById('logout-link').onclick = function() {
